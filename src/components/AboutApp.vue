@@ -53,7 +53,13 @@ export default {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.$router.push({ path: '/about' })
+                        if (this.$cookies.isKey("togo")) {
+                            const togo = this.$cookies.get("togo")
+                            this.$cookies.remove("togo")
+                            this.$router.push({ path: togo });
+                        } else {
+                            this.$router.push({ path: '/about' })
+                        }
                     }
                 })
             }

@@ -211,7 +211,9 @@ export default {
                     text: 'ログインしてください。',
                     showConfirmButton: true,
                     showCloseButton: false,
-                }).then(function () {
+                }).then(() => {
+                    this.$cookies.config(60 * 60 * 1, '');
+                    this.$cookies.set("togo", "/createimg");
                     router.push('/login');
                 })
             } 
