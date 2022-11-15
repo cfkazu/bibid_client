@@ -1,17 +1,29 @@
 export default {
     headerItems: [
         {
-            name: "検索？", url: "/"
+            name: "トップ", url: "/"
         },
         {
             name: "新規登録", url: "about"
         },
+
         {
-            name: "ログイン", url: "login"
+            name: "投稿", url: "createimg"
+        },
+
+    ],
+    headerItems_login: [
+        {
+            name: "トップ", url: "/"
         },
         {
-            name: "テスト", url: "test"
-        }
+            name: "新規登録", url: "about"
+        },
+
+        {
+            name: "投稿", url: "createimg"
+        },
+
     ],
     menuItems: [
         {

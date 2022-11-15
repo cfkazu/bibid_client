@@ -46,7 +46,7 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <AppButton :button-text="buttonText" :url="url" />
+
 
         </v-container>
     </section>
@@ -67,19 +67,3 @@
     }
 }
 </style>
-<script>
-import AppButton from './AppButton.vue'
-
-export default {
-    data() {
-        return {
-            buttonText: '新しくはじめる',
-            url: '/about'
-        }
-    },
-    components: {
-        AppButton
-    }
-}
-
-</script>

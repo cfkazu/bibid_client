@@ -58,7 +58,9 @@ export default {
 
             ]
         }
-    }),
+    }), mounted() {
+        this.checkLoggedIn();
+    },
     methods: {
         login() {
             if (this.$refs.form.validate()) {
@@ -66,6 +68,7 @@ export default {
                 axios.post('http://localhost:8000/auth/', this.credentials).then(res => {
                     this.$session.start();
                     this.$session.set('token', res.data.token);
+                    logger.info(res.data.token);
                     router.push('/');
                     // eslint-disable-next-line
                 }).catch(e => {
@@ -79,6 +82,12 @@ export default {
                         timer: 3000
                     })
                 })
+            }
+        },
+        checkLoggedIn() {
+            this.$session.start();
+            if (!this.$session.has("token")) {
+                router.push("/login");
             }
         }
     }

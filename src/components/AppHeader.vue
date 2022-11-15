@@ -9,6 +9,12 @@
                     {{ menuItem.name }}
                 </v-tab>
             </v-tabs>
+            <v-row class="justify-end">
+                <v-btn elevation="2" rounded text @click="getlogin_or_out">
+                    <div v-show="islogin">ログアウト</div>
+                    <div v-show="!islogin">ログイン</div>
+                </v-btn>
+            </v-row>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" temporary fixed>
             <v-list nav dense>
@@ -20,18 +26,54 @@
                 </v-list-item-group>
             </v-list>
         </v-navigation-drawer>
+
+
     </header>
 </template>
  
 <script>
 import constants from '../common/constants';
-
+import Swal from 'sweetalert2';
 export default {
     data() {
         return {
             drawer: false,
             menuItems: constants.menuItems,
-            headerItems: constants.headerItems
+            headerItems: constants.headerItems,
+            headerItems_login: constants.headerItems_login,
+            islogin: false
+        }
+    },
+
+    mounted() {
+        console.log("チェック")
+        this.checkLoggedIn();
+    },
+    methods: {
+        checkLoggedIn() {
+            this.islogin = this.$session.has("token")
+            console.log("ログイン状況", this.islogin)
+        },
+        getlogin_or_out() {
+            this.$session.start();
+            if (this.$session.has("token")) {
+                this.$session.destroy();
+                this.islogin = false
+                console.log("ログアウトしました")
+                console.log(this.$session.has("token"))
+                Swal.fire({
+                    text: 'ログアウトしました。',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push({ path: '/about' })
+                    }
+                })
+            } else {
+                const url = 'http://localhost:8000/twitter_login';
+                window.location.href = url
+            }
         }
     }
 }
