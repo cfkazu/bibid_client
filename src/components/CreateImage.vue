@@ -134,7 +134,8 @@ export default {
             this.$refs.observer.validate()
             const header = {
                 'Content-Type': 'multipart/form-data',
-                "X-AUTH-TOKEN": this.$session.get('token'),
+               // "X-AUTH-TOKEN": this.$session.get('token'),
+               "X-AUTH-TOKEN":this.$cookies.get('user').token,
             }
 
             var formData = new FormData();
@@ -144,7 +145,7 @@ export default {
             formData.append('prompt', this.imagedata.prompt);
             formData.append('neg_prompt', this.imagedata.neg_prompt);
             formData.append('additonal_tags', this.imagedata.additonal_tags);
-            formData.append('author_id_id', this.$session.get('id'));
+            formData.append('author_id_id', this.$cookies.get('user').id);
             formData.append('good', 0)
             formData.append('seed', -1)
             formData.append('is_nsfw', this.nsfw_id)
@@ -153,7 +154,7 @@ export default {
             for (let value of formData.entries()) {
                 console.log(value);
             }
-            console.log(this.$session.get('id'));
+           // console.log(this.$session.get('id'));
             axios.post("http://localhost:8000/creategraph/", formData, { headers: header })
                 .then((response) => {
                     console.log(response);
@@ -203,6 +204,18 @@ export default {
             e.target.value = '';
         },
         checkLoggedIn() {
+            if (!this.$cookies.isKey("user")) {
+                Swal.fire({
+                    type: 'warning',
+                    icon: 'warning',
+                    text: 'ログインしてください。',
+                    showConfirmButton: true,
+                    showCloseButton: false,
+                }).then(function () {
+                    router.push('/login');
+                })
+            } 
+/*
             this.$session.start();
             if (!this.$session.has("token")) {
                 Swal.fire({
@@ -216,7 +229,7 @@ export default {
                 })
             } else {
                 this.imagedata.author_id_id = this.$session.get("id");
-            }
+            }*/
         },
 
     },

@@ -43,6 +43,21 @@ export default {
         if (this.$route.query.id === void 0) {
             console.log(this.$route.params.id)
         } else {
+            if (!this.$cookies.isKey("user")) {
+                this.$cookies.config(60 * 60 * 1, '');
+                var user = { id: this.$route.query.id, token: this.$route.query.t }
+                this.$cookies.set("user", user);
+                Swal.fire({
+                    text: 'ログインしました。',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push({ path: '/about' })
+                    }
+                })
+            }
+            /*
             if (!this.$session.has("token")) {
                 this.$session.set('token', this.$route.query.t);
                 this.$session.set('id', this.$route.query.id)
@@ -55,7 +70,7 @@ export default {
                         this.$router.push({ path: '/about' })
                     }
                 })
-            }
+            }*/
 
 
 

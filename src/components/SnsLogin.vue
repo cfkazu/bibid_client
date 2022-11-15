@@ -49,15 +49,13 @@ export default {
     },
     methods: {
         checkLoggedIn() {
-            this.$session.start();
-            if (this.$session.has("token")) {
+            if (this.$cookies.isKey("user")) {
                 Swal.fire({
                     type: 'warning',
-                    title: 'Error',
+                    icon: 'warning',
                     text: 'ログイン済みです。',
-                    showConfirmButton: false,
+                    showConfirmButton: true,
                     showCloseButton: false,
-                    timer: 3000
                 })
             }
         },

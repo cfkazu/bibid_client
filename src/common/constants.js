@@ -8,7 +8,7 @@ export default {
         },
 
         {
-            name: "投稿", url: "createimg"
+            name: "投稿する", url: "createimg"
         },
 
     ],
@@ -27,16 +27,14 @@ export default {
     ],
     menuItems: [
         {
-            name: 'ランキング',
-            url: '#'
+            name: "トップ", url: "/"
         },
         {
-            name: 'リクエスト',
-            url: '#'
+            name: "新規登録", url: "about"
         },
+
         {
-            name: '描き方',
-            url: '#'
+            name: "投稿する", url: "createimg"
         },
     ],
 

@@ -9,8 +9,9 @@
                     {{ menuItem.name }}
                 </v-tab>
             </v-tabs>
+
             <v-row class="justify-end">
-                <v-btn elevation="2" rounded text @click="getlogin_or_out">
+                <v-btn elevation="2" text @click="getlogin_or_out">
                     <div v-show="islogin">ログアウト</div>
                     <div v-show="!islogin">ログイン</div>
                 </v-btn>
@@ -51,10 +52,29 @@ export default {
     },
     methods: {
         checkLoggedIn() {
-            this.islogin = this.$session.has("token")
+            this.islogin = this.$cookies.isKey("user");
+            //     this.islogin = this.$session.has("token")
             console.log("ログイン状況", this.islogin)
         },
         getlogin_or_out() {
+
+            if (this.$cookies.isKey("user")) {
+                this.$cookies.remove("user");
+                this.islogin = false;
+                Swal.fire({
+                    text: 'ログアウトしました。',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push({ path: '/about' })
+                    }
+                })
+            } else {
+                const url = 'http://localhost:8000/twitter_login';
+                window.location.href = url
+            }
+            /*
             this.$session.start();
             if (this.$session.has("token")) {
                 this.$session.destroy();
@@ -73,7 +93,7 @@ export default {
             } else {
                 const url = 'http://localhost:8000/twitter_login';
                 window.location.href = url
-            }
+            }*/
         }
     }
 }
