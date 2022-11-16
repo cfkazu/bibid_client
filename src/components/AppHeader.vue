@@ -54,7 +54,7 @@ export default {
         checkLoggedIn() {
             this.islogin = this.$cookies.isKey("user");
             //     this.islogin = this.$session.has("token")
-            console.log("ログイン状況", this.islogin)
+            // console.log("ログイン状況", this.islogin)
         },
         getlogin_or_out() {
 
@@ -71,10 +71,23 @@ export default {
                     }
                 })
             } else {
-                this.$cookies.config(60 * 60 * 1, '');
-                this.$cookies.set("togo", this.$route.path);
-                const url = 'http://localhost:8000/twitter_login';
-                window.location.href = url
+                Swal.fire({
+                    text: 'Twitter連携でログインします。',
+                    icon: 'info',
+                    confirmButtonText: 'OK',
+                    showConfirmButton: true,
+                    showCancelButton: true,
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        //this.$router.push({ path: '/' })
+                        this.$cookies.config(60 * 60 * 1, '');
+                        this.$cookies.set("togo", this.$route.path);
+                        const url = 'http://localhost:8000/twitter_login';
+                        window.location.href = url
+                    }
+                })
+
             }
             /*
             this.$session.start();

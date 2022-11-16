@@ -3,9 +3,7 @@ export default {
         {
             name: "トップ", url: "/"
         },
-        {
-            name: "新規登録", url: "/about"
-        },
+
 
         {
             name: "投稿する", url: "/createimg"
@@ -19,9 +17,7 @@ export default {
         {
             name: "トップ", url: "/"
         },
-        {
-            name: "新規登録", url: "/about"
-        },
+
 
         {
             name: "投稿", url: "/createimg"
@@ -32,9 +28,7 @@ export default {
         {
             name: "トップ", url: "/"
         },
-        {
-            name: "新規登録", url: "/about"
-        },
+
 
         {
             name: "投稿する", url: "/createimg"
