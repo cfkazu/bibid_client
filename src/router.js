@@ -6,6 +6,7 @@ import Login from './components/SnsLogin.vue'
 import Hedge from './components/HedgeHog.vue'
 import ShowImage from './components/ShowImage.vue'
 import CreateImage from './components/CreateImage.vue'
+import SearchRes from './components/SearchResult.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +41,10 @@ export default new Router({
             path: '/createimg',
             name: 'createimg',
             component: CreateImage
+        }, {
+            path: '/search',
+            name: 'search',
+            component: SearchRes
         }
     ]
 })

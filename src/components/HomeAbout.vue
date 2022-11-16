@@ -46,7 +46,9 @@
                     </v-card>
                 </v-col>
             </v-row>
-
+            <div class=".home-about__subtitle">
+                おすすめ作品
+            </div>
 
         </v-container>
     </section>
@@ -57,6 +59,19 @@
 .home-about__contents {
     margin-top: 20px;
     justify-content: center;
+
+    &-img {
+        text-align: center;
+    }
+
+    &-text {
+        word-wrap: break-word;
+    }
+}
+
+.home-about__subtitle {
+    margin-top: 20px;
+    justify-content: left;
 
     &-img {
         text-align: center;

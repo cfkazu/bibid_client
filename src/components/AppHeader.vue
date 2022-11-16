@@ -42,7 +42,7 @@ export default {
             menuItems: constants.menuItems,
             headerItems: constants.headerItems,
             headerItems_login: constants.headerItems_login,
-            islogin: false
+            islogin: false,
         }
     },
 
@@ -67,10 +67,12 @@ export default {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.$router.push({ path: '/about' })
+                        this.$router.push({ path: '/' })
                     }
                 })
             } else {
+                this.$cookies.config(60 * 60 * 1, '');
+                this.$cookies.set("togo", this.$route.path);
                 const url = 'http://localhost:8000/twitter_login';
                 window.location.href = url
             }

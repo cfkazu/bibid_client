@@ -2,7 +2,7 @@
     <v-card class="d-flex flex-column mx-auto my-6 flat" width="374" color="#fff">
         <v-card-title class="d-flex justify-center pa-0 mt-6">ログイン</v-card-title>
         <v-card-text class="d-flex justify-center flex-column">
-            <v-btn class="fill-width mt-6 text-capitalize caption mx-4" rounded color="#00ACEE" dark depressed
+            <v-btn class="fill-width mt-6 text-capitalize caption mx-4" rounded color="#9ee4ff" dark depressed
                 height="48px" @click="submitTwitter">
                 <img class="button-logo-img mr-4" src="../../public/static/twitter.png" style="height: 20px" />
                 twitterでログイン
