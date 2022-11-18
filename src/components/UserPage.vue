@@ -1,0 +1,211 @@
+<template>
+    <v-app>
+
+
+        <v-main>
+            <v-card :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
+
+
+                <v-list three-line>
+
+
+
+                    <v-list-item>
+                        <v-list-item-avatar size="90">
+                            <v-img :src="this.user.profile_url"></v-img>
+                        </v-list-item-avatar>
+
+                        <v-list-item-content>
+                            <v-list-item-title>@{{ this.user.username }}</v-list-item-title>
+                            <v-list-item-subtitle>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
+                            </v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-card-actions>
+                        <v-btn class="ma" icon color="red lighten-2" v-show="fav">
+                            <v-icon @click="unfollow()">mdi-heart</v-icon>
+                        </v-btn>
+                        <v-btn class="ma" icon color="red lighten-2" v-show="!fav">
+                            <v-icon @click="follow()">mdi-heart-outline</v-icon>
+                        </v-btn>
+                        <v-btn icon text color="blue lighten-2" :href="'https://twitter.com/' + this.user.username">
+                            <img src="../../public/static/twitter.png" style="height: 20px" />
+                        </v-btn>
+                    </v-card-actions>
+                </v-list>
+            </v-card>
+            <v-container mt-n12 pt-1>
+                <div class="text-center">
+                    <v-list>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-row class="mb-6" no-gutters>
+
+                                    <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3">
+                                        <v-col cols="12" sm="12" md="12" lg="12">
+                                            <v-card loading="false" class="mx-auto my-12" align="center">
+                                                <router-link :to="'/image/' + list.id">
+                                                    <v-img :aspect-ratio="1" v-bind:src="list.image">
+                                                    </v-img>
+                                                </router-link>
+                                                <br>
+                                                <div class="search-about__contents-text" align="left">{{ list.title }}
+                                                </div>
+
+                                            </v-card>
+
+                                        </v-col>
+                                    </v-col>
+                                </v-row>
+
+
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+
+
+                    <br><br>
+                </div>
+            </v-container>
+        </v-main>
+    </v-app>
+</template>
+
+<script>
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
+export default {
+    name: 'App',
+    data() {
+        return {
+            query: {
+
+            },
+            page: 1,
+            length: 0,
+            num: 0,
+            fav: false,
+            user: {
+
+            },
+            displayLists_devided: [],
+            dividenum: 5,
+            displayLists: [],
+            pageSize: 10,
+            maxnum: 40,
+            following: {
+
+            }
+        }
+    },
+    methods: {
+        need_login: function () {
+            if (!this.$cookies.isKey("user")) {
+                Swal.fire({
+                    type: 'warning',
+                    icon: 'warning',
+                    text: 'ログインしてください。',
+                    showConfirmButton: true,
+                    showCloseButton: false,
+                }).then(
+                    () => {
+                        return false;
+                    }
+                )
+            } else {
+                return true;
+            }
+        }, follow() {
+            if (!this.need_login()) {
+                return;
+            }
+            const header = {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
+            }
+            axios.get('http://127.0.0.1:8000/follow/' + this.$route.params.id, { headers: header }).then(() => {
+                this.fav = !this.fav;
+            }).catch(err => {
+                console.log(err);
+            });
+        }, unfollow() {
+            if (!this.need_login()) {
+                return;
+            }
+            const header = {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
+            }
+            axios.get('http://127.0.0.1:8000/unfollow/' + this.$route.params.id, { headers: header }).then(() => {
+                this.fav = !this.fav;
+            }).catch(err => {
+                console.log(err);
+            });
+        },
+
+        sliceByNumber: function (array, number) {
+            const length = Math.ceil(array.length / number)
+            return new Array(length).fill().map((_, i) =>
+                array.slice(i * number, (i + 1) * number)
+            )
+        }
+    },
+
+    mounted: function () {
+        axios.get("http://127.0.0.1:8000/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum)
+            .then(response => {
+                this.displayLists = response.data;
+                this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        axios.get("http://127.0.0.1:8000/getuser/" + this.$route.params.id)
+            .then(response => {
+                this.user = response.data;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        let f_url = ""
+        if (this.$cookies.isKey("user")) {
+            const header = {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
+            }
+            f_url = "http://127.0.0.1:8000/getfollowing/"
+            axios.get(f_url, { headers: header })
+                .then(response => {
+                    this.following = response.data;
+                    this.fav = this.$route.params.id in this.following
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+
+    }
+    //さすがに全件持っとくのはどうかと思うので、ページごとにリクエスト飛ばしていいんじゃないか？
+    //pageChangeのところでもらっていこう。
+    //Todo:最新n件を取得するAPI,m以降のn件を取得するAPI
+    //それらをいい感じに表示する
+}
+</script>
+<style lang="scss" scoped>
+@import '../styles/common/common';
+
+.search-result__contents {
+    margin-top: 20px;
+    justify-content: center;
+
+    &-img {
+        text-align: center;
+    }
+
+    &-text {
+        margin-left: 20px;
+        word-wrap: break-word;
+    }
+}
+</style>

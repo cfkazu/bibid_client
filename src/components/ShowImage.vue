@@ -11,6 +11,29 @@
                     <img height="150" :src="imgSrc" alt="" class="img-fluid">
                 </v-col>
                 <v-col md="5" class="home-about__contents-text">
+                    <v-card :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
+
+
+                        <v-list three-line>
+
+
+
+                            <v-card-actions>
+                                <router-link :to="'/user/' + this.imagedata.author_id.id">
+                                    <v-list-item-avatar size="50">
+                                        <v-img :src="this.imagedata.author_id.profile_url"></v-img>
+                                    </v-list-item-avatar>
+                                </router-link>
+                                <router-link :to="'/user/' + this.imagedata.author_id.id">
+                                    <v-list-item-content>
+                                        <v-list-item-title>@{{ this.imagedata.author_id.username }}</v-list-item-title>
+
+                                    </v-list-item-content>
+                                </router-link>
+                            </v-card-actions>
+
+                        </v-list>
+                    </v-card>
                     <v-card class="mx-auto" max-width="1044">
                         <v-card-text>
                             <div>Prompt</div>
@@ -94,7 +117,6 @@ export default {
         }
     },
     methods: {
-
     }
 }
 </script>
