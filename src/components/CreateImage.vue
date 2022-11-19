@@ -64,6 +64,7 @@
     </section>
 </template>
 <script>
+import constants from '../common/constants';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import router from '../router';
@@ -134,8 +135,8 @@ export default {
             this.$refs.observer.validate()
             const header = {
                 'Content-Type': 'multipart/form-data',
-               // "X-AUTH-TOKEN": this.$session.get('token'),
-               "X-AUTH-TOKEN":this.$cookies.get('user').token,
+                // "X-AUTH-TOKEN": this.$session.get('token'),
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
 
             var formData = new FormData();
@@ -154,8 +155,8 @@ export default {
             for (let value of formData.entries()) {
                 console.log(value);
             }
-           // console.log(this.$session.get('id'));
-            axios.post("http://localhost:8000/creategraph/", formData, { headers: header })
+            // console.log(this.$session.get('id'));
+            axios.post(constants.host + "/creategraph/", formData, { headers: header })
                 .then((response) => {
                     console.log(response);
                     Swal.fire({
@@ -216,22 +217,22 @@ export default {
                     this.$cookies.set("togo", "/createimg");
                     router.push('/login');
                 })
-            } 
-/*
-            this.$session.start();
-            if (!this.$session.has("token")) {
-                Swal.fire({
-                    type: 'warning',
-                    icon: 'warning',
-                    text: 'ログインしてください。',
-                    showConfirmButton: true,
-                    showCloseButton: false,
-                }).then(function () {
-                    router.push('/login');
-                })
-            } else {
-                this.imagedata.author_id_id = this.$session.get("id");
-            }*/
+            }
+            /*
+                        this.$session.start();
+                        if (!this.$session.has("token")) {
+                            Swal.fire({
+                                type: 'warning',
+                                icon: 'warning',
+                                text: 'ログインしてください。',
+                                showConfirmButton: true,
+                                showCloseButton: false,
+                            }).then(function () {
+                                router.push('/login');
+                            })
+                        } else {
+                            this.imagedata.author_id_id = this.$session.get("id");
+                        }*/
         },
 
     },

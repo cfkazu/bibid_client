@@ -128,32 +128,13 @@ export default {
                         //this.$router.push({ path: '/' })
                         this.$cookies.config(60 * 60 * 1, '');
                         this.$cookies.set("togo", this.$route.fullPath);
-                        const url = 'http://localhost:8000/twitter_login';
+                        const url = constants.host + '/twitter_login/';
                         window.location.href = url
                     }
                 })
 
             }
-            /*
-            this.$session.start();
-            if (this.$session.has("token")) {
-                this.$session.destroy();
-                this.islogin = false
-                console.log("ログアウトしました")
-                console.log(this.$session.has("token"))
-                Swal.fire({
-                    text: 'ログアウトしました。',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.$router.push({ path: '/about' })
-                    }
-                })
-            } else {
-                const url = 'http://localhost:8000/twitter_login';
-                window.location.href = url
-            }*/
+
         }
     }
 }

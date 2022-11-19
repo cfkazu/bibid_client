@@ -99,7 +99,7 @@
 <script>
 import axios from 'axios';
 import Swal from 'sweetalert2';
-
+import constants from '../common/constants';
 export default {
     name: 'App',
 
@@ -135,7 +135,7 @@ export default {
             this.search_again()
         },
         search_again: function () {
-            let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
             console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -164,7 +164,7 @@ export default {
                 }
                 console.log("token")
                 console.log(this.$cookies.get('user').token,)
-                fav_url = "http://127.0.0.1:8000/getfavorite"
+                fav_url = constants.host + "/getfavorite"
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;
@@ -201,7 +201,7 @@ export default {
                 'Content-Type': 'application/json',
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
-            axios.get('http://127.0.0.1:8000/delfav/' + list.id, { headers: header }).then(() => {
+            axios.get(constants.host + '/delfav/' + list.id, { headers: header }).then(() => {
                 list.good -= 1;
                 console.log("TEST")
                 console.log(this.favs)
@@ -219,7 +219,7 @@ export default {
                 'Content-Type': 'application/json',
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
-            axios.get('http://127.0.0.1:8000/fav/' + list.id, { headers: header }).then(() => {
+            axios.get(constants.host + '/fav/' + list.id, { headers: header }).then(() => {
                 list.good += 1;
                 this.favs[list.id] = list.title
             }).catch(err => {
@@ -231,7 +231,7 @@ export default {
         },
         pageChange: function (pageNumber) {
             //  this.displayLists = this.lists.slice(this.pageSize * (pageNumber - 1), this.pageSize * (pageNumber));
-            axios.get("http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&page=" + pageNumber + "&order=" + this.query.order)
+            axios.get(constants.host + "/searchbyword/?word=" + this.query.word + "&page=" + pageNumber + "&order=" + this.query.order)
                 .then(response => {
                     this.displayLists = response.data.results;
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
@@ -284,7 +284,7 @@ export default {
         } else {
             this.query.word = this.$route.query.word
         }
-        let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
         console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page
@@ -313,7 +313,7 @@ export default {
             }
             console.log("token")
             console.log(this.$cookies.get('user').token,)
-            fav_url = "http://127.0.0.1:8000/getfavorite"
+            fav_url = constants.host + "/getfavorite"
             axios.get(fav_url, { headers: header })
                 .then(response => {
                     this.favs = response.data;
@@ -338,7 +338,7 @@ export default {
             } else {
                 this.query.word = to.query.word
             }
-            let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
+            let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
             console.log(url)
             if (!isNaN(to.query.page)) {
                 this.page = to.query.page
@@ -367,7 +367,7 @@ export default {
                 }
                 console.log("token")
                 console.log(this.$cookies.get('user').token,)
-                fav_url = "http://127.0.0.1:8000/getfavorite"
+                fav_url = constants.host + "/getfavorite"
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;

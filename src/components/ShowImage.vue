@@ -93,6 +93,7 @@
 <script>
 import axios from 'axios';
 import NewestImage from './NewestImage.vue';
+import constants from '../common/constants';
 export default {
     name: 'LoginMain',
     components: {
@@ -104,7 +105,7 @@ export default {
     }),
 
     mounted() {
-        this.url = 'http://localhost:8000/getgraph/' + this.$route.params.id + '/'
+        this.url = constants.host + '/getgraph/' + this.$route.params.id + '/'
         console.log(this.url)
         axios.get(this.url)
             .then(response => {
@@ -123,9 +124,9 @@ export default {
     },
     watch: {
         $route(to) {
-            this.url = 'http://localhost:8000/getgraph/' + to.params.id + '/'
-            console.log('http://localhost:8000/getgraph/' + to.params.id + '/')
-            axios.get('http://localhost:8000/getgraph/' + to.params.id + '/')
+            this.url = constants.host + '/getgraph/' + to.params.id + '/'
+
+            axios.get(this.url)
                 .then(response => {
                     this.imagedata = response.data;
                     console.log(this.imagedata)

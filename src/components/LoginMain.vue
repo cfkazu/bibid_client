@@ -42,6 +42,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import router from '../router';
+import constants from '../common/constants';
 export default {
     name: 'LoginMain',
     data: () => ({
@@ -65,7 +66,7 @@ export default {
         login() {
             if (this.$refs.form.validate()) {
                 this.loading = true;
-                axios.post('http://localhost:8000/auth/', this.credentials).then(res => {
+                axios.post(constants.host + '/auth/', this.credentials).then(res => {
                     this.$session.start();
                     this.$session.set('token', res.data.token);
                     logger.info(res.data.token);

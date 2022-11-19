@@ -37,5 +37,6 @@ export default {
             name: "新着作品", url: "/search/?order=new"
         },
     ],
+    host: "http://localhost:8000"
 
 }

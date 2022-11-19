@@ -154,6 +154,19 @@ export default {
     },
 
     mounted: function () {
+        if (!this.$cookies.isKey("user")) {
+            Swal.fire({
+                type: 'warning',
+                icon: 'warning',
+                text: 'ログインしてください。',
+                showConfirmButton: true,
+                showCloseButton: false,
+            }).then(
+                () => {
+                    this.$route.push('/');
+                }
+            )
+        }
         axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum)
             .then(response => {
                 this.displayLists = response.data;

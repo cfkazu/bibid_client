@@ -34,6 +34,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import router from '../router';
+import constants from '../common/constants';
 export default {
     data() {
         return {
@@ -63,27 +64,8 @@ export default {
             this.$refs.form.validate();
         },
         submitTwitter() {
-            const url = 'http://localhost:8000/twitter_login';
+            const url = constants.host + '/twitter_login/';
             window.location.href = url
-            /*
-                        axios.post('http://localhost:8000/twitter_login').then(res => {
-                            this.$session.start();
-                            this.$session.set('token', res.data.token);
-                            logger.info(res.data.token);
-                            router.push('/');
-                            // eslint-disable-next-line
-                        }).catch(e => {
-                            this.loading = false;
-                            Swal.fire({
-                                type: 'warning',
-                                title: 'Error',
-                                text: 'ユーザー名もしくはパスワード、または両方が間違っています',
-                                showConfirmButton: false,
-                                showCloseButton: false,
-                                timer: 3000
-                            })
-                        })*/
-            // ツイッターログインの処理
         },
         submitGoogle() {
             console.log("token");
@@ -92,7 +74,7 @@ export default {
                 'Content-Type': 'application/json',
                 "X-AUTH-TOKEN": this.$session.get('token'),
             }
-            axios.post('http://localhost:8000/yesman', {}, { headers: header }).then(res => {
+            axios.post(constants.host + '/yesman', {}, { headers: header }).then(res => {
                 console.log(res.data);
                 // eslint-disable-next-line
             }).catch(e => {
@@ -111,7 +93,7 @@ export default {
         },
         forgetPw() {
 
-            axios.get('http://localhost:8000/islogin').then(res => {
+            axios.get(constants.host + '/islogin').then(res => {
                 //print(res);
                 if (res.data.res) {
                     router.push('/');
