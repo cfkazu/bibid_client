@@ -6,12 +6,12 @@
                 {{ this.imagedata.decription }}</div>
         </div>
         <v-container>
-            <v-row class="home-about__contents">
-                <v-col md="5" class="home-about__contents-img">
+            <v-row class="home-about__contents" align="center" fill-height>
+                <v-col cols="7" sm="4" md="4" lg="4" xl="4" class="home-about__contents-img">
                     <img height="150" :src="imgSrc" alt="" class="img-fluid">
                 </v-col>
-                <v-col md="5" class="home-about__contents-text">
-                    <v-card :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
+                <v-col cols="5" sm="4" md="4" lg="4" xl="4" class="home-about__contents-text">
+                    <v-card hide-details :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
 
 
                         <v-list three-line>
@@ -71,6 +71,7 @@
             </v-row>
 
         </v-container>
+        <NewestImage />
     </section>
 </template>
 <style lang="scss" scoped>
@@ -91,13 +92,17 @@
 </style>
 <script>
 import axios from 'axios';
+import NewestImage from './NewestImage.vue';
 export default {
     name: 'LoginMain',
-
+    components: {
+        NewestImage,
+    },
     data: () => ({
         imagedata: {},
         url: '',
     }),
+
     mounted() {
         this.url = 'http://localhost:8000/getgraph/' + this.$route.params.id + '/'
         console.log(this.url)
@@ -116,7 +121,21 @@ export default {
             return this.imagedata.image
         }
     },
-    methods: {
-    }
+    watch: {
+        $route(to) {
+            this.url = 'http://localhost:8000/getgraph/' + to.params.id + '/'
+            console.log('http://localhost:8000/getgraph/' + to.params.id + '/')
+            axios.get('http://localhost:8000/getgraph/' + to.params.id + '/')
+                .then(response => {
+                    this.imagedata = response.data;
+                    console.log(this.imagedata)
+                    console.log(this.imagedata.prompt)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    },
+
 }
 </script>

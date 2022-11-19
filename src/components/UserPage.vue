@@ -185,7 +185,42 @@ export default {
                 });
         }
 
-    }
+    },
+    watch: {
+        $route(to) {
+            axios.get("http://127.0.0.1:8000/getImagebyUserid/?user_id=" + to.params.id + "&limit=" + this.maxnum)
+                .then(response => {
+                    this.displayLists = response.data;
+                    this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            axios.get("http://127.0.0.1:8000/getuser/" + to.params.id)
+                .then(response => {
+                    this.user = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            let f_url = ""
+            if (this.$cookies.isKey("user")) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                f_url = "http://127.0.0.1:8000/getfollowing/"
+                axios.get(f_url, { headers: header })
+                    .then(response => {
+                        this.following = response.data;
+                        this.fav = to.params.id in this.following
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+        }
+    },
     //さすがに全件持っとくのはどうかと思うので、ページごとにリクエスト飛ばしていいんじゃないか？
     //pageChangeのところでもらっていこう。
     //Todo:最新n件を取得するAPI,m以降のn件を取得するAPI

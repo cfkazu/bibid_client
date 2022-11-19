@@ -46,9 +46,7 @@
                     </v-card>
                 </v-col>
             </v-row>
-            <div class=".home-about__subtitle">
-                おすすめ作品
-            </div>
+
 
         </v-container>
     </section>

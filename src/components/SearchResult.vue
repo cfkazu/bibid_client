@@ -6,6 +6,34 @@
             <div class="text-center">
 
                 <v-list>
+                    <div v-show="query.word != ''">
+                        {{ query.word }}の検索結果
+                    </div>
+
+
+                    <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                        <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
+                        <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                        <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                        <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+
+                    </v-radio-group>
+
+                    <v-row align="center" justify="start">
+                        <v-btn depressed @click="to_new" class="ml-2">
+                            新しい順
+                        </v-btn>
+                        <v-btn depressed @click="to_old" class="ml-2">
+                            古い順
+                        </v-btn>
+                        <v-btn depressed @click="to_ninki" class="ml-2">
+                            人気順
+                        </v-btn>
+
+                    </v-row>
+
+
+
 
                     <v-list-item>
                         <v-list-item-content>
@@ -88,9 +116,66 @@ export default {
             displayLists: [],
             pageSize: 10,
             favs: {},
+
+            nsfw: 0
         }
     },
+
     methods: {
+        to_new: function () {
+            this.query.order = "new";
+            this.search_again()
+        },
+        to_old: function () {
+            this.query.order = "old"
+            this.search_again()
+        },
+        to_ninki: function () {
+            this.query.order = "popular"
+            this.search_again()
+        },
+        search_again: function () {
+            let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
+            console.log(url)
+            if (!isNaN(this.$route.query.page)) {
+                this.page = this.$route.query.page
+                url += "&page=" + this.$route.query.page
+            }
+            axios.get(url)
+                .then(response => {
+                    this.num = response.data.count
+                        ;
+                    this.length = Math.ceil(this.num / this.pageSize);
+                    console.log(this.length)
+                    this.displayLists = response.data.results;
+                    this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
+                    console.log(this.displayLists[0].title)
+                    console.log(this.displayLists_devided)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+            let fav_url = ""
+            if (this.$cookies.isKey("user")) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                console.log("token")
+                console.log(this.$cookies.get('user').token,)
+                fav_url = "http://127.0.0.1:8000/getfavorite"
+                axios.get(fav_url, { headers: header })
+                    .then(response => {
+                        this.favs = response.data;
+                        console.log(this.favs)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
+            }
+        },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
                 Swal.fire({
@@ -161,13 +246,34 @@ export default {
             return new Array(length).fill().map((_, i) =>
                 array.slice(i * number, (i + 1) * number)
             )
+        },
+        nsfw_change: function () {
+            if (this.nsfw != "0") {
+
+                Swal.fire({
+                    text: '年齢制限のあるコンテンツが含まれます。本当に表示しますか？',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    showConfirmButton: true,
+                    showCancelButton: true,
+
+                }).then((result) => {
+                    if (result.isDismissed) {
+                        this.nsfw = 0;
+                        console.log("HERE")
+                    } else if (result.isConfirmed) {
+                        this.search_again();
+                    }
+                })
+
+            } else {
+                this.search_again();
+            }
         }
 
     },
     mounted: function () {
-        this.lists = new Array(99).fill().map((v, i) => {
-            return { id: i, title: 'Title' + i };
-        });
+
         if (this.$route.query.order === "new") {
             this.query.order = "new"
         } else {
@@ -178,7 +284,7 @@ export default {
         } else {
             this.query.word = this.$route.query.word
         }
-        let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
+        let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
         console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page
@@ -218,12 +324,62 @@ export default {
                 });
 
         }
+    },
+    watch: {
 
+        $route(to) {
+            if (to.query.order === "new") {
+                this.query.order = "new"
+            } else {
+                this.query.order = "old"
+            }
+            if (to.query.word === void 0) {
+                this.query.word = ""
+            } else {
+                this.query.word = to.query.word
+            }
+            let url = "http://127.0.0.1:8000/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
+            console.log(url)
+            if (!isNaN(to.query.page)) {
+                this.page = to.query.page
+                url += "&page=" + this.$route.query.page
+            }
+            axios.get(url)
+                .then(response => {
+                    this.num = response.data.count
+                        ;
+                    this.length = Math.ceil(this.num / this.pageSize);
+                    console.log(this.length)
+                    this.displayLists = response.data.results;
+                    this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
+                    console.log(this.displayLists[0].title)
+                    console.log(this.displayLists_devided)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+            let fav_url = ""
+            if (this.$cookies.isKey("user")) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                console.log("token")
+                console.log(this.$cookies.get('user').token,)
+                fav_url = "http://127.0.0.1:8000/getfavorite"
+                axios.get(fav_url, { headers: header })
+                    .then(response => {
+                        this.favs = response.data;
+                        console.log(this.favs)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+
+            }
+        }
     }
-    //さすがに全件持っとくのはどうかと思うので、ページごとにリクエスト飛ばしていいんじゃないか？
-    //pageChangeのところでもらっていこう。
-    //Todo:最新n件を取得するAPI,m以降のn件を取得するAPI
-    //それらをいい感じに表示する
 }
 </script>
 <style lang="scss" scoped>

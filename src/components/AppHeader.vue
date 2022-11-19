@@ -1,22 +1,60 @@
 <template>
     <header>
-        <v-app-bar app dark>
+        <v-toolbar color="black" dark flat>
+
+
+            <v-row justify="space-between" class="mt-4">
+                <v-col cols="1" sm="1" md="4" lg="4" xl="4">
+                    <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+                </v-col>
+                <v-col cols="8" sm="8" md="4" lg="4" xl="4">
+
+                    <v-text-field class="expanding-search mt-1 " flat hide-details filled dense clearable label="Search"
+                        prepend-inner-icon="mdi-magnify" solo-inverted @click:prepend-inner="search(search_word)"
+                        v-model="search_word" @keyup.enter="search(search_word)">
+                    </v-text-field>
+                </v-col>
+                <v-col cols="1" sm="1" md="4" lg="4" xl="4" justify="end">
+                    <v-row class="justify-end mt-1">
+                        <v-btn elevation="2" text @click="getlogin_or_out">
+                            <div v-show="islogin">ログアウト</div>
+                            <div v-show="!islogin">ログイン</div>
+                        </v-btn>
+                    </v-row>
+                </v-col>
+            </v-row>
+            <template v-slot:extension>
+                <v-tabs v-model="tabs" centered>
+                    <v-tab v-for="(menuItem, index) in headerItems" :key="index" :to="menuItem.url">
+                        {{ menuItem.name }}
+                    </v-tab>
+                </v-tabs>
+
+            </template>
+        </v-toolbar>
+        <!--   <v-app-bar app dark>
             <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
             <v-toolbar-title>MyPortfolioSite</v-toolbar-title>
             <v-tabs dark>
-                <!-- :toプロパティを追加 -->
+
                 <v-tab v-for="(menuItem, index) in headerItems" :key="index" :to="menuItem.url">
                     {{ menuItem.name }}
                 </v-tab>
+                <v-tab>
+                    <v-text-field class="expanding-search mt-7" prepend-inner-icon="mdi-magnify" filled dense clearable>
+                    </v-text-field>
+                </v-tab>
             </v-tabs>
 
-            <v-row class="justify-end">
-                <v-btn elevation="2" text @click="getlogin_or_out">
-                    <div v-show="islogin">ログアウト</div>
-                    <div v-show="!islogin">ログイン</div>
-                </v-btn>
-            </v-row>
-        </v-app-bar>
+            <v-col>
+                <v-row class="justify-end">
+                    <v-btn elevation="2" text>
+                        <div v-show="islogin">ログアウト</div>
+                        <div v-show="!islogin">ログイン</div>
+                    </v-btn>
+                </v-row>
+            </v-col>
+        </v-app-bar>-->
         <v-navigation-drawer v-model="drawer" temporary fixed>
             <v-list nav dense>
                 <v-list-item-group>
@@ -43,6 +81,7 @@ export default {
             headerItems: constants.headerItems,
             headerItems_login: constants.headerItems_login,
             islogin: false,
+            search_word: "",
         }
     },
 
@@ -51,6 +90,12 @@ export default {
         this.checkLoggedIn();
     },
     methods: {
+        search(word) {
+            console.log("ここ")
+            console.log(word)
+            const togo = "/search/?word=" + word;
+            this.$router.push(togo);
+        },
         checkLoggedIn() {
             this.islogin = this.$cookies.isKey("user");
             //     this.islogin = this.$session.has("token")
@@ -82,7 +127,7 @@ export default {
                     if (result.isConfirmed) {
                         //this.$router.push({ path: '/' })
                         this.$cookies.config(60 * 60 * 1, '');
-                        this.$cookies.set("togo", this.$route.path);
+                        this.$cookies.set("togo", this.$route.fullPath);
                         const url = 'http://localhost:8000/twitter_login';
                         window.location.href = url
                     }

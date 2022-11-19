@@ -1,20 +1,22 @@
 
 <template>
     <section class="home">
-        <HomeHero />
+
         <!-- ここから追加 -->
         <HomeAbout />
+        <NewestImage />
         <!-- ここまで追加 -->
     </section>
 </template>
 <script>
-import HomeHero from './HomeHero.vue'
-import HomeAbout from './HomeAbout.vue' // 今回追加
 
+import HomeAbout from './HomeAbout.vue' // 今回追加
+import NewestImage from './NewestImage.vue'
 export default {
     components: {
-        HomeHero,
-        HomeAbout // 今回追加
+
+        HomeAbout,
+        NewestImage,
     }
 }
 </script>
