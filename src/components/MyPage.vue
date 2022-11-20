@@ -16,9 +16,8 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                            <v-list-item-title>@{{ this.user.username }}</v-list-item-title>
-                            <v-list-item-subtitle>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-                            </v-list-item-subtitle>
+                            <v-list-item-title>{{ this.user.first_name }}(@{{ this.user.username }})</v-list-item-title>
+                            <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                     <v-card-actions>
@@ -97,10 +96,26 @@ export default {
             following: {
 
             },
+            editing: false,
             mypage: false,
+            uid: 0,
         }
     },
     methods: {
+        editchange: function () {
+            if (this.editing) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                console.log(this.user.description)
+                axios.post(constants.host + "/modifyme/", this.user, { headers: header })
+                    .then((response) => {
+                        console.log(response);
+                    })
+            }
+            this.editing = !this.editing;
+        },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
                 Swal.fire({
@@ -163,11 +178,13 @@ export default {
                 showCloseButton: false,
             }).then(
                 () => {
-                    this.$route.push('/');
+                    this.$router.push('/');
                 }
             )
         }
-        axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum)
+
+        this.uid = this.$cookies.get('user').id;
+        axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.uid + "&limit=" + this.maxnum)
             .then(response => {
                 this.displayLists = response.data;
                 this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
@@ -175,7 +192,7 @@ export default {
             .catch(error => {
                 console.log(error);
             });
-        axios.get(constants.host + "/getuser/" + this.$route.params.id)
+        axios.get(constants.host + "/getuser/" + this.uid)
             .then(response => {
                 this.user = response.data;
             })
@@ -183,62 +200,23 @@ export default {
                 console.log(error);
             });
         let f_url = ""
-        if (this.$cookies.isKey("user")) {
-            const header = {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN": this.$cookies.get('user').token,
-            }
-            f_url = constants.host + "/getfollowing/"
-            axios.get(f_url, { headers: header })
-                .then(response => {
-                    this.following = response.data;
-                    this.fav = this.$route.params.id in this.following
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+
+        const header = {
+            'Content-Type': 'application/json',
+            "X-AUTH-TOKEN": this.$cookies.get('user').token,
         }
+        f_url = constants.host + "/getfollowing/"
+        axios.get(f_url, { headers: header })
+            .then(response => {
+                this.following = response.data;
+                this.fav = this.$route.params.id in this.following
+            })
+            .catch(error => {
+                console.log(error);
+            });
 
     },
-    watch: {
-        $route(to) {
-            axios.get(constants.host + "/getImagebyUserid/?user_id=" + to.params.id + "&limit=" + this.maxnum)
-                .then(response => {
-                    this.displayLists = response.data;
-                    this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-            axios.get(constants.host + "/getuser/" + to.params.id)
-                .then(response => {
-                    this.user = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-            let f_url = ""
-            if (this.$cookies.isKey("user")) {
-                const header = {
-                    'Content-Type': 'application/json',
-                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
-                }
-                f_url = constants.host + "/getfollowing/"
-                axios.get(f_url, { headers: header })
-                    .then(response => {
-                        this.following = response.data;
-                        this.fav = to.params.id in this.following
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
-            }
-        }
-    },
-    //さすがに全件持っとくのはどうかと思うので、ページごとにリクエスト飛ばしていいんじゃないか？
-    //pageChangeのところでもらっていこう。
-    //Todo:最新n件を取得するAPI,m以降のn件を取得するAPI
-    //それらをいい感じに表示する
+
 }
 </script>
 <style lang="scss" scoped>

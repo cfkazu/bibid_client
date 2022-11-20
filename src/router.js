@@ -8,6 +8,7 @@ import ShowImage from './components/ShowImage.vue'
 import CreateImage from './components/CreateImage.vue'
 import SearchRes from './components/SearchResult.vue'
 import UserPage from './components/UserPage.vue'
+import MyPage from './components/MyPage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -61,6 +62,10 @@ export default new Router({
             path: '/user/:id',
             name: 'user',
             component: UserPage
+        }, {
+            path: '/mypage',
+            name: 'mypage',
+            component: MyPage
         }
     ]
 })

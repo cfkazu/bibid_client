@@ -5,6 +5,7 @@
         <!-- ここから追加 -->
         <HomeAbout />
         <NewestImage />
+        <HottestImage />
         <!-- ここまで追加 -->
     </section>
 </template>
@@ -12,11 +13,13 @@
 
 import HomeAbout from './HomeAbout.vue' // 今回追加
 import NewestImage from './NewestImage.vue'
+import HottestImage from './HottestImage.vue'
 export default {
     components: {
 
         HomeAbout,
         NewestImage,
+        HottestImage,
     }
 }
 </script>

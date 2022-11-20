@@ -16,9 +16,8 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                            <v-list-item-title>@{{ this.user.username }}</v-list-item-title>
-                            <v-list-item-subtitle>あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ
-                            </v-list-item-subtitle>
+                            <v-list-item-title>{{ this.user.first_name }}(@{{ this.user.username }})</v-list-item-title>
+                            <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                     <v-card-actions>
@@ -35,6 +34,7 @@
                 </v-list>
             </v-card>
             <v-container mt-n12 pt-1>
+
                 <div class="text-center">
                     <v-list>
                         <v-list-item>

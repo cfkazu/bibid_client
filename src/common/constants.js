@@ -11,6 +11,9 @@ export default {
         {
             name: "新着作品", url: "/search/?order=new"
         },
+        {
+            name: "マイページ", url: "/mypage"
+        },
 
     ],
     headerItems_login: [
@@ -36,7 +39,11 @@ export default {
         {
             name: "新着作品", url: "/search/?order=new"
         },
+        {
+            name: "マイページ", url: "/mypage"
+        },
     ],
-    host: "http://localhost:8000"
+    host: "http://localhost:8000",
+    // host: "https://bibid-api.tokyo",
 
 }

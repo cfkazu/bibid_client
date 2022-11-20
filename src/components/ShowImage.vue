@@ -26,7 +26,12 @@
                                 </router-link>
                                 <router-link :to="'/user/' + this.imagedata.author_id.id">
                                     <v-list-item-content>
-                                        <v-list-item-title>@{{ this.imagedata.author_id.username }}</v-list-item-title>
+                                        <v-list-item-title>
+                                            {{ this.imagedata.author_id.first_name }} (@{{
+                                                    this.imagedata.author_id.username
+                                            }})
+
+                                        </v-list-item-title>
 
                                     </v-list-item-content>
                                 </router-link>
@@ -53,6 +58,7 @@
                             <div class="text--primary">
                                 {{ this.imagedata.neg_prompt }}
                             </div>
+
                         </v-card-text>
 
                     </v-card>
@@ -62,8 +68,48 @@
                             <div>Additional Tags</div>
 
                             <div class="text--primary">
-                                {{ this.imagedata.additonal_tags }}
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag0.substr(1, this.imagedata.tag0.length - 2)">{{
+                                            this.imagedata.tag0
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag1.substr(1, this.imagedata.tag1.length - 2)">{{
+                                            this.imagedata.tag1
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag2.substr(1, this.imagedata.tag2.length - 2)">{{
+                                            this.imagedata.tag2
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag3.substr(1, this.imagedata.tag3.length - 2)">{{
+                                            this.imagedata.tag3
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag4.substr(1, this.imagedata.tag4.length - 2)">{{
+                                            this.imagedata.tag4
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag5.substr(1, this.imagedata.tag5.length - 2)">{{
+                                            this.imagedata.tag5
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag6.substr(1, this.imagedata.tag6.length - 2)">{{
+                                            this.imagedata.tag6
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag7.substr(1, this.imagedata.tag7.length - 2)">{{
+                                            this.imagedata.tag7
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag8.substr(1, this.imagedata.tag8.length - 2)">{{
+                                            this.imagedata.tag8
+                                    }}</a>
+                                <a
+                                    :href="'#/search?word=' + this.imagedata.tag9.substr(1, this.imagedata.tag9.length - 2)">{{
+                                            this.imagedata.tag9
+                                    }}</a>
                             </div>
+
                         </v-card-text>
 
                     </v-card>
@@ -71,6 +117,45 @@
             </v-row>
 
         </v-container>
+
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                    <v-card elevation="0">
+                        <v-card-text>
+                            コメント
+                            <v-textarea single-line auto-grow outlined rows="1" row-height="15"
+                                v-model="current_comment.comment"></v-textarea>
+                            <v-row justify="end">
+                                <v-btn justify="end" @click="PostComment">送信</v-btn>
+                            </v-row>
+                        </v-card-text>
+                        <v-card-actions>
+
+                        </v-card-actions>
+                        <v-list>
+                            <v-list-item v-for="comment in comments_divided" :key="comment.id">
+                                <v-list-item-avatar size="30">
+                                    <v-img :src="comment.user.profile_url"></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title>{{ comment.user.first_name }}</v-list-item-title>
+                                    <v-list-item-subtitle>{{ comment.comment }}</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-list-item-content>
+                                <v-btn justify="end" @click="AddComment_Max" :disabled="!there_is_more">もっと見る</v-btn>
+                            </v-list-item-content>
+                        </v-list>
+
+                    </v-card>
+                </v-col>
+            </v-row>
+
+
+        </v-container>
+
+
         <NewestImage />
     </section>
 </template>
@@ -94,6 +179,7 @@
 import axios from 'axios';
 import NewestImage from './NewestImage.vue';
 import constants from '../common/constants';
+import Swal from 'sweetalert2';
 export default {
     name: 'LoginMain',
     components: {
@@ -102,39 +188,240 @@ export default {
     data: () => ({
         imagedata: {},
         url: '',
+        comments: [],
+        islogin: false,
+        current_comment: {
+
+        },
+        comment_max: 3,
+        my_profile_url: '',
+        my_first_name: '',
+
     }),
 
     mounted() {
+
         this.url = constants.host + '/getgraph/' + this.$route.params.id + '/'
+        this.current_comment['image_id'] = this.$route.params.id
+        this.current_comment['comment'] = ''
         console.log(this.url)
         axios.get(this.url)
             .then(response => {
                 this.imagedata = response.data;
+                if (this.imagedata.tag0 != null) {
+                    this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
+                } else {
+                    this.imagedata.tag0 = ""
+                }
+                if (this.imagedata.tag1 != null) {
+                    this.imagedata.tag1 = "#" + this.imagedata.tag1 + ","
+                } else {
+                    this.imagedata.tag1 = ""
+                }
+                if (this.imagedata.tag2 != null) {
+                    this.imagedata.tag2 = "#" + this.imagedata.tag2 + ","
+                } else {
+                    this.imagedata.tag2 = ""
+                }
+                if (this.imagedata.tag3 != null) {
+                    this.imagedata.tag3 = "#" + this.imagedata.tag3 + ","
+                } else {
+                    this.imagedata.tag3 = ""
+                }
+                if (this.imagedata.tag4 != null) {
+                    this.imagedata.tag4 = "#" + this.imagedata.tag4 + ","
+                } else {
+                    this.imagedata.tag4 = ""
+                }
+                if (this.imagedata.tag5 != null) {
+                    this.imagedata.tag5 = "#" + this.imagedata.tag5 + ","
+                } else {
+                    this.imagedata.tag5 = ""
+                }
+                if (this.imagedata.tag6 != null) {
+                    this.imagedata.tag6 = "#" + this.imagedata.tag6 + ","
+                } else {
+                    this.imagedata.tag6 = ""
+                }
+                if (this.imagedata.tag7 != null) {
+                    this.imagedata.tag7 = "#" + this.imagedata.tag7 + ","
+                } else {
+                    this.imagedata.tag7 = ""
+                }
+                if (this.imagedata.tag8 != null) {
+                    this.imagedata.tag8 = "#" + this.imagedata.tag8 + ","
+                } else {
+                    this.imagedata.tag8 = ""
+                }
+                if (this.imagedata.tag9 != null) {
+                    this.imagedata.tag9 = "#" + this.imagedata.tag9 + ","
+                } else {
+                    this.imagedata.tag9 = ""
+                }
                 console.log(this.imagedata)
                 console.log(this.imagedata.prompt)
             })
             .catch(error => {
                 console.log(error);
             });
+        this.islogin = this.$cookies.isKey('user')
+        if (this.islogin) {
+            const prof_url = constants.host + '/getuser/' + this.$cookies.get('user').id
+            axios.get(prof_url)
+                .then(response => {
+                    this.my_profile_url = response.data.profile_url
+                    this.my_first_name = response.data.first_name
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+        const comment_url = constants.host + '/getcomment/' + this.$route.params.id
+        axios.get(comment_url)
+            .then(response => {
+                this.comments = response.data;
+                console.log(this.comments)
+            })
+
     },
     computed: {
         imgSrc() {
             return this.imagedata.image
+        },
+        comments_divided() {
+            return this.comments.slice(0, this.comment_max)
+        },
+        there_is_more() {
+            return this.comments.length > this.comment_max
         }
     },
+    methods: {
+        AddComment_Max() {
+            this.comment_max += 5
+        },
+        PostComment() {
+
+            if (!this.islogin) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ログインしてください',
+                    text: 'コメントを投稿するにはログインが必要です',
+                    confirmButtonText: 'OK',
+                }).then(() => {
+                    return;
+                })
+
+            }
+            const header = {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
+            }
+            axios.post(constants.host + '/makecomment/', this.current_comment, {
+                headers: header
+            })
+                .then(response => {
+                    console.log(response)
+                    let newcomment = {
+                        'user': {
+                            'first_name': this.my_first_name,
+                            'profile_url': this.my_profile_url,
+                        },
+                        'comment': this.current_comment.comment
+                    }
+                    this.comments.unshift(newcomment)
+                    this.current_comment.comment = ''
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+        }
+
+    },
+
     watch: {
         $route(to) {
             this.url = constants.host + '/getgraph/' + to.params.id + '/'
-
+            this.current_comment['image_id'] = to.params.id
+            this.current_comment['comment'] = ''
+            console.log(this.url)
             axios.get(this.url)
                 .then(response => {
                     this.imagedata = response.data;
+                    if (this.imagedata.tag0 != null) {
+                        this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
+                    } else {
+                        this.imagedata.tag0 = ""
+                    }
+                    if (this.imagedata.tag1 != null) {
+                        this.imagedata.tag1 = "#" + this.imagedata.tag1 + ","
+                    } else {
+                        this.imagedata.tag1 = ""
+                    }
+                    if (this.imagedata.tag2 != null) {
+                        this.imagedata.tag2 = "#" + this.imagedata.tag2 + ","
+                    } else {
+                        this.imagedata.tag2 = ""
+                    }
+                    if (this.imagedata.tag3 != null) {
+                        this.imagedata.tag3 = "#" + this.imagedata.tag3 + ","
+                    } else {
+                        this.imagedata.tag3 = ""
+                    }
+                    if (this.imagedata.tag4 != null) {
+                        this.imagedata.tag4 = "#" + this.imagedata.tag4 + ","
+                    } else {
+                        this.imagedata.tag4 = ""
+                    }
+                    if (this.imagedata.tag5 != null) {
+                        this.imagedata.tag5 = "#" + this.imagedata.tag5 + ","
+                    } else {
+                        this.imagedata.tag5 = ""
+                    }
+                    if (this.imagedata.tag6 != null) {
+                        this.imagedata.tag6 = "#" + this.imagedata.tag6 + ","
+                    } else {
+                        this.imagedata.tag6 = ""
+                    }
+                    if (this.imagedata.tag7 != null) {
+                        this.imagedata.tag7 = "#" + this.imagedata.tag7 + ","
+                    } else {
+                        this.imagedata.tag7 = ""
+                    }
+                    if (this.imagedata.tag8 != null) {
+                        this.imagedata.tag8 = "#" + this.imagedata.tag8 + ","
+                    } else {
+                        this.imagedata.tag8 = ""
+                    }
+                    if (this.imagedata.tag9 != null) {
+                        this.imagedata.tag9 = "#" + this.imagedata.tag9 + ","
+                    } else {
+                        this.imagedata.tag9 = ""
+                    }
                     console.log(this.imagedata)
                     console.log(this.imagedata.prompt)
                 })
                 .catch(error => {
                     console.log(error);
                 });
+            this.islogin = this.$cookies.isKey('user')
+            if (this.islogin) {
+                const prof_url = constants.host + '/getuser/' + this.$cookies.get('user').id
+                axios.get(prof_url)
+                    .then(response => {
+                        this.my_profile_url = response.data.profile_url
+                        this.my_first_name = response.data.first_name
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+            const comment_url = constants.host + '/getcomment/' + this.$route.params.id
+            axios.get(comment_url)
+                .then(response => {
+                    this.comments = response.data;
+                    console.log(this.comments)
+                })
         }
     },
 

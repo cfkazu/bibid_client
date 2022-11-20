@@ -19,10 +19,10 @@
                         <v-form v-else ref="form" v-model="valid" lazy-validation>
                             <v-container>
 
-                                <v-text-field v-model="credentials.username" :counter="70" label="ユーザー名"
-                                    :rules="rules.username" maxlength="70" required />
+                                <v-text-field v-model="creden    tials.first_name" :counter="70" label="ユーザー名"
+                                    :rules="rules.first_name" maxlength="70" required />
 
-                                <v-text-field type="password" v-model="credentials.password" :counter="20" label="パスワード"
+                                <v-text-field type="password" v-model="credentials.passw    ord" :counter="20" label="パスワード"
                                     :rules="rules.password" maxlength="20" required />
 
                             </v-container>
@@ -50,7 +50,7 @@ export default {
         valid: true,
         loading: false,
         rules: {
-            username: [
+            first_name: [
                 v => !!v || "ユーザー名は必須です",
                 v => /^[a-z0-9_]+$/.test(v) || "許可されていない文字が入力されています"
             ],

@@ -61,7 +61,7 @@
                                                     </router-link>
                                                     <router-link :to="'/user/' + list.author_id.id">
                                                         <v-list-item-content>
-                                                            <v-list-item-title>{{ list.author_id.username }}
+                                                            <v-list-item-title>{{ list.author_id.first_name }}
                                                             </v-list-item-title>
                                                         </v-list-item-content>
                                                     </router-link>
@@ -111,7 +111,7 @@ export default {
             page: 1,
             length: 0,
             num: 0,
-            displayLists_devided: [],
+displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
             pageSize: 10,
@@ -159,7 +159,7 @@ export default {
             let fav_url = ""
             if (this.$cookies.isKey("user")) {
                 const header = {
-                    'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
                     "X-AUTH-TOKEN": this.$cookies.get('user').token,
                 }
                 console.log("token")

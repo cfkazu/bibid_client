@@ -4,17 +4,20 @@
 
 
             <v-row justify="space-between" class="mt-4">
-                <v-col cols="1" sm="1" md="4" lg="4" xl="4">
+                <v-col cols="1" sm="1" md="3" lg="3" xl="3">
                     <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
                 </v-col>
-                <v-col cols="8" sm="8" md="4" lg="4" xl="4">
+                <v-col cols="6" sm="6" md="6" lg="6" xl="6">
 
-                    <v-text-field class="expanding-search mt-1 " flat hide-details filled dense clearable label="Search"
-                        prepend-inner-icon="mdi-magnify" solo-inverted @click:prepend-inner="search(search_word)"
-                        v-model="search_word" @keyup.enter="search(search_word)">
+                    <v-text-field class="expanding-search mt-1 " flat hide-details filled dense clearable
+                        label="Promoptやタイトルなど" prepend-inner-icon="mdi-magnify" solo-inverted
+                        @click:prepend-inner="search(search_word)" v-model="search_word"
+                        @keyup.enter="search(search_word)">
                     </v-text-field>
                 </v-col>
-                <v-col cols="1" sm="1" md="4" lg="4" xl="4" justify="end">
+
+                <v-col cols="2" sm="1" md="2" lg="2" xl="2" justify="end">
+
                     <v-row class="justify-end mt-1">
                         <v-btn elevation="2" text @click="getlogin_or_out">
                             <div v-show="islogin">ログアウト</div>
@@ -90,6 +93,9 @@ export default {
         this.checkLoggedIn();
     },
     methods: {
+        gomypage() {
+            this.$router.push('/mypage');
+        },
         search(word) {
             console.log("ここ")
             console.log(word)

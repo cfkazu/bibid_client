@@ -5,7 +5,7 @@
         <v-main>
             <v-container>
                 <div class="section_title-main">
-                    新着イラスト
+                    今日人気
                 </div>
                 <v-radio-group row v-model="nsfw" @change="nsfw_change">
                     <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
@@ -167,7 +167,7 @@ export default {
         nsfw_change: function () {
             this.query.order = "new"
             console.log("new")
-            let url = constants.host + "/searchbyword_nopage/?order=new&limit=20&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=20&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -215,7 +215,7 @@ export default {
         this.query.order = "new"
         console.log("new")
 
-        let url = constants.host + "/searchbyword_nopage/?order=new&limit=20&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=20&nsfw=" + this.nsfw
         //console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page

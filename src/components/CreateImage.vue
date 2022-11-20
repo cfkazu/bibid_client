@@ -39,10 +39,11 @@
                     </validation-provider>
 
                     <validation-provider v-slot="{ errors }" name="AdditonalTag">
-                        <v-textarea v-model="imagedata.additonal_tags
-                        " :error-messages="errors" label="タグ(任意)">
-                        </v-textarea>
+                        <v-text-field v-model="imagedata.additonal_tags
+                        " :error-messages="errors" label="タグ(任意,30字×10個まで)">
+                        </v-text-field>
                     </validation-provider>
+
                     <validation-provider v-slot="{ errors }" name="年齢設定" rules="required">
                         <v-select v-model="imagedata.is_nsfw" :error-messages="errors" :items="NSFW" label="年齢設定"
                             required>
@@ -105,12 +106,15 @@ export default {
     data() {
         return {
             url: "",
-            imagedata: {},
+            imagedata: {
+                additonal_tags:"(例)女の子,海,夏",
+            },
             filename: "",
             select: null,
             checkbox: null,
             previewSrc: "",
             NSFW: ['全年齢', 'R18', 'R18-G'],
+
         }
     }, mounted() {
         this.checkLoggedIn();
@@ -124,6 +128,9 @@ export default {
             } else {
                 return 2;
             }
+        },
+        tags_oneline() {
+            return this.imagedata.additonal_tags;
         }
     },
     methods: {
@@ -138,7 +145,9 @@ export default {
                 // "X-AUTH-TOKEN": this.$session.get('token'),
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
-
+            if (this.imagedata.additonal_tags == "(例)女の子,海,夏"){
+                this.imagedata.additonal_tags = "";
+            }
             var formData = new FormData();
             formData.append('image', this.imagedata.image);
             formData.append('title', this.imagedata.title);
