@@ -7,10 +7,10 @@
         </div>
         <v-container>
             <v-row class="home-about__contents" align="center" fill-height>
-                <v-col cols="7" sm="4" md="4" lg="4" xl="4" class="home-about__contents-img">
+                <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="home-about__contents-img">
                     <img height="150" :src="imgSrc" alt="" class="img-fluid">
                 </v-col>
-                <v-col cols="5" sm="4" md="4" lg="4" xl="4" class="home-about__contents-text">
+                <v-col cols="12" sm="12" md="4" lg="4" xl="4" class="home-about__contents-text">
                     <v-card hide-details :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
 
 
@@ -120,7 +120,7 @@
 
         <v-container>
             <v-row justify="center">
-                <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                <v-col cols="12" sm="12" md="6" lg="6" xl="6">
                     <v-card elevation="0">
                         <v-card-text>
                             コメント

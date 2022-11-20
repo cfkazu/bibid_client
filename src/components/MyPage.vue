@@ -16,21 +16,18 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                            <v-list-item-title>{{ this.user.first_name }}(@{{ this.user.username }})</v-list-item-title>
-                            <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
+                            <v-list-item-title>{{ this.user.first_name }}(<a
+                                    :href="'https://twitter.com/' + this.user.username">@{{ this.user.username }}</a>)
+                            </v-list-item-title>
+                            <v-textarea v-if="editing" v-model="user.description">
+                            </v-textarea>
+                            <v-list-item-subtitle v-else>{{ this.user.description }}
+                            </v-list-item-subtitle>
+                            <v-btn v-if="editing" @click="editchange">保存</v-btn>
+                            <v-btn v-else @click="editchange">編集</v-btn>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-card-actions>
-                        <v-btn class="ma" icon color="red lighten-2" v-show="fav">
-                            <v-icon @click="unfollow()">mdi-heart</v-icon>
-                        </v-btn>
-                        <v-btn class="ma" icon color="red lighten-2" v-show="!fav">
-                            <v-icon @click="follow()">mdi-heart-outline</v-icon>
-                        </v-btn>
-                        <v-btn icon text color="blue lighten-2" :href="'https://twitter.com/' + this.user.username">
-                            <img src="../../public/static/twitter.png" style="height: 20px" />
-                        </v-btn>
-                    </v-card-actions>
+
                 </v-list>
             </v-card>
             <v-container mt-n12 pt-1>
@@ -48,9 +45,23 @@
                                                     </v-img>
                                                 </router-link>
                                                 <br>
-                                                <div class="search-about__contents-text" align="left">{{ list.title }}
-                                                </div>
+                                                <v-row>
 
+
+                                                    <v-col>
+
+
+                                                        <div class="search-about__contents-text" align="left">{{
+                                                                list.title
+                                                        }}
+                                                        </div>
+                                                    </v-col>
+                                                    <v-col>
+                                                        <v-icon large @click="delete_image(list)" class="mt+5">
+                                                            mdi-delete
+                                                        </v-icon>
+                                                    </v-col>
+                                                </v-row>
                                             </v-card>
 
                                         </v-col>
@@ -102,6 +113,29 @@ export default {
         }
     },
     methods: {
+        delete_image: function (list) {
+            Swal.fire(
+                '削除しますか？',
+                '',
+                'warning'
+            ).then((result) => {
+                if (result.isConfirmed) {
+                    const header = {
+                        'Content-Type': 'application/json',
+                        "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                    }
+                    console.log(constants.host + '/deletegraph/' + list.id)
+                    axios.get(constants.host + '/deletegraph/' + list.id, { headers: header }).then(() => {
+                        this.displayLists = this.displayLists.filter(function (value) {
+                            return value.id != list.id;
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                    });
+                }
+            })
+
+        },
         editchange: function () {
             if (this.editing) {
                 const header = {

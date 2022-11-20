@@ -16,17 +16,19 @@
                         </v-list-item-avatar>
 
                         <v-list-item-content>
-                            <v-list-item-title>{{ this.user.first_name }}(@{{ this.user.username }})</v-list-item-title>
+                            <v-list-item-title>{{ this.user.first_name }}(<a
+                                    :href="'https://twitter.com/' + this.user.username">@{{
+                                            this.user.username
+                                    }}</a>)
+                            </v-list-item-title>
                             <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
                     <v-card-actions>
-                        <v-btn class="ma" icon color="red lighten-2" v-show="fav">
-                            <v-icon @click="unfollow()">mdi-heart</v-icon>
-                        </v-btn>
-                        <v-btn class="ma" icon color="red lighten-2" v-show="!fav">
-                            <v-icon @click="follow()">mdi-heart-outline</v-icon>
-                        </v-btn>
+                        <v-icon @click="unfollow()" color="red lighten-2" v-show="fav">mdi-heart</v-icon>
+
+
+                        <v-icon @click="follow()" color="red lighten-2" v-show="!fav">mdi-heart-outline</v-icon>
                         <v-btn icon text color="blue lighten-2" :href="'https://twitter.com/' + this.user.username">
                             <img src="../../public/static/twitter.png" style="height: 20px" />
                         </v-btn>
