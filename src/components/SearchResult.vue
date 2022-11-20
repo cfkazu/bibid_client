@@ -39,7 +39,8 @@
                         <v-list-item-content>
                             <v-row class="mb-6" no-gutters>
 
-                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="2">
+                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3"
+                                    xl="2">
                                     <v-col md="12">
                                         <v-card loading="false" class="mx-auto my-12" max-width="374" align="center">
                                             <router-link :to="'/image/' + list.id">
@@ -111,7 +112,7 @@ export default {
             page: 1,
             length: 0,
             num: 0,
-displayLists_devided: [],
+            displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
             pageSize: 10,
@@ -159,7 +160,7 @@ displayLists_devided: [],
             let fav_url = ""
             if (this.$cookies.isKey("user")) {
                 const header = {
-        'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                     "X-AUTH-TOKEN": this.$cookies.get('user').token,
                 }
                 console.log("token")

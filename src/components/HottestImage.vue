@@ -20,7 +20,8 @@
                             <v-list-item-content>
                                 <v-row class="mb-6" no-gutters justify="start">
 
-                                    <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3">
+                                    <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3"
+                                        xl="2">
                                         <v-col md="12">
                                             <v-card loading="false" class="mx-auto my-12" max-width="374"
                                                 align="center">

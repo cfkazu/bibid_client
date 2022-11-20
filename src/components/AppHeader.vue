@@ -10,7 +10,7 @@
                 <v-col cols="6" sm="6" md="6" lg="6" xl="6">
 
                     <v-text-field class="expanding-search mt-1 " flat hide-details filled dense clearable
-                        label="Promoptやタイトルなど" prepend-inner-icon="mdi-magnify" solo-inverted
+                        label="Promptやタイトルなど" prepend-inner-icon="mdi-magnify" solo-inverted
                         @click:prepend-inner="search(search_word)" v-model="search_word"
                         @keyup.enter="search(search_word)">
                     </v-text-field>

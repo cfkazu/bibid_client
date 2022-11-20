@@ -136,6 +136,14 @@ export default {
         }
     },
     methods: {
+        inputFile: function (e) {
+            reader.onload = e => {
+                this.previewSrc = e.target.result;
+            };
+            reader.readAsDataURL(e);
+            this.imagedata.image = e;
+            this.fileName = e.name;
+        },
         async selectedFile(e) {
             this.isUploading = true;
             console.log(e)
@@ -221,14 +229,7 @@ export default {
             this.imagedata.neg_prompt = "";
             this.imagedata.additonal_tags = "";
         },
-        inputFile: function (e) {
-            reader.onload = e => {
-                this.previewSrc = e.target.result;
-            };
-            reader.readAsDataURL(e);
-            this.imagedata.image = e;
-            this.fileName = e.name;
-        },
+     
         clearFile: function () {
             this.file = null;
             this.fileName = '';

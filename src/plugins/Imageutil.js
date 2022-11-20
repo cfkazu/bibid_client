@@ -5,6 +5,7 @@ export default {
     async getCompressImageFileAsync(file) {
         const options = {
             maxSizeMB: 0.4, // 最大ファイルサイズ
+            fileType: "image/jpeg", // ファイルタイプ
         };
         try {
             // 圧縮画像の生成

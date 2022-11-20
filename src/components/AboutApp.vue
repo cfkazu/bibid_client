@@ -44,7 +44,7 @@ export default {
             console.log(this.$route.params.id)
         } else {
             if (!this.$cookies.isKey("user")) {
-                this.$cookies.config(60 * 60 * 1, '');
+                this.$cookies.config(60 * 60 * 1, '', '', true);
                 var user = { id: this.$route.query.id, token: this.$route.query.t }
                 this.$cookies.set("user", user);
                 Swal.fire({
