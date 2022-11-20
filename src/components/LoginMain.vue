@@ -19,10 +19,10 @@
                         <v-form v-else ref="form" v-model="valid" lazy-validation>
                             <v-container>
 
-                                <v-text-field v-model="creden    tials.first_name" :counter="70" label="ユーザー名"
+                                <v-text-field v-model="credentials.first_name" :counter="70" label="ユーザー名"
                                     :rules="rules.first_name" maxlength="70" required />
 
-                                <v-text-field type="password" v-model="credentials.passw    ord" :counter="20" label="パスワード"
+                                <v-text-field type="password" v-model="credentials.password" :counter="20" label="パスワード"
                                     :rules="rules.password" maxlength="20" required />
 
                             </v-container>

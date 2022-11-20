@@ -43,7 +43,7 @@
                             <v-list-item-content>
                                 <v-row class="mb-6" no-gutters>
 
-                                    <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3">
+                                    <v-col v-for="list in displayLists" :key="list.id" cols="6" sm="6" md="4" lg="3">
                                         <v-col cols="12" sm="12" md="12" lg="12">
                                             <v-card loading="false" class="mx-auto my-12" align="center">
                                                 <router-link :to="'/image/' + list.id">
@@ -53,7 +53,6 @@
                                                 <br>
                                                 <div class="search-about__contents-text" align="left">{{ list.title }}
                                                 </div>
-
                                             </v-card>
 
                                         </v-col>

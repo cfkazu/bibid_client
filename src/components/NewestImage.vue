@@ -34,8 +34,18 @@
                                                 </v-img>
                                             </router-link>
                                             <br>
-                                            <div class="search-about__contents-text" align="left">{{ list.title }}
-                                            </div>
+                                            <v-row>
+                                                <v-col cols="1" sm="1" md="1" lg="1">
+
+                                                </v-col>
+                                                <v-col>
+                                                    <div class="search-about__contents-text" align="left">
+                                                        {{
+                                                                list.title
+                                                        }}
+                                                    </div>
+                                                </v-col>
+                                            </v-row>
                                             <v-card-actions>
 
                                                 <v-list-item class="grow">
@@ -172,7 +182,7 @@ export default {
         nsfw_change: function () {
             this.query.order = "new"
             console.log("new")
-            let url = constants.host + "/searchbyword_nopage/?order=new&limit=20&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword_nopage/?order=new&limit=8&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -220,7 +230,7 @@ export default {
         this.query.order = "new"
         console.log("new")
 
-        let url = constants.host + "/searchbyword_nopage/?order=new&limit=20&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword_nopage/?order=new&limit=8&nsfw=" + this.nsfw
         //console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page

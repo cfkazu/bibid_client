@@ -12,7 +12,7 @@
                 <form @submit.prevent="submit">
 
                     <v-file-input ref="fileInput" label="イラスト(クリックで選択)" accept="image/*" :clearable="true"
-                        @click="clearFileName" @change="inputFile">
+                        @click="clearFileName" @change="selectedFile">
                     </v-file-input>
 
                     <div>
@@ -71,6 +71,7 @@ import Swal from 'sweetalert2';
 import router from '../router';
 import { required, digits, email, max, regex } from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+import ImageUtil from '../plugins/Imageutil';
 setInteractionMode('eager')
 
 extend('digits', {
@@ -114,6 +115,7 @@ export default {
             checkbox: null,
             previewSrc: "",
             NSFW: ['全年齢', 'R18', 'R18-G'],
+            isUploading:false,
 
         }
     }, mounted() {
@@ -134,6 +136,30 @@ export default {
         }
     },
     methods: {
+        async selectedFile(e) {
+            this.isUploading = true;
+            console.log(e)
+            const file = e
+            if (!file) {
+                return;
+
+            }
+            try {
+                // 圧縮した画像を取得
+                const compFile = await ImageUtil.getCompressImageFileAsync(file);
+                this.imagedata.image = compFile;
+                this.fileName = await ImageUtil.getDataUrlFromFile(compFile);
+                this.previewSrc = this.fileName;
+                console.log("ここ")
+                console.log(this.filename)
+            } catch (err) {
+                console.log("鰓")
+                console.log(err);
+                // エラーメッセージ等を表示
+            } finally {
+                this.isUploading = false;
+            }
+        },
         uploadFile() {
             const file = this.$refs.preview.files[0];
             this.url = URL.createObjectURL(file)
@@ -141,7 +167,6 @@ export default {
         submit() {
             this.$refs.observer.validate()
             const header = {
-                'Content-Type': 'multipart/form-data',
                 // "X-AUTH-TOKEN": this.$session.get('token'),
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
@@ -165,7 +190,7 @@ export default {
                 console.log(value);
             }
             // console.log(this.$session.get('id'));
-            axios.post(constants.host + "/creategraph/", formData, { headers: header })
+            axios.post(constants.host + "/creategraph", formData, { headers: header })
                 .then((response) => {
                     console.log(response);
                     Swal.fire({

@@ -45,19 +45,19 @@
                                                     </v-img>
                                                 </router-link>
                                                 <br>
-                                                <v-row>
+                                                <v-row justify="space-between">
 
 
                                                     <v-col>
 
 
-                                                        <div class="search-about__contents-text" align="left">{{
+                                                        <div class="search-about__contents-text mt-2" align="left">{{
                                                                 list.title
                                                         }}
                                                         </div>
                                                     </v-col>
-                                                    <v-col>
-                                                        <v-icon large @click="delete_image(list)" class="mt+5">
+                                                    <v-col class="justify-end">
+                                                        <v-icon large @click="delete_image(list)" class="ml-auto mt+3">
                                                             mdi-delete
                                                         </v-icon>
                                                     </v-col>
