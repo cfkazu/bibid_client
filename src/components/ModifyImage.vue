@@ -306,7 +306,7 @@ export default {
             }
             axios.put(constants.host + '/modifyimage/' + this.$route.params.id, this.imagedata, {
                 headers: header
-            }).then((response) => {
+            }).then(() => {
 
                 Swal.fire({
                     title: '投稿完了',
@@ -351,7 +351,7 @@ export default {
             axios.post(constants.host + '/makecomment/', this.current_comment, {
                 headers: header
             })
-                .then(response => {
+                .then(() => {
              
                     let newcomment = {
                         'user': {

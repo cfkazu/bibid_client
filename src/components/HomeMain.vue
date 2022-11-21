@@ -4,11 +4,27 @@
 
         <!-- ここから追加 -->
         <HomeAbout />
+        <router-link :to="'/contest'" style="text-decoration: none; color: inherit;">
+            <v-card>
+                <div class=" competetion_title-bigtitlemid mt-10 black">
+                    姉派？妹派？&nbsp;<br>
+                </div>
+                <div class="competetion_title-bigtitle mt-n5 black">
+                    あなたは、どっち派？<br>
+                </div>
+                <div class="competetion_title-bigtitlemini mt-n2 black">
+                    投稿してAmazonギフト券10000円を手に入れよう！<br>
+                </div>
+                <div class="competetion_title-bigtitleminimini mt-n2 black">
+                    2022年11月23日～12月24日<br>
+                </div>
 
-        <HottestImage />
+            </v-card>
+        </router-link>
 
         <ChildResult v-bind:nsfw="nsfw" v-bind:order="order" v-bind:word="word" v-bind:displaytitle="visible" />
         <ChildResult v-bind:nsfw="nsfw" v-bind:order="order" v-bind:word="word2" v-bind:displaytitle="visible" />
+        <HottestImage />
         <NewestImage />
 
         <RecommendImage />
@@ -74,5 +90,104 @@ export default {
 <style lang="scss" scoped>
 .home {
     padding-bottom: 50px;
+}
+
+.competetion_title {
+    margin-top: 20px;
+    justify-content: center;
+
+    &-bigtitle {
+        text-align: center;
+        font-size: 60px;
+        font-weight: bold;
+        color: yellow;
+    }
+
+    &-bigtitleminimini {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+
+    &-bigtitlemid {
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        color: white;
+    }
+
+    &-bigtitlemini {
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        color: white;
+    }
+
+    &-bigtitleleft {
+        text-align: left;
+        margin-left: 100px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #2196F3;
+        text-shadow: 2px 2px 0 #FFF, -2px -2px 0 #FFF,
+            -2px 2px 0 #FFF, 2px -2px 0 #FFF,
+            0px 2px 0 #FFF, 0-2px 0 #FFF,
+            -2px 0 0 #FFF, 2px 0 0 #FFF;
+    }
+
+    &-bigtitleleftwhite {
+        text-align: left;
+        margin-left: 100px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #E91E63;
+
+        text-shadow: 2px 2px 0 #FFF, -2px -2px 0 #FFF,
+            -2px 2px 0 #FFF, 2px -2px 0 #FFF,
+            0px 2px 0 #FFF, 0-2px 0 #FFF,
+            -2px 0 0 #FFF, 2px 0 0 #FFF;
+    }
+
+    &-bigtitleright {
+        text-align: right;
+        margin-left: 100px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #e65f78;
+    }
+
+    &-title {
+        color: yellow;
+        font-size: 60px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &-subtitle {
+        color: yellow;
+        font-size: 40px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    &-img {
+        text-align: center;
+    }
+
+    &-textblack {
+        color: #e65f78;
+        margin-left: 20px;
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    &-text {
+        color: white;
+        font-size: 20px;
+        margin-left: 20px;
+        word-wrap: break-word;
+        text-align: center;
+    }
 }
 </style>

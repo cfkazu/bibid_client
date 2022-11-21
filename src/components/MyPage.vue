@@ -304,7 +304,9 @@ export default {
                 showCloseButton: false,
             }).then(
                 () => {
-                    this.$router.push('/');
+                    this.$cookies.config(60 * 60 * 1, '');
+                    this.$cookies.set("togo", "/mypage");
+                    router.push('/login');
                 }
             )
         }

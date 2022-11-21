@@ -1,7 +1,10 @@
 <template>
     <section class="home-about mt black">
         <v-card>
-            <div class="competetion_title-bigtitle mt-10 black">
+            <div class="competetion_title-bigtitlemid mt-10 black">
+                姉派？妹派？&nbsp;<br>
+            </div>
+            <div class="competetion_title-bigtitle mt-n5 black">
                 あなたは、どっち派？<br>
             </div>
             <div class="competetion_title-bigtitlemini mt-n2 black">
@@ -135,6 +138,13 @@ export default {
     &-bigtitleminimini {
         text-align: center;
         font-size: 20px;
+        font-weight: bold;
+        color: white;
+    }
+
+    &-bigtitlemid {
+        text-align: center;
+        font-size: 40px;
         font-weight: bold;
         color: white;
     }
