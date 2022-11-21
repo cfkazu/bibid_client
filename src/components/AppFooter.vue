@@ -2,7 +2,7 @@
     <v-footer dark absolute>
 
         <div class="footer">
-            Copyright test 2022. All right reserved
+            Copyright 2022. All rights reserved
         </div>
 
     </v-footer>
