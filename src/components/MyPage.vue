@@ -31,8 +31,80 @@
                 </v-list>
 
             </v-card>
-            <v-container mt-n12 pt-1>
 
+            <v-container mt-n12 pt-1>
+                <v-list>
+
+                    <v-list-item>
+
+
+                        <v-list-item-content>
+                            <v-row justify="start">
+                                <div class="text-right font-weight-bold">
+
+                                    <br><br><br><br>
+                                    &emsp;お気に入り画像
+                                </div>
+                            </v-row>
+
+
+                            <v-row class="mb-6" no-gutters justify="start">
+
+                                <v-col v-for="list in displayLists_fav" :key="list.id" cols="12" sm="6" md="3" lg="3"
+                                    xl="2">
+
+                                    <v-col md="12">
+                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
+                                            <router-link :to="'/image/' + list.image.id">
+                                                <v-img :aspect-ratio="1" v-bind:src="list.image.image">
+                                                </v-img>
+                                            </router-link>
+                                            <br>
+                                            <v-row>
+                                                <v-col cols="1" sm="1" md="1" lg="1">
+
+                                                </v-col>
+                                                <v-col>
+                                                    <div class="search-about__contents-text" align="left">
+                                                        {{
+                                                                list.title
+                                                        }}
+                                                    </div>
+                                                </v-col>
+                                            </v-row>
+                                            <v-card-actions>
+
+                                                <v-list-item class="grow">
+
+                                                    <router-link :to="'/user/' + list.image.author_id.id">
+                                                        <v-list-item-avatar color="grey darken-3">
+                                                            <v-img class="elevation-6" alt=""
+                                                                :src="list.image.author_id.profile_url">
+                                                            </v-img>
+                                                        </v-list-item-avatar>
+                                                    </router-link>
+                                                    <router-link :to="'/user/' + list.image.author_id.id">
+                                                        <v-list-item-content>
+                                                            <v-list-item-title>{{ list.image.author_id.first_name }}
+                                                            </v-list-item-title>
+                                                        </v-list-item-content>
+                                                    </router-link>
+
+                                                </v-list-item>
+                                            </v-card-actions>
+                                        </v-card>
+
+                                    </v-col>
+                                </v-col>
+
+                            </v-row>
+                            <v-btn justify="end" @click="Go_Search">もっと見る</v-btn>
+
+
+                        </v-list-item-content>
+
+                    </v-list-item>
+                </v-list>
                 <div class="text-center">
                     <v-list>
                         <v-list-item>
@@ -99,9 +171,11 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import constants from '../common/constants';
+
 import router from '../router';
 export default {
     name: 'App',
+
     data() {
         return {
             query: {
@@ -128,6 +202,9 @@ export default {
         }
     },
     methods: {
+        Go_Search() {
+            this.$router.push("/myfavoriteall");
+        },
         delete_image: function (list) {
             Swal.fire(
                 '削除しますか？',
@@ -234,7 +311,27 @@ export default {
                 }
             )
         }
-
+        const header = {
+            'Content-Type': 'application/json',
+            "X-AUTH-TOKEN": this.$cookies.get('user').token,
+        }
+        let myfav_url = constants.host + "/getmyfavorite/4"
+        console.log(myfav_url)
+        axios.get(myfav_url, { headers: header })
+            .then(response => {
+                this.num = response.data.count
+                    ;
+                this.length = Math.ceil(this.num / this.pageSize);
+                console.log("お気に入り")
+                console.log(response.data)
+                console.log(response.data[0].title)
+                this.displayLists_fav = response.data;
+                console.log(this.displayLists_fav.length)
+                this.displayLists_fav_devided = this.sliceByNumber(this.displayLists_fav, this.dividenum);
+            })
+            .catch(error => {
+                console.log(error);
+            });
         this.uid = this.$cookies.get('user').id;
         axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.uid + "&limit=" + this.maxnum)
             .then(response => {
@@ -253,10 +350,7 @@ export default {
             });
         let f_url = ""
 
-        const header = {
-            'Content-Type': 'application/json',
-            "X-AUTH-TOKEN": this.$cookies.get('user').token,
-        }
+
         f_url = constants.host + "/getfollowing/"
         axios.get(f_url, { headers: header })
             .then(response => {

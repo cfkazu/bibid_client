@@ -10,6 +10,7 @@ import SearchRes from './components/SearchResult.vue'
 import UserPage from './components/UserPage.vue'
 import MyPage from './components/MyPage.vue'
 import ModyfyImage from './components/ModifyImage.vue'
+import MyFavoriteAll from './components/MyFavorite_all.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -71,6 +72,10 @@ export default new Router({
             path: '/mimage/:id',
             name: 'modifyimage',
             component: ModyfyImage
-        },
+        }, {
+            path: '/myfavoriteall',
+            name: 'myfavoriteall',
+            component: MyFavoriteAll
+        }
     ]
 })

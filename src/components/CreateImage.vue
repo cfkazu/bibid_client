@@ -6,7 +6,7 @@
 
             <div class="section__title">
                 <div class="sectiontitle-text">イラスト投稿</div>
-
+                ※局部にはモザイクなどの修正のうえ投稿してください。
             </div>
             <validation-observer ref="observer" v-slot="{ invalid }">
                 <form @submit.prevent="submit">
@@ -46,6 +46,11 @@
 
                     <validation-provider v-slot="{ errors }" name="年齢設定" rules="required">
                         <v-select v-model="imagedata.is_nsfw" :error-messages="errors" :items="NSFW" label="年齢設定"
+                            required>
+                        </v-select>
+                    </validation-provider>
+                    <validation-provider v-slot="{ errors }" name="AIモデル" rules="required">
+                        <v-select v-model="imagedata.ai_model" :error-messages="errors" :items="AIModel" label="AIモデル"
                             required>
                         </v-select>
                     </validation-provider>
@@ -108,14 +113,15 @@ export default {
         return {
             url: "",
             imagedata: {
-                additonal_tags:"(例)女の子,海,夏",
+                additonal_tags: "(例)女の子,海,夏",
             },
             filename: "",
             select: null,
             checkbox: null,
             previewSrc: "",
             NSFW: ['全年齢', 'R18', 'R18-G'],
-            isUploading:false,
+            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ving", "Unstable Diffusion", "Hentai Diffusion", "その他"],
+            isUploading: false,
 
         }
     }, mounted() {
@@ -178,7 +184,7 @@ export default {
                 // "X-AUTH-TOKEN": this.$session.get('token'),
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
-            if (this.imagedata.additonal_tags == "(例)女の子,海,夏"){
+            if (this.imagedata.additonal_tags == "(例)女の子,海,夏") {
                 this.imagedata.additonal_tags = "";
             }
             var formData = new FormData();
@@ -192,6 +198,7 @@ export default {
             formData.append('good', 0)
             formData.append('seed', -1)
             formData.append('is_nsfw', this.nsfw_id)
+            formData.append('ai_model', this.imagedata.ai_model)
             console.log(this.imagedata.is_nsfw)
             console.log("IDD")
             for (let value of formData.entries()) {
@@ -229,7 +236,7 @@ export default {
             this.imagedata.neg_prompt = "";
             this.imagedata.additonal_tags = "";
         },
-     
+
         clearFile: function () {
             this.file = null;
             this.fileName = '';

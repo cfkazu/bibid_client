@@ -1,101 +1,100 @@
 <template>
-    <v-app>
-
-
-        <v-main>
-            <v-container>
 
 
 
-                <v-list>
+    <v-main>
+        <v-container>
 
-                    <v-list-item>
 
 
-                        <v-list-item-content>
-                            <v-row justify="start">
-                                <div class="text-right font-weight-bold">
-                                    &emsp;新着イラスト
-                                </div>
-                            </v-row>
-                            <v-radio-group row v-model="nsfw" @change="nsfw_change">
-                                <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
-                                <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
-                                <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
-                                <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
-                            </v-radio-group>
+            <v-list>
 
-                            <v-row class="mb-6" no-gutters justify="start">
+                <v-list-item>
 
-                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3"
-                                    xl="2">
-                                    <v-col md="12">
-                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
-                                            <router-link :to="'/image/' + list.id">
-                                                <v-img :aspect-ratio="1" v-bind:src="list.image">
-                                                </v-img>
-                                            </router-link>
-                                            <br>
-                                            <v-row>
-                                                <v-col cols="1" sm="1" md="1" lg="1">
 
-                                                </v-col>
-                                                <v-col>
-                                                    <div class="search-about__contents-text" align="left">
-                                                        {{
-                                                                list.title
-                                                        }}
-                                                    </div>
-                                                </v-col>
-                                            </v-row>
-                                            <v-card-actions>
+                    <v-list-item-content>
+                        <v-row justify="start">
+                            <div class="text-right font-weight-bold">
+                                &emsp;新着イラスト
+                            </div>
+                        </v-row>
+                        <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                            <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
+                            <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                            <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                            <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+                        </v-radio-group>
 
-                                                <v-list-item class="grow">
+                        <v-row class="mb-6" no-gutters justify="start">
 
-                                                    <router-link :to="'/user/' + list.author_id.id">
-                                                        <v-list-item-avatar color="grey darken-3">
-                                                            <v-img class="elevation-6" alt=""
-                                                                :src="list.author_id.profile_url">
-                                                            </v-img>
-                                                        </v-list-item-avatar>
-                                                    </router-link>
-                                                    <router-link :to="'/user/' + list.author_id.id">
-                                                        <v-list-item-content>
-                                                            <v-list-item-title>{{ list.author_id.first_name }}
-                                                            </v-list-item-title>
-                                                        </v-list-item-content>
-                                                    </router-link>
-                                                    <v-row align="center" justify="end">
-                                                        <v-icon class="mr-1" color="red lighten-2"
-                                                            v-show="list.id in favs" @click="disfavorite(list)">
-                                                            mdi-heart
-                                                        </v-icon>
-                                                        <v-icon class="mr-1" @click="favorite(list)"
-                                                            v-show="!(list.id in favs)">
-                                                            mdi-heart
-                                                        </v-icon>
-                                                        <span class="subheading mr-2">{{ list.good }}</span>
-                                                    </v-row>
-                                                </v-list-item>
-                                            </v-card-actions>
-                                        </v-card>
+                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="4" xl="2">
+                                <v-col md="12">
+                                    <v-card loading="false" class="mx-auto " max-width="374" align="center">
+                                        <router-link :to="'/image/' + list.id">
+                                            <v-img :aspect-ratio="1" v-bind:src="list.image">
+                                            </v-img>
+                                        </router-link>
+                                        <br>
+                                        <v-row>
+                                            <v-col cols="1" sm="1" md="1" lg="1">
 
-                                    </v-col>
+                                            </v-col>
+                                            <v-col>
+                                                <div class="search-about__contents-text" align="left">
+                                                    {{
+                                                    list.title
+                                                    }}
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                        <v-card-actions>
+
+                                            <v-list-item class="grow">
+
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-avatar color="grey darken-3">
+                                                        <v-img class="elevation-6" alt=""
+                                                            :src="list.author_id.profile_url">
+                                                        </v-img>
+                                                    </v-list-item-avatar>
+                                                </router-link>
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>{{ list.author_id.first_name }}
+                                                        </v-list-item-title>
+                                                    </v-list-item-content>
+                                                </router-link>
+                                                <v-row align="center" justify="end">
+                                                    <v-icon class="mr-1" color="red lighten-2" v-show="list.id in favs"
+                                                        @click="disfavorite(list)">
+                                                        mdi-heart
+                                                    </v-icon>
+                                                    <v-icon class="mr-1" @click="favorite(list)"
+                                                        v-show="!(list.id in favs)">
+                                                        mdi-heart
+                                                    </v-icon>
+                                                    <span class="subheading mr-2">{{ list.good }}</span>
+                                                </v-row>
+                                            </v-list-item>
+                                        </v-card-actions>
+                                    </v-card>
+
                                 </v-col>
+                            </v-col>
 
-                            </v-row>
-                            <v-btn justify="end" @click="Go_Search">もっと見る</v-btn>
+                        </v-row>
+                        <v-btn justify="end" @click="Go_Search">もっと見る</v-btn>
 
-                        </v-list-item-content>
+                    </v-list-item-content>
 
-                    </v-list-item>
-                </v-list>
+                </v-list-item>
+            </v-list>
 
-                <br><br>
+            <br><br>
 
-            </v-container>
-        </v-main>
-    </v-app>
+        </v-container>
+    </v-main>
+
 </template>
 
 <script>

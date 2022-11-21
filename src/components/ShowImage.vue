@@ -2,8 +2,19 @@
     <section class="home-about">
         <div class="section__title">
             <div class="section__title-text">{{ this.imagedata.title }}</div>
-            <div class="section_title-main">
-                {{ this.imagedata.decription }}</div>
+            <v-row>
+                <v-col cols="0" sm="0" md="3" lg="4" xl="4">
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="4" xl="4">
+                    <div>
+                        {{ this.imagedata.decription }}</div>
+                    <div>
+                        <br>
+                        使用しているモデル:{{ this.imagedata.ai_model }}
+                    </div>
+
+                </v-col>
+            </v-row>
         </div>
         <v-container>
             <v-row class="home-about__contents" align="center" fill-height>
@@ -35,18 +46,19 @@
 
                                     </v-list-item-content>
                                 </router-link>
-                                <v-row align="center" justify="end">
-                                    <v-icon class="mr-1" color="red lighten-2" v-show="imagedata.id in favs"
-                                        @click="disfavorite(imagedata)">
-                                        mdi-heart
-                                    </v-icon>
-                                    <v-icon class="mr-1" @click="favorite(imagedata)" v-show="!(imagedata.id in favs)">
-                                        mdi-heart
-                                    </v-icon>
-                                    <span class="subheading mr-2">{{ imagedata.good }}</span>
-                                </v-row>
-                            </v-card-actions>
 
+                            </v-card-actions>
+                            <v-row align="center" justify="start">
+                                <br>&ensp;&ensp;&ensp;
+                                <v-icon class="mr-1" color="red lighten-2" v-show="imagedata.id in favs"
+                                    @click="disfavorite(imagedata)">
+                                    mdi-heart
+                                </v-icon>
+                                <v-icon class="mr-1" @click="favorite(imagedata)" v-show="!(imagedata.id in favs)">
+                                    mdi-heart
+                                </v-icon>
+                                <span class="subheading mr-2">{{ imagedata.good }}</span>
+                            </v-row>
                         </v-list>
                     </v-card>
                     <v-card class="mx-auto" max-width="1044">
@@ -154,7 +166,8 @@
                                 </v-list-item-content>
                             </v-list-item>
                             <v-list-item-content>
-                                <v-btn justify="end" @click="AddComment_Max" :disabled="!there_is_more">もっと見る</v-btn>
+                                <v-btn justify="end" @click="AddComment_Max" :disabled="!there_is_more">もっと見る
+                                </v-btn>
                             </v-list-item-content>
                         </v-list>
 
