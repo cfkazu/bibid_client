@@ -124,7 +124,7 @@ export default {
             NSFW: ['全年齢', 'R18', 'R18-G'],
             AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ving", "Unstable Diffusion", "Hentai Diffusion", "その他"],
             isUploading: false,
-
+            twitter:false,
         }
     }, mounted() {
         this.checkLoggedIn();
@@ -220,9 +220,10 @@ export default {
                             const newid = response.data.newid
                             router.push('/image/' + newid);
                             if (this.twitter) {
-                                let gourl =constants.host + "/image/" + newid;
-                                let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text="+this.imagedata.title+":Bibidに投稿しました！&hashtags=Bibid,AIイラスト";
+                                let gourl ="https://bibid-ai.com/image?id=" + newid;
+                                let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text=「"+this.imagedata.title+"」をBibidに投稿しました！&hashtags=Bibid,AIイラスト";
                                 myurl = encodeURI(myurl)
+                                console.log(myurl)
                                  open(myurl);
                             }
                         }

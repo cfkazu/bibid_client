@@ -11,6 +11,7 @@ import UserPage from './components/UserPage.vue'
 import MyPage from './components/MyPage.vue'
 import ModyfyImage from './components/ModifyImage.vue'
 import MyFavoriteAll from './components/MyFavorite_all.vue'
+import RedirectImage from './components/RedirectImage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -52,7 +53,13 @@ export default new Router({
             path: '/image/:id',
             name: 'showimage',
             component: ShowImage
-        }, {
+        },
+        {
+            path: '/image',
+            name: 'redirectimage',
+            component: RedirectImage
+        }
+        , {
             path: '/createimg',
             name: 'createimg',
             component: CreateImage
