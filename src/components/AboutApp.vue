@@ -38,10 +38,10 @@ export default {
     },
     beforeMount() {
 
-        console.log(this.$route.params.id)
+
         this.$session.start();
         if (this.$route.query.id === void 0) {
-            console.log(this.$route.params.id)
+            console.log("come")
         } else {
             if (!this.$cookies.isKey("user")) {
                 this.$cookies.config(60 * 60 * 1, '', '', true);
@@ -67,10 +67,7 @@ export default {
     }
     ,
     methods: {
-        submit() {
-            console.log(this.name, this.password)
-            console.log("koko")
-        },
+
 
     },
     components: {

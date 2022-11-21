@@ -85,11 +85,12 @@ export default {
             headerItems_login: constants.headerItems_login,
             islogin: false,
             search_word: "",
+            tabs: []
         }
     },
 
     mounted() {
-        console.log("チェック")
+
         this.checkLoggedIn();
     },
     methods: {
@@ -97,8 +98,7 @@ export default {
             this.$router.push('/mypage');
         },
         search(word) {
-            console.log("ここ")
-            console.log(word)
+
             const togo = "/search/?word=" + word;
             this.$router.push(togo);
         },
@@ -162,5 +162,9 @@ export default {
     @include display_pc {
         display: block !important;
     }
+}
+
+* {
+    margin: 0;
 }
 </style>

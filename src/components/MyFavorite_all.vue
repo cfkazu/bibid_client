@@ -39,7 +39,7 @@
                                                 <v-col>
                                                     <div class="search-about__contents-text" align="left">
                                                         {{
-                                                                list.title
+                                                        list.title
                                                         }}
                                                     </div>
                                                 </v-col>
@@ -115,7 +115,7 @@ export default {
             displayLists_fav: [],
             pageSize: 12,
             favs: {},
-            nsfw: 0,
+            nsfw: -1,
         }
     },
     methods: {
@@ -154,7 +154,7 @@ export default {
                 delete this.favs[list.id];
                 // console.log(this.favs)
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
         favorite(list) {
@@ -169,7 +169,7 @@ export default {
                 list.good += 1;
                 this.favs[list.id] = list.title
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
         gotoimage: function (id) {
@@ -190,13 +190,13 @@ export default {
     mounted: function () {
         this.need_login();
         this.query.order = "new"
-        console.log("new")
+        console.error("new")
         const header = {
             'Content-Type': 'application/json',
             "X-AUTH-TOKEN": this.$cookies.get('user').token,
         }
         let url = constants.host + "/getmyfavorite"
-        console.log(url)
+
         axios.get(url, { headers: header })
             .then(response => {
 
@@ -204,7 +204,7 @@ export default {
 
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
 
         let fav_url = ""
@@ -219,10 +219,10 @@ export default {
             axios.get(fav_url, { headers: header })
                 .then(response => {
                     this.favs = response.data;
-                    console.log(this.favs)
+                    console.error(this.favs)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }

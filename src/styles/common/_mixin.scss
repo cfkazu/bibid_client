@@ -9,6 +9,10 @@ $tb-min: $xs + px;
 $tb-max: calc($sm - 1)px;
 $pc-min: $sm + px;
 
+.v-application {
+      font-family: "Noto Sans", "游明朝体", "M Plus 1p" !important;
+}
+
 /* PC */
 @mixin display_pc {
       @media (min-width: $pc-min) {

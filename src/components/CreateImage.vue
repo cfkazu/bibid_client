@@ -128,6 +128,11 @@ export default {
         }
     }, mounted() {
         this.checkLoggedIn();
+
+        if (!(this.$route.query.deftag === void 0)) {
+         //   console.log(this.$route.query.deftag);
+            this.imagedata.additonal_tags = this.$route.query.deftag;
+        }
     },
     computed: {
         nsfw_id: function () {
@@ -154,7 +159,7 @@ export default {
         },
         async selectedFile(e) {
             this.isUploading = true;
-            console.log(e)
+         //   console.log(e)
             const file = e
             if (!file) {
                 return;
@@ -166,11 +171,10 @@ export default {
                 this.imagedata.image = compFile;
                 this.fileName = await ImageUtil.getDataUrlFromFile(compFile);
                 this.previewSrc = this.fileName;
-                console.log("ここ")
-                console.log(this.filename)
+         
             } catch (err) {
-                console.log("鰓")
-                console.log(err);
+
+                console.error(err);
                 // エラーメッセージ等を表示
             } finally {
                 this.isUploading = false;
@@ -201,15 +205,11 @@ export default {
             formData.append('seed', -1)
             formData.append('is_nsfw', this.nsfw_id)
             formData.append('ai_model', this.imagedata.ai_model)
-            console.log(this.imagedata.is_nsfw)
-            console.log("IDD")
-            for (let value of formData.entries()) {
-                console.log(value);
-            }
+
             // console.log(this.$session.get('id'));
             axios.post(constants.host + "/creategraph", formData, { headers: header })
                 .then((response) => {
-                    console.log(response);
+             
                     Swal.fire({
                         title: '投稿完了',
                         text: '投稿が完了しました。',
@@ -220,10 +220,10 @@ export default {
                             const newid = response.data.newid
                             router.push('/image/' + newid);
                             if (this.twitter) {
-                                let gourl ="https://bibid-ai.com/image?id=" + newid;
+                                let gourl ="https://bibid-ai.com/image/" + newid;
                                 let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text=「"+this.imagedata.title+"」をBibidに投稿しました！&hashtags=Bibid,AIイラスト";
                                 myurl = encodeURI(myurl)
-                                console.log(myurl)
+  
                                  open(myurl);
                             }
                         }

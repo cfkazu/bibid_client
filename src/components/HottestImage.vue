@@ -139,7 +139,7 @@ export default {
                 delete this.favs[list.id];
                 // console.log(this.favs)
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
         favorite(list) {
@@ -154,7 +154,7 @@ export default {
                 list.good += 1;
                 this.favs[list.id] = list.title
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
         gotoimage: function (id) {
@@ -169,7 +169,7 @@ export default {
         },
         search_again: function () {
             this.query.order = "new"
-            console.log("new")
+
             let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=6&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
@@ -188,7 +188,7 @@ export default {
                     //console.log(this.displayLists_devided)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
             let fav_url = ""
@@ -203,10 +203,10 @@ export default {
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;
-                        console.log(this.favs)
+
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
 
             }
@@ -239,7 +239,7 @@ export default {
 
     mounted: function () {
         this.query.order = "new"
-        console.log("new")
+
 
         let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=6&nsfw=" + this.nsfw
         //console.log(url)
@@ -259,7 +259,7 @@ export default {
                 //console.log(this.displayLists_devided)
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
 
         let fav_url = ""
@@ -277,7 +277,7 @@ export default {
                     console.log(this.favs)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }

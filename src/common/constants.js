@@ -14,6 +14,9 @@ export default {
         {
             name: "マイページ", url: "/mypage"
         },
+        {
+            name: "コンテスト", url: "/contest"
+        },
 
     ],
     headerItems_login: [
@@ -41,6 +44,9 @@ export default {
         },
         {
             name: "マイページ", url: "/mypage"
+        },
+        {
+            name: "コンテスト", url: "/contest"
         },
     ],
     host: "http://localhost:8000",

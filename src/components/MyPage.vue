@@ -188,6 +188,7 @@ export default {
             user: {
 
             },
+            displayLists_fav: [],
             displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
@@ -216,13 +217,12 @@ export default {
                         'Content-Type': 'application/json',
                         "X-AUTH-TOKEN": this.$cookies.get('user').token,
                     }
-                    console.log(constants.host + '/deletegraph/' + list.id)
                     axios.get(constants.host + '/deletegraph/' + list.id, { headers: header }).then(() => {
                         this.displayLists = this.displayLists.filter(function (value) {
                             return value.id != list.id;
                         });
                     }).catch(err => {
-                        console.log(err);
+                        console.error(err);
                     });
                 }
             })
@@ -237,11 +237,9 @@ export default {
                     'Content-Type': 'application/json',
                     "X-AUTH-TOKEN": this.$cookies.get('user').token,
                 }
-                console.log(this.user.description)
+
                 axios.post(constants.host + "/modifyme/", this.user, { headers: header })
-                    .then((response) => {
-                        console.log(response);
-                    })
+
             }
             this.editing = !this.editing;
         },
@@ -272,7 +270,7 @@ export default {
             axios.get(constants.host + '/follow/' + this.$route.params.id, { headers: header }).then(() => {
                 this.fav = !this.fav;
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         }, unfollow() {
             if (!this.need_login()) {
@@ -285,10 +283,9 @@ export default {
             axios.get(constants.host + '/unfollow/' + this.$route.params.id, { headers: header }).then(() => {
                 this.fav = !this.fav;
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
-
         sliceByNumber: function (array, number) {
             const length = Math.ceil(array.length / number)
             return new Array(length).fill().map((_, i) =>
@@ -316,21 +313,17 @@ export default {
             "X-AUTH-TOKEN": this.$cookies.get('user').token,
         }
         let myfav_url = constants.host + "/getmyfavorite/4"
-        console.log(myfav_url)
+
         axios.get(myfav_url, { headers: header })
             .then(response => {
                 this.num = response.data.count
                     ;
                 this.length = Math.ceil(this.num / this.pageSize);
-                console.log("お気に入り")
-                console.log(response.data)
-                console.log(response.data[0].title)
                 this.displayLists_fav = response.data;
-                console.log(this.displayLists_fav.length)
                 this.displayLists_fav_devided = this.sliceByNumber(this.displayLists_fav, this.dividenum);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         this.uid = this.$cookies.get('user').id;
         axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.uid + "&limit=" + this.maxnum)
@@ -339,14 +332,14 @@ export default {
                 this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         axios.get(constants.host + "/getuser/" + this.uid)
             .then(response => {
                 this.user = response.data;
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         let f_url = ""
 
@@ -358,12 +351,13 @@ export default {
                 this.fav = this.$route.params.id in this.following
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
 
     },
 
 }
+
 </script>
 <style lang="scss" scoped>
 @import '../styles/common/common';

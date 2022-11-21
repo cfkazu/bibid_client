@@ -236,17 +236,17 @@ export default {
             axios.get(fav_url, { headers: header })
                 .then(response => {
                     this.favs = response.data;
-                    console.log(this.favs)
+
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
         this.url = constants.host + '/getgraph/' + this.$route.params.id + '/'
         this.current_comment['image_id'] = this.$route.params.id
         this.current_comment['comment'] = ''
-        console.log(this.url)
+
         axios.get(this.url)
             .then(response => {
                 this.imagedata = response.data;
@@ -300,11 +300,10 @@ export default {
                 } else {
                     this.imagedata.tag9 = ""
                 }
-                console.log(this.imagedata)
-                console.log(this.imagedata.prompt)
+
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         this.islogin = this.$cookies.isKey('user')
         if (this.islogin) {
@@ -315,14 +314,14 @@ export default {
                     this.my_first_name = response.data.first_name
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
         const comment_url = constants.host + '/getcomment/' + this.$route.params.id
         axios.get(comment_url)
             .then(response => {
                 this.comments = response.data;
-                console.log(this.comments)
+
             })
 
     },
@@ -411,8 +410,8 @@ export default {
             axios.post(constants.host + '/makecomment/', this.current_comment, {
                 headers: header
             })
-                .then(response => {
-                    console.log(response)
+                .then(() => {
+
                     let newcomment = {
                         'user': {
                             'first_name': this.my_first_name,
@@ -424,7 +423,7 @@ export default {
                     this.current_comment.comment = ''
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
@@ -436,7 +435,7 @@ export default {
             this.url = constants.host + '/getgraph/' + to.params.id + '/'
             this.current_comment['image_id'] = to.params.id
             this.current_comment['comment'] = ''
-            console.log(this.url)
+
             axios.get(this.url)
                 .then(response => {
                     this.imagedata = response.data;
@@ -490,11 +489,9 @@ export default {
                     } else {
                         this.imagedata.tag9 = ""
                     }
-                    console.log(this.imagedata)
-                    console.log(this.imagedata.prompt)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
             this.islogin = this.$cookies.isKey('user')
             if (this.islogin) {
@@ -505,14 +502,14 @@ export default {
                         this.my_first_name = response.data.first_name
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
             }
             const comment_url = constants.host + '/getcomment/' + this.$route.params.id
             axios.get(comment_url)
                 .then(response => {
                     this.comments = response.data;
-                    console.log(this.comments)
+
                 })
         }
     },

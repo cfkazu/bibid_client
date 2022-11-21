@@ -12,6 +12,7 @@ import MyPage from './components/MyPage.vue'
 import ModyfyImage from './components/ModifyImage.vue'
 import MyFavoriteAll from './components/MyFavorite_all.vue'
 import RedirectImage from './components/RedirectImage.vue'
+import ContestPage from './components/ContestPage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -83,6 +84,10 @@ export default new Router({
             path: '/myfavoriteall',
             name: 'myfavoriteall',
             component: MyFavoriteAll
+        }, {
+            path: '/contest',
+            name: 'contest',
+            component: ContestPage
         }
     ]
 })

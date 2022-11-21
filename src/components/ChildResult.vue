@@ -3,54 +3,48 @@
 
 
     <v-main>
-        <v-container>
+        <v-container class="">
 
 
 
-            <v-list>
+            <v-list class="">
 
-                <v-list-item>
+                <v-list-item class="">
 
 
-                    <v-list-item-content>
-                        <v-row justify="start">
+                    <v-list-item-content class="">
+                        <v-row justify="start" v-if="displaytitle">
                             <div class="text-right font-weight-bold">
-                                &emsp;新着イラスト
+                                &emsp;#{{ word }}
                             </div>
                         </v-row>
-                        <v-col col="12">
-                            <v-radio-group row v-model="nsfw" @change="nsfw_change">
-                                <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
-                                <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
-                                <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
-                                <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
-                            </v-radio-group>
-                        </v-col>
-                        <v-row class="mb-6" no-gutters justify="start">
 
-                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="4" xl="2">
-                                <v-col md="12">
-                                    <v-card loading="false" class="mx-auto " max-width="374" align="center">
+                        <v-row class="mb-6 " no-gutters justify="start">
+
+                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="12" md="8" lg="8" xl="4"
+                                class="mb-6 ">
+                                <v-col md="12" class="mb-6 ">
+                                    <v-card loading="false" class="mx-auto  " max-width="374" align="center">
                                         <router-link :to="'/image/' + list.id">
                                             <v-img :aspect-ratio="1" v-bind:src="list.image">
                                             </v-img>
                                         </router-link>
                                         <br>
-                                        <v-row>
+                                        <v-row class="">
                                             <v-col cols="1" sm="1" md="1" lg="1">
 
                                             </v-col>
                                             <v-col>
                                                 <div class="search-about__contents-text" align="left">
                                                     {{
-                                                            list.title
+                                                    list.title
                                                     }}
                                                 </div>
                                             </v-col>
                                         </v-row>
                                         <v-card-actions>
 
-                                            <v-list-item class="grow">
+                                            <v-list-item class="grow ">
 
                                                 <router-link :to="'/user/' + list.author_id.id">
                                                     <v-list-item-avatar color="grey darken-3">
@@ -104,12 +98,15 @@ import Swal from 'sweetalert2';
 import constants from '../common/constants';
 export default {
     name: 'App',
-
+    props: {
+        word: { type: String },
+        order: { type: String },
+        nsfw: { type: Number },
+        displaytitle: { type: Boolean }
+    },
     data() {
         return {
-            query: {
 
-            },
             page: 1,
             length: 0,
             num: 0,
@@ -118,12 +115,12 @@ export default {
             displayLists: [],
             pageSize: 12,
             favs: {},
-            nsfw: 0,
+
         }
     },
     methods: {
         Go_Search() {
-            this.$router.push("/search?order=new&nsfw=" + this.nsfw);
+            this.$router.push("/search?order=" + this.order + "&nsfw=" + this.nsfw + "&word=" + this.word);
         },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
@@ -186,14 +183,9 @@ export default {
             )
         },
         search_again: function () {
-            this.query.order = "new"
 
             let url = constants.host + "/searchbyword_nopage/?order=new&limit=6&nsfw=" + this.nsfw
-            //console.log(url)
-            if (!isNaN(this.$route.query.page)) {
-                this.page = this.$route.query.page
-                url += "&page=" + this.$route.query.page
-            }
+
             axios.get(url)
                 .then(response => {
                     this.num = response.data.count
@@ -206,7 +198,7 @@ export default {
                     //console.log(this.displayLists_devided)
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
             let fav_url = ""
@@ -221,7 +213,7 @@ export default {
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;
-
+                      
                     })
                     .catch(error => {
                         console.error(error);
@@ -229,52 +221,19 @@ export default {
 
             }
         },
-        nsfw_change: function () {
-            if (this.nsfw != "0") {
 
-                Swal.fire({
-                    text: '年齢制限のあるコンテンツが含まれます。本当に表示しますか？',
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    showConfirmButton: true,
-                    showCancelButton: true,
-
-                }).then((result) => {
-                    if (result.isDismissed) {
-                        this.nsfw = 0;
-                    }
-                    this.search_again();
-
-                })
-
-            } else {
-                this.search_again();
-
-            }
-        },
 
     },
 
     mounted: function () {
-        this.query.order = "new"
 
 
-        let url = constants.host + "/searchbyword_nopage/?order=new&limit=6&nsfw=" + this.nsfw
-        //console.log(url)
-        if (!isNaN(this.$route.query.page)) {
-            this.page = this.$route.query.page
-            url += "&page=" + this.$route.query.page
-        }
+        let url = constants.host + "/searchbyword_nopage/?order=" + this.order + "&limit=6&nsfw=" + this.nsfw + "&word=" + this.word
+
         axios.get(url)
             .then(response => {
-                this.num = response.data.count
-                    ;
-                this.length = Math.ceil(this.num / this.pageSize);
-                //console.log(this.length)
                 this.displayLists = response.data;
-                this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
-                //console.log(this.displayLists[0].title)
-                //console.log(this.displayLists_devided)
+
             })
             .catch(error => {
                 console.error(error);

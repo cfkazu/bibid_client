@@ -1,100 +1,99 @@
 <template>
-    <v-app>
-
-
-        <v-main>
-            <div class="text-center">
-
-                <v-list>
-                    <div v-show="query.word != ''">
-                        {{ query.word }}の検索結果
-                    </div>
-
-
-                    <v-radio-group row v-model="nsfw" @change="nsfw_change">
-                        <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
-                        <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
-                        <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
-                        <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
-
-                    </v-radio-group>
-
-                    <v-row align="center" justify="start">
-                        <v-btn depressed @click="to_new" class="ml-2">
-                            新しい順
-                        </v-btn>
-                        <v-btn depressed @click="to_old" class="ml-2">
-                            古い順
-                        </v-btn>
-                        <v-btn depressed @click="to_ninki" class="ml-2">
-                            人気順
-                        </v-btn>
-
-                    </v-row>
 
 
 
+    <v-main>
+        <div class="text-center">
 
-                    <v-list-item>
-                        <v-list-item-content>
-                            <v-row class="mb-6" no-gutters>
+            <v-list>
+                <div v-show="query.word != ''">
+                    {{ query.word }}の検索結果
+                </div>
 
-                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3"
-                                    xl="2">
-                                    <v-col md="12">
-                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
-                                            <router-link :to="'/image/' + list.id">
-                                                <v-img :aspect-ratio="1" v-bind:src="list.image">
-                                                </v-img>
-                                            </router-link>
-                                            <br>
-                                            <div class="search-about__contents-text" align="left">{{ list.title }}</div>
-                                            <v-card-actions>
 
-                                                <v-list-item class="grow">
+                <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                    <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
+                    <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                    <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                    <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
 
-                                                    <router-link :to="'/user/' + list.author_id.id">
-                                                        <v-list-item-avatar color="grey darken-3">
-                                                            <v-img class="elevation-6" alt=""
-                                                                :src="list.author_id.profile_url">
-                                                            </v-img>
-                                                        </v-list-item-avatar>
-                                                    </router-link>
-                                                    <router-link :to="'/user/' + list.author_id.id">
-                                                        <v-list-item-content>
-                                                            <v-list-item-title>{{ list.author_id.first_name }}
-                                                            </v-list-item-title>
-                                                        </v-list-item-content>
-                                                    </router-link>
-                                                    <v-row align="center" justify="end">
-                                                        <v-icon class="mr-1" color="red lighten-2"
-                                                            v-show="list.id in favs" @click="disfavorite(list)">
-                                                            mdi-heart
-                                                        </v-icon>
-                                                        <v-icon class="mr-1" @click="favorite(list)"
-                                                            v-show="!(list.id in favs)">
-                                                            mdi-heart
-                                                        </v-icon>
-                                                        <span class="subheading mr-2">{{ list.good }}</span>
-                                                    </v-row>
-                                                </v-list-item>
-                                            </v-card-actions>
-                                        </v-card>
+                </v-radio-group>
 
-                                    </v-col>
+                <v-row align="center" justify="start">
+                    <v-btn depressed @click="to_new" class="ml-2">
+                        新しい順
+                    </v-btn>
+                    <v-btn depressed @click="to_old" class="ml-2">
+                        古い順
+                    </v-btn>
+                    <v-btn depressed @click="to_ninki" class="ml-2">
+                        人気順
+                    </v-btn>
+
+                </v-row>
+
+
+
+
+                <v-list-item>
+                    <v-list-item-content>
+                        <v-row class="mb-6" no-gutters>
+
+                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3" xl="2">
+                                <v-col md="12">
+                                    <v-card loading="false" class="mx-auto " max-width="374" align="center">
+                                        <router-link :to="'/image/' + list.id">
+                                            <v-img :aspect-ratio="1" v-bind:src="list.image">
+                                            </v-img>
+                                        </router-link>
+                                        <br>
+                                        <div class="search-about__contents-text" align="left">{{ list.title }}</div>
+                                        <v-card-actions>
+
+                                            <v-list-item class="grow">
+
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-avatar color="grey darken-3">
+                                                        <v-img class="elevation-6" alt=""
+                                                            :src="list.author_id.profile_url">
+                                                        </v-img>
+                                                    </v-list-item-avatar>
+                                                </router-link>
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>{{ list.author_id.first_name }}
+                                                        </v-list-item-title>
+                                                    </v-list-item-content>
+                                                </router-link>
+                                                <v-row align="center" justify="end">
+                                                    <v-icon class="mr-1" color="red lighten-2" v-show="list.id in favs"
+                                                        @click="disfavorite(list)">
+                                                        mdi-heart
+                                                    </v-icon>
+                                                    <v-icon class="mr-1" @click="favorite(list)"
+                                                        v-show="!(list.id in favs)">
+                                                        mdi-heart
+                                                    </v-icon>
+                                                    <span class="subheading mr-2">{{ list.good }}</span>
+                                                </v-row>
+                                            </v-list-item>
+                                        </v-card-actions>
+                                    </v-card>
+
                                 </v-col>
-                            </v-row>
+                            </v-col>
+                        </v-row>
 
 
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
 
-                <v-pagination v-model="page" :length="length" @input="pageChange"></v-pagination>
-                <br><br>
-            </div>
-        </v-main>
-    </v-app>
+            <v-pagination v-model="page" :length="length" @input="pageChange"></v-pagination>
+            <br><br>
+        </div>
+    </v-main>
+
 </template>
 
 <script>
@@ -137,7 +136,7 @@ export default {
         },
         search_again: function () {
             let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
-            console.log(url)
+
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
                 url += "&page=" + this.$route.query.page
@@ -147,14 +146,13 @@ export default {
                     this.num = response.data.count
                         ;
                     this.length = Math.ceil(this.num / this.pageSize);
-                    console.log(this.length)
+
                     this.displayLists = response.data.results;
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
-                    console.log(this.displayLists[0].title)
-                    console.log(this.displayLists_devided)
+
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
             let fav_url = ""
@@ -163,16 +161,15 @@ export default {
                     'Content-Type': 'application/json',
                     "X-AUTH-TOKEN": this.$cookies.get('user').token,
                 }
-                console.log("token")
-                console.log(this.$cookies.get('user').token,)
+
                 fav_url = constants.host + "/getfavorite"
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;
-                        console.log(this.favs)
+
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
 
             }
@@ -204,12 +201,11 @@ export default {
             }
             axios.get(constants.host + '/delfav/' + list.id, { headers: header }).then(() => {
                 list.good -= 1;
-                console.log("TEST")
-                console.log(this.favs)
+
                 delete this.favs[list.id];
-                console.log(this.favs)
+
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             });
         },
         favorite(list) {
@@ -238,7 +234,7 @@ export default {
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         },
@@ -261,7 +257,7 @@ export default {
                 }).then((result) => {
                     if (result.isDismissed) {
                         this.nsfw = 0;
-                        console.log("HERE")
+
                     } else if (result.isConfirmed) {
                         this.search_again();
                     }
@@ -288,7 +284,7 @@ export default {
             this.nsfw = this.$route.query.nsfw
         }
         let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
-        console.log(url)
+
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page
             url += "&page=" + this.$route.query.page
@@ -298,14 +294,13 @@ export default {
                 this.num = response.data.count
                     ;
                 this.length = Math.ceil(this.num / this.pageSize);
-                console.log(this.length)
+
                 this.displayLists = response.data.results;
                 this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
-                console.log(this.displayLists[0].title)
-                console.log(this.displayLists_devided)
+
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
 
         let fav_url = ""
@@ -314,16 +309,14 @@ export default {
                 'Content-Type': 'application/json',
                 "X-AUTH-TOKEN": this.$cookies.get('user').token,
             }
-            console.log("token")
-            console.log(this.$cookies.get('user').token,)
             fav_url = constants.host + "/getfavorite"
             axios.get(fav_url, { headers: header })
                 .then(response => {
                     this.favs = response.data;
-                    console.log(this.favs)
+
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
@@ -342,7 +335,7 @@ export default {
                 this.query.word = to.query.word
             }
             let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
-            console.log(url)
+
             if (!isNaN(to.query.page)) {
                 this.page = to.query.page
                 url += "&page=" + this.$route.query.page
@@ -352,14 +345,12 @@ export default {
                     this.num = response.data.count
                         ;
                     this.length = Math.ceil(this.num / this.pageSize);
-                    console.log(this.length)
+
                     this.displayLists = response.data.results;
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
-                    console.log(this.displayLists[0].title)
-                    console.log(this.displayLists_devided)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
             let fav_url = ""
@@ -368,8 +359,6 @@ export default {
                     'Content-Type': 'application/json',
                     "X-AUTH-TOKEN": this.$cookies.get('user').token,
                 }
-                console.log("token")
-                console.log(this.$cookies.get('user').token,)
                 fav_url = constants.host + "/getfavorite"
                 axios.get(fav_url, { headers: header })
                     .then(response => {
@@ -377,7 +366,7 @@ export default {
                         console.log(this.favs)
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
 
             }

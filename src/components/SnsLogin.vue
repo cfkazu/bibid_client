@@ -68,8 +68,6 @@ export default {
             window.location.href = url
         },
         submitGoogle() {
-            console.log("token");
-            console.log(this.$session.get("token"));
             const header = {
                 'Content-Type': 'application/json',
                 "X-AUTH-TOKEN": this.$session.get('token'),

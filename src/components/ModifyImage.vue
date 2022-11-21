@@ -35,7 +35,7 @@
                                     <v-list-item-content>
                                         <v-list-item-title>
                                             {{ this.imagedata.author_id.first_name }} (@{{
-                                                    this.imagedata.author_id.username
+                                            this.imagedata.author_id.username
                                             }})
 
                                         </v-list-item-title>
@@ -366,7 +366,7 @@ export default {
                     this.current_comment.comment = ''
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
 
         }
@@ -436,7 +436,7 @@ export default {
                     console.log(this.imagedata.prompt)
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
             this.islogin = this.$cookies.isKey('user')
             if (this.islogin) {
@@ -447,7 +447,7 @@ export default {
                         this.my_first_name = response.data.first_name
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.error(error);
                     });
             }
             const comment_url = constants.host + '/getcomment/' + this.$route.params.id
