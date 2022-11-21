@@ -63,23 +63,6 @@ export default {
                     }
                 })
             }
-            /*
-            if (!this.$session.has("token")) {
-                this.$session.set('token', this.$route.query.t);
-                this.$session.set('id', this.$route.query.id)
-                Swal.fire({
-                    text: 'ログインしました。',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.$router.push({ path: '/about' })
-                    }
-                })
-            }*/
-
-
-
         }
     }
     ,

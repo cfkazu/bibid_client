@@ -54,7 +54,9 @@
                             required>
                         </v-select>
                     </validation-provider>
-
+                    <v-switch v-model="twitter" label="ツイッターにも投稿する" color="blue" value="secondary" hide-details>
+                    </v-switch>
+                    <br>
                     <v-btn class="mr-4" type="submit" :disabled="(invalid || !imagedata.image)">
                         投稿
                     </v-btn>
@@ -217,6 +219,12 @@ export default {
                         if (result.isConfirmed) {
                             const newid = response.data.newid
                             router.push('/image/' + newid);
+                            if (this.twitter) {
+                                let gourl =constants.host + "/image/" + newid;
+                                let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text="+this.imagedata.title+":Bibidに投稿しました！&hashtags=Bibid,AIイラスト";
+                                myurl = encodeURI(myurl)
+                                 open(myurl);
+                            }
                         }
                     })
                 })

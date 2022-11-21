@@ -18,13 +18,14 @@
                                 &emsp;新着イラスト
                             </div>
                         </v-row>
-                        <v-radio-group row v-model="nsfw" @change="nsfw_change">
-                            <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
-                            <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
-                            <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
-                            <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
-                        </v-radio-group>
-
+                        <v-col col="12">
+                            <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                                <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
+                                <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                                <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                                <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+                            </v-radio-group>
+                        </v-col>
                         <v-row class="mb-6" no-gutters justify="start">
 
                             <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="4" xl="2">
@@ -42,7 +43,7 @@
                                             <v-col>
                                                 <div class="search-about__contents-text" align="left">
                                                     {{
-                                                    list.title
+                                                            list.title
                                                     }}
                                                 </div>
                                             </v-col>
