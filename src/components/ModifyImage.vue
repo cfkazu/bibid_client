@@ -194,7 +194,7 @@ export default {
         this.url = constants.host + '/getgraph/' + this.$route.params.id + '/'
         this.current_comment['image_id'] = this.$route.params.id
         this.current_comment['comment'] = ''
-        console.log(this.url)
+
         axios.get(this.url)
             .then(response => {
                 if (response.data.author_id.id != this.$cookies.get("user").id) {
@@ -259,11 +259,10 @@ export default {
                 } else {
                     this.imagedata.tag9 = ""
                 }
-                console.log(this.imagedata)
-                console.log(this.imagedata.prompt)
+
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
         this.islogin = this.$cookies.isKey('user')
         if (this.islogin) {
@@ -274,14 +273,13 @@ export default {
                     this.my_first_name = response.data.first_name
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
         const comment_url = constants.host + '/getcomment/' + this.$route.params.id
         axios.get(comment_url)
             .then(response => {
                 this.comments = response.data;
-                console.log(this.comments)
             })
 
     },
@@ -309,7 +307,7 @@ export default {
             axios.put(constants.host + '/modifyimage/' + this.$route.params.id, this.imagedata, {
                 headers: header
             }).then((response) => {
-                console.log(response);
+
                 Swal.fire({
                     title: '投稿完了',
                     text: '投稿が完了しました。',
@@ -354,7 +352,7 @@ export default {
                 headers: header
             })
                 .then(response => {
-                    console.log(response)
+             
                     let newcomment = {
                         'user': {
                             'first_name': this.my_first_name,
@@ -378,7 +376,7 @@ export default {
             this.url = constants.host + '/getgraph/' + to.params.id + '/'
             this.current_comment['image_id'] = to.params.id
             this.current_comment['comment'] = ''
-            console.log(this.url)
+
             axios.get(this.url)
                 .then(response => {
                     this.imagedata = response.data;
@@ -432,8 +430,7 @@ export default {
                     } else {
                         this.imagedata.tag9 = ""
                     }
-                    console.log(this.imagedata)
-                    console.log(this.imagedata.prompt)
+                    
                 })
                 .catch(error => {
                     console.error(error);
@@ -454,7 +451,7 @@ export default {
             axios.get(comment_url)
                 .then(response => {
                     this.comments = response.data;
-                    console.log(this.comments)
+             
                 })
         }
     },

@@ -228,7 +228,7 @@ export default {
         },
         pageChange: function (pageNumber) {
             //  this.displayLists = this.lists.slice(this.pageSize * (pageNumber - 1), this.pageSize * (pageNumber));
-            axios.get(constants.host + "/searchbyword/?word=" + this.query.word + "&page=" + pageNumber + "&order=" + this.query.order)
+            axios.get(constants.host + "/searchbyword/?word=" + this.query.word + "&page=" + pageNumber + "&order=" + this.query.order + "&nsfw=" + this.nsfw)
                 .then(response => {
                     this.displayLists = response.data.results;
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
@@ -334,7 +334,7 @@ export default {
             } else {
                 this.query.word = to.query.word
             }
-            let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order
+            let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
 
             if (!isNaN(to.query.page)) {
                 this.page = to.query.page
