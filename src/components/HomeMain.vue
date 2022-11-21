@@ -6,7 +6,10 @@
         <HomeAbout />
         <router-link :to="'/contest'" style="text-decoration: none; color: inherit;">
             <v-card>
-                <div class=" competetion_title-bigtitlemid mt-10 black">
+                <div class="competetion_title-bigtitleminimini mt-10 black">
+                    Bibid投稿コンテスト第一弾！&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                </div>
+                <div class=" competetion_title-bigtitlemid mt-n1 black">
                     姉派？妹派？&nbsp;<br>
                 </div>
                 <div class="competetion_title-bigtitle mt-n5 black">

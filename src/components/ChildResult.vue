@@ -21,7 +21,7 @@
 
                         <v-row class="mb-6 " no-gutters justify="start">
 
-                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="12" md="8" lg="8" xl="4"
+                            <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="12" md="12" lg="6" xl="4"
                                 class="mb-6 ">
                                 <v-col md="12" class="mb-6 ">
                                     <v-card loading="false" class="mx-auto  " max-width="374" align="center">

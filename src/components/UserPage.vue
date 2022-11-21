@@ -18,7 +18,7 @@
                         <v-list-item-content>
                             <v-list-item-title>{{ this.user.first_name }}(<a
                                     :href="'https://twitter.com/' + this.user.username">@{{
-                                            this.user.username
+                                    this.user.username
                                     }}</a>)
                             </v-list-item-title>
                             <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
@@ -46,7 +46,14 @@
                                         <br><br><br><br>
                                         &emsp;投稿画像
                                     </div>
+
                                 </v-row>
+                                <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                                    <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
+                                    <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                                    <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                                    <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+                                </v-radio-group>
                                 <v-row class="mb-6" no-gutters>
 
                                     <v-col v-for="list in displayLists" :key="list.id" cols="6" sm="6" md="4" lg="3"
@@ -93,6 +100,7 @@ export default {
             page: 1,
             length: 0,
             num: 0,
+            nsfw:0,
             fav: false,
             user: {
 
@@ -109,6 +117,62 @@ export default {
         }
     },
     methods: {
+        search_again() {
+            axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum + "&nsfw=" + this.nsfw)
+                .then(response => {
+                    this.displayLists = response.data;
+                    this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            axios.get(constants.host + "/getuser/" + this.$route.params.id)
+                .then(response => {
+                    this.user = response.data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            let f_url = ""
+            if (this.$cookies.isKey("user")) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                f_url = constants.host + "/getfollowing/"
+                axios.get(f_url, { headers: header })
+                    .then(response => {
+                        this.following = response.data;
+                        this.fav = this.$route.params.id in this.following
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            }
+        },
+        nsfw_change() {
+            if (this.nsfw != "0") {
+
+                Swal.fire({
+                    text: '年齢制限のあるコンテンツが含まれます。本当に表示しますか？',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    showConfirmButton: true,
+                    showCancelButton: true,
+
+                }).then((result) => {
+                    if (result.isDismissed) {
+                        this.nsfw = 0;
+
+                    } else if (result.isConfirmed) {
+                        this.search_again();
+                    }
+                })
+
+            } else {
+                this.search_again();
+            }
+        },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
                 Swal.fire({
@@ -158,11 +222,18 @@ export default {
             return new Array(length).fill().map((_, i) =>
                 array.slice(i * number, (i + 1) * number)
             )
-        }
+        },
+        
+        
     },
 
     mounted: function () {
-        axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum)
+        if (!(this.$route.params.nsfw === void 0)) {
+            this.nsfw = this.$route.params.nsfw;
+        } else {
+            this.nsfw = 0;
+        }
+        axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.$route.params.id + "&limit=" + this.maxnum+"&nsfw="+this.nsfw)
             .then(response => {
                 this.displayLists = response.data;
                 this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);
@@ -197,7 +268,7 @@ export default {
     },
     watch: {
         $route(to) {
-            axios.get(constants.host + "/getImagebyUserid/?user_id=" + to.params.id + "&limit=" + this.maxnum)
+            axios.get(constants.host + "/getImagebyUserid/?user_id=" + to.params.id + "&limit=" + this.maxnum+"&nsfw="+this.nsfw)
                 .then(response => {
                     this.displayLists = response.data;
                     this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);

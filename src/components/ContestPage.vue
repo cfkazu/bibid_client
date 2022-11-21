@@ -1,6 +1,7 @@
 <template>
     <section class="home-about mt black">
         <v-card>
+
             <div class="competetion_title-bigtitlemid mt-10 black">
                 姉派？妹派？&nbsp;<br>
             </div>
@@ -24,7 +25,7 @@
 
 
         <v-row justify="space-between" class="black">
-            <v-col class="blue lighten-3">
+            <v-col class="blue lighten-3" cols="12" sm="12" md="6" lg="6">
                 <div class="competetion_title-bigtitleleftwhite ">
                     #姉派？
 
