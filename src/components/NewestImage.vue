@@ -19,6 +19,7 @@
                                 </div>
                             </v-row>
                             <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                                <v-radio name="nsfw" label="すべて" :value="-1"></v-radio>
                                 <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
                                 <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
                                 <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
@@ -81,10 +82,12 @@
 
                                     </v-col>
                                 </v-col>
-                            </v-row>
 
+                            </v-row>
+                            <v-btn justify="end" @click="Go_Search">もっと見る</v-btn>
 
                         </v-list-item-content>
+
                     </v-list-item>
                 </v-list>
 
@@ -119,7 +122,9 @@ export default {
         }
     },
     methods: {
-
+        Go_Search() {
+            this.$router.push("/search?order=new&nsfw=" + this.nsfw);
+        },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
                 Swal.fire({
@@ -180,10 +185,10 @@ export default {
                 array.slice(i * number, (i + 1) * number)
             )
         },
-        nsfw_change: function () {
+        search_again: function () {
             this.query.order = "new"
             console.log("new")
-            let url = constants.host + "/searchbyword_nopage/?order=new&limit=12&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword_nopage/?order=new&limit=6&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -224,6 +229,29 @@ export default {
 
             }
         },
+        nsfw_change: function () {
+            if (this.nsfw != "0") {
+
+                Swal.fire({
+                    text: '年齢制限のあるコンテンツが含まれます。本当に表示しますか？',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    showConfirmButton: true,
+                    showCancelButton: true,
+
+                }).then((result) => {
+                    if (result.isDismissed) {
+                        this.nsfw = 0;
+                    }
+                    this.search_again();
+
+                })
+
+            } else {
+                this.search_again();
+
+            }
+        },
 
     },
 
@@ -231,7 +259,7 @@ export default {
         this.query.order = "new"
         console.log("new")
 
-        let url = constants.host + "/searchbyword_nopage/?order=new&limit=12&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword_nopage/?order=new&limit=6&nsfw=" + this.nsfw
         //console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page

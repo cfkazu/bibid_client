@@ -275,15 +275,17 @@ export default {
     },
     mounted: function () {
 
-        if (this.$route.query.order === "new") {
-            this.query.order = "new"
-        } else {
-            this.query.order = "old"
-        }
+
+        this.query.order = this.$route.query.order
         if (this.$route.query.word === void 0) {
             this.query.word = ""
         } else {
             this.query.word = this.$route.query.word
+        }
+        if (this.$route.query.nsfw === void 0) {
+            this.nsfw = 0
+        } else {
+            this.nsfw = this.$route.query.nsfw
         }
         let url = constants.host + "/searchbyword/?word=" + this.query.word + "&order=" + this.query.order + "&nsfw=" + this.nsfw
         console.log(url)
