@@ -29,18 +29,26 @@
                     </v-list-item>
 
                 </v-list>
+
             </v-card>
             <v-container mt-n12 pt-1>
+
                 <div class="text-center">
                     <v-list>
                         <v-list-item>
                             <v-list-item-content>
+                                <v-row justify="start">
+                                    <div class="text-right font-weight-bold">
+                                        <br><br><br><br>
+                                        &emsp;投稿画像
+                                    </div>
+                                </v-row>
                                 <v-row class="mb-6" no-gutters>
 
                                     <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3"
                                         xl="2">
                                         <v-col cols="12" sm="12" md="12" lg="12">
-                                            <v-card loading="false" class="mx-auto my-12" align="center">
+                                            <v-card loading="false" class="mx-auto " align="center">
                                                 <router-link :to="'/image/' + list.id">
                                                     <v-img :aspect-ratio="1" v-bind:src="list.image">
                                                     </v-img>
@@ -57,9 +65,14 @@
                                                         }}
                                                         </div>
                                                     </v-col>
+
                                                     <v-col class="justify-end">
-                                                        <v-icon large @click="delete_image(list)" class="ml-auto mt+3">
+                                                        <v-icon large @click="delete_image(list)" class="mr+2 mt+3">
                                                             mdi-delete
+                                                        </v-icon>
+                                                        &nbsp;
+                                                        <v-icon large @click="edit_image(list)" class="mr+3 mt+3">
+                                                            mdi-pencil-circle
                                                         </v-icon>
                                                     </v-col>
                                                 </v-row>
@@ -86,6 +99,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import constants from '../common/constants';
+import router from '../router';
 export default {
     name: 'App',
     data() {
@@ -103,7 +117,7 @@ export default {
             displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
-            pageSize: 10,
+            pageSize: 12,
             maxnum: 40,
             following: {
 
@@ -136,6 +150,9 @@ export default {
                 }
             })
 
+        },
+        edit_image: function (list) {
+            router.push("mimage/" + list.id);
         },
         editchange: function () {
             if (this.editing) {

@@ -41,12 +41,18 @@
                     <v-list>
                         <v-list-item>
                             <v-list-item-content>
+                                <v-row justify="start">
+                                    <div class="text-right font-weight-bold">
+                                        <br><br><br><br>
+                                        &emsp;投稿画像
+                                    </div>
+                                </v-row>
                                 <v-row class="mb-6" no-gutters>
 
                                     <v-col v-for="list in displayLists" :key="list.id" cols="6" sm="6" md="4" lg="3"
                                         xl="2">
                                         <v-col cols="12" sm="12" md="12" lg="12">
-                                            <v-card loading="false" class="mx-auto my-12" align="center">
+                                            <v-card loading="false" class="mx-auto " align="center">
                                                 <router-link :to="'/image/' + list.id">
                                                     <v-img :aspect-ratio="1" v-bind:src="list.image">
                                                     </v-img>
@@ -94,7 +100,7 @@ export default {
             displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
-            pageSize: 10,
+            pageSize: 12,
             maxnum: 40,
             following: {
 

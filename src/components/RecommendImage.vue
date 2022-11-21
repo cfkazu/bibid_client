@@ -4,76 +4,92 @@
 
         <v-main>
             <v-container>
-                <div class="section_title-main font-weight-bold">
-                    今日人気
-                </div>
-                <v-radio-group row v-model="nsfw" @change="nsfw_change">
-                    <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
-                    <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
-                    <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
-                </v-radio-group>
-                <div class="text-center">
 
-                    <v-list>
 
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-row class="mb-6" no-gutters justify="start">
 
-                                    <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3"
-                                        xl="2">
-                                        <v-col md="12">
-                                            <v-card loading="false" class="mx-auto " max-width="374" align="center">
-                                                <router-link :to="'/image/' + list.id">
-                                                    <v-img :aspect-ratio="1" v-bind:src="list.image">
-                                                    </v-img>
-                                                </router-link>
-                                                <br>
-                                                <div class="search-about__contents-text" align="left">{{ list.title }}
-                                                </div>
-                                                <v-card-actions>
+                <v-list>
 
-                                                    <v-list-item class="grow">
+                    <v-list-item>
 
-                                                        <router-link :to="'/user/' + list.author_id.id">
-                                                            <v-list-item-avatar color="grey darken-3">
-                                                                <v-img class="elevation-6" alt=""
-                                                                    :src="list.author_id.profile_url">
-                                                                </v-img>
-                                                            </v-list-item-avatar>
-                                                        </router-link>
-                                                        <router-link :to="'/user/' + list.author_id.id">
-                                                            <v-list-item-content>
-                                                                <v-list-item-title>{{ list.author_id.first_name }}
-                                                                </v-list-item-title>
-                                                            </v-list-item-content>
-                                                        </router-link>
-                                                        <v-row align="center" justify="end">
-                                                            <v-icon class="mr-1" color="red lighten-2"
-                                                                v-show="list.id in favs" @click="disfavorite(list)">
-                                                                mdi-heart
-                                                            </v-icon>
-                                                            <v-icon class="mr-1" @click="favorite(list)"
-                                                                v-show="!(list.id in favs)">
-                                                                mdi-heart
-                                                            </v-icon>
-                                                            <span class="subheading mr-2">{{ list.good }}</span>
-                                                        </v-row>
-                                                    </v-list-item>
-                                                </v-card-actions>
-                                            </v-card>
 
-                                        </v-col>
+                        <v-list-item-content>
+                            <v-row justify="start">
+                                <div class="text-right font-weight-bold">
+                                    &emsp;おすすめイラスト
+                                </div>
+                            </v-row>
+                            <v-radio-group row v-model="nsfw" @change="nsfw_change">
+                                <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                                <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                                <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+                            </v-radio-group>
+
+                            <v-row class="mb-6" no-gutters justify="start">
+
+                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3"
+                                    xl="2">
+                                    <v-col md="12">
+                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
+                                            <router-link :to="'/image/' + list.id">
+                                                <v-img :aspect-ratio="1" v-bind:src="list.image">
+                                                </v-img>
+                                            </router-link>
+                                            <br>
+                                            <v-row>
+                                                <v-col cols="1" sm="1" md="1" lg="1">
+
+                                                </v-col>
+                                                <v-col>
+                                                    <div class="search-about__contents-text" align="left">
+                                                        {{
+                                                        list.title
+                                                        }}
+                                                    </div>
+                                                </v-col>
+                                            </v-row>
+                                            <v-card-actions>
+
+                                                <v-list-item class="grow">
+
+                                                    <router-link :to="'/user/' + list.author_id.id">
+                                                        <v-list-item-avatar color="grey darken-3">
+                                                            <v-img class="elevation-6" alt=""
+                                                                :src="list.author_id.profile_url">
+                                                            </v-img>
+                                                        </v-list-item-avatar>
+                                                    </router-link>
+                                                    <router-link :to="'/user/' + list.author_id.id">
+                                                        <v-list-item-content>
+                                                            <v-list-item-title>{{ list.author_id.first_name }}
+                                                            </v-list-item-title>
+                                                        </v-list-item-content>
+                                                    </router-link>
+                                                    <v-row align="center" justify="end">
+                                                        <v-icon class="mr-1" color="red lighten-2"
+                                                            v-show="list.id in favs" @click="disfavorite(list)">
+                                                            mdi-heart
+                                                        </v-icon>
+                                                        <v-icon class="mr-1" @click="favorite(list)"
+                                                            v-show="!(list.id in favs)">
+                                                            mdi-heart
+                                                        </v-icon>
+                                                        <span class="subheading mr-2">{{ list.good }}</span>
+                                                    </v-row>
+                                                </v-list-item>
+                                            </v-card-actions>
+                                        </v-card>
+
                                     </v-col>
-                                </v-row>
+                                </v-col>
+                            </v-row>
 
 
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
 
-                    <br><br>
-                </div>
+                <br><br>
+
             </v-container>
         </v-main>
     </v-app>
@@ -167,7 +183,7 @@ export default {
         nsfw_change: function () {
             this.query.order = "new"
             console.log("new")
-            let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=12&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword_nopage/?order=recommend&limit=12&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -215,7 +231,7 @@ export default {
         this.query.order = "new"
         console.log("new")
 
-        let url = constants.host + "/searchbyword_nopage/?order=today_popular&limit=12&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword_nopage/?order=recommend&limit=12&nsfw=" + this.nsfw
         //console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page

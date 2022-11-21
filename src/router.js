@@ -9,6 +9,7 @@ import CreateImage from './components/CreateImage.vue'
 import SearchRes from './components/SearchResult.vue'
 import UserPage from './components/UserPage.vue'
 import MyPage from './components/MyPage.vue'
+import ModyfyImage from './components/ModifyImage.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -66,6 +67,10 @@ export default new Router({
             path: '/mypage',
             name: 'mypage',
             component: MyPage
-        }
+        }, {
+            path: '/mimage/:id',
+            name: 'modifyimage',
+            component: ModyfyImage
+        },
     ]
 })

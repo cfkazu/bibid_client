@@ -14,7 +14,7 @@
 
                         <v-list-item-content>
                             <v-row justify="start">
-                                <div class="text-right">
+                                <div class="text-right font-weight-bold">
                                     &emsp;新着イラスト
                                 </div>
                             </v-row>
@@ -26,10 +26,10 @@
 
                             <v-row class="mb-6" no-gutters justify="start">
 
-                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3"
+                                <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="3"
                                     xl="2">
                                     <v-col md="12">
-                                        <v-card loading="false" class="mx-auto my-12" max-width="374" align="center">
+                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
                                             <router-link :to="'/image/' + list.id">
                                                 <v-img :aspect-ratio="1" v-bind:src="list.image">
                                                 </v-img>
@@ -113,7 +113,7 @@ export default {
             displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
-            pageSize: 10,
+            pageSize: 12,
             favs: {},
             nsfw: 0,
         }
@@ -183,7 +183,7 @@ export default {
         nsfw_change: function () {
             this.query.order = "new"
             console.log("new")
-            let url = constants.host + "/searchbyword_nopage/?order=new&limit=8&nsfw=" + this.nsfw
+            let url = constants.host + "/searchbyword_nopage/?order=new&limit=12&nsfw=" + this.nsfw
             //console.log(url)
             if (!isNaN(this.$route.query.page)) {
                 this.page = this.$route.query.page
@@ -231,7 +231,7 @@ export default {
         this.query.order = "new"
         console.log("new")
 
-        let url = constants.host + "/searchbyword_nopage/?order=new&limit=8&nsfw=" + this.nsfw
+        let url = constants.host + "/searchbyword_nopage/?order=new&limit=12&nsfw=" + this.nsfw
         //console.log(url)
         if (!isNaN(this.$route.query.page)) {
             this.page = this.$route.query.page

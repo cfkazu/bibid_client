@@ -1,13 +1,20 @@
 <template>
     <section class="home-about">
-        <div class="section__title">
-            <div class="section__title-text">{{ this.imagedata.title }}</div>
-            <div class="section_title-main">
-                {{ this.imagedata.decription }}</div>
-        </div>
+
+        <br><br>
+        <v-text-field class="input-color-red-class" v-model="imagedata.title"></v-text-field>
+
+        <v-textarea class="input-color-black-class" v-model="imagedata.decription"></v-textarea>
+
+
         <v-container>
             <v-row class="home-about__contents" align="center" fill-height>
                 <v-col cols="12" sm="12" md="7" lg="7" xl="7" class="home-about__contents-img">
+                    <v-radio-group row v-model="imagedata.is_nsfw">
+                        <v-radio name="nsfw" label="全年齢" :value="0"></v-radio>
+                        <v-radio name="nsfw" label="R-18" :value="1"></v-radio>
+                        <v-radio name="nsfw" label="R-18G" :value="2"></v-radio>
+                    </v-radio-group>
                     <img :src="imgSrc" alt="" class="img-fluid">
                 </v-col>
                 <v-col cols="12" sm="12" md="5" lg="5" xl="5" class="home-about__contents-text">
@@ -35,16 +42,6 @@
 
                                     </v-list-item-content>
                                 </router-link>
-                                <v-row align="center" justify="end">
-                                    <v-icon class="mr-1" color="red lighten-2" v-show="imagedata.id in favs"
-                                        @click="disfavorite(imagedata)">
-                                        mdi-heart
-                                    </v-icon>
-                                    <v-icon class="mr-1" @click="favorite(imagedata)" v-show="!(imagedata.id in favs)">
-                                        mdi-heart
-                                    </v-icon>
-                                    <span class="subheading mr-2">{{ imagedata.good }}</span>
-                                </v-row>
                             </v-card-actions>
 
                         </v-list>
@@ -53,9 +50,9 @@
                         <v-card-text>
                             <div>Prompt</div>
 
-                            <div class="text--primary">
-                                {{ this.imagedata.prompt }}
-                            </div>
+                            <v-textarea v-model="imagedata.prompt">
+
+                            </v-textarea>
                         </v-card-text>
 
                     </v-card>
@@ -65,10 +62,10 @@
                         <v-card-text>
                             <div>Negative Prompt</div>
 
-                            <div class="text--primary">
-                                {{ this.imagedata.neg_prompt }}
-                            </div>
 
+                            <v-textarea v-model="imagedata.neg_prompt">
+
+                            </v-textarea>
                         </v-card-text>
 
                     </v-card>
@@ -76,54 +73,18 @@
                     <v-card class="mx-auto" max-width="1044">
                         <v-card-text>
                             <div>Additional Tags</div>
+                            <v-text-field v-model="imagedata.additonal_tags">
 
-                            <div class="text--primary">
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag0.substr(1, this.imagedata.tag0.length - 2)">{{
-                                            this.imagedata.tag0
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag1.substr(1, this.imagedata.tag1.length - 2)">{{
-                                            this.imagedata.tag1
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag2.substr(1, this.imagedata.tag2.length - 2)">{{
-                                            this.imagedata.tag2
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag3.substr(1, this.imagedata.tag3.length - 2)">{{
-                                            this.imagedata.tag3
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag4.substr(1, this.imagedata.tag4.length - 2)">{{
-                                            this.imagedata.tag4
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag5.substr(1, this.imagedata.tag5.length - 2)">{{
-                                            this.imagedata.tag5
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag6.substr(1, this.imagedata.tag6.length - 2)">{{
-                                            this.imagedata.tag6
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag7.substr(1, this.imagedata.tag7.length - 2)">{{
-                                            this.imagedata.tag7
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag8.substr(1, this.imagedata.tag8.length - 2)">{{
-                                            this.imagedata.tag8
-                                    }}</a>
-                                <a
-                                    :href="'#/search?word=' + this.imagedata.tag9.substr(1, this.imagedata.tag9.length - 2)">{{
-                                            this.imagedata.tag9
-                                    }}</a>
-                            </div>
+                            </v-text-field>
 
                         </v-card-text>
 
                     </v-card>
                 </v-col>
+
+                <v-btn justify="end" @click="Submit">変更を保存
+                </v-btn>
+
             </v-row>
 
         </v-container>
@@ -154,7 +115,8 @@
                                 </v-list-item-content>
                             </v-list-item>
                             <v-list-item-content>
-                                <v-btn justify="end" @click="AddComment_Max" :disabled="!there_is_more">もっと見る</v-btn>
+                                <v-btn justify="end" @click="AddComment_Max" :disabled="!there_is_more">もっと見る
+                                </v-btn>
                             </v-list-item-content>
                         </v-list>
 
@@ -190,6 +152,7 @@ import axios from 'axios';
 import NewestImage from './NewestImage.vue';
 import constants from '../common/constants';
 import Swal from 'sweetalert2';
+import router from '../router';
 export default {
     name: 'LoginMain',
     components: {
@@ -206,29 +169,27 @@ export default {
         comment_max: 3,
         my_profile_url: '',
         my_first_name: '',
-        favs: [],
+        modify_addition_tag: false,
+        modify_prompt: false,
+        modify_neg_prompt: false,
+        modify_title: false,
+        modify_description: false,
 
     }),
 
     mounted() {
-        let fav_url = ""
-        if (this.$cookies.isKey("user")) {
-            const header = {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN": this.$cookies.get('user').token,
-            }
-            // console.log("token")
-            // console.log(this.$cookies.get('user').token,)
-            fav_url = constants.host + "/getfavorite"
-            axios.get(fav_url, { headers: header })
-                .then(response => {
-                    this.favs = response.data;
-                    console.log(this.favs)
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-
+        if (!this.$cookies.isKey("user")) {
+            Swal.fire({
+                type: 'warning',
+                icon: 'warning',
+                text: 'ログインしてください。',
+                showConfirmButton: true,
+                showCloseButton: false,
+            }).then(() => {
+                this.$cookies.config(60 * 60 * 1, '');
+                this.$cookies.set("togo", "/createimg");
+                router.push('/login');
+            })
         }
         this.url = constants.host + '/getgraph/' + this.$route.params.id + '/'
         this.current_comment['image_id'] = this.$route.params.id
@@ -236,6 +197,17 @@ export default {
         console.log(this.url)
         axios.get(this.url)
             .then(response => {
+                if (response.data.author_id.id != this.$cookies.get("user").id) {
+                    Swal.fire({
+                        type: 'warning',
+                        icon: 'warning',
+                        text: '権限がありません。',
+                        showConfirmButton: true,
+                        showCloseButton: false,
+                    }).then(() => {
+                        router.push('/mypage');
+                    })
+                }
                 this.imagedata = response.data;
                 if (this.imagedata.tag0 != null) {
                     this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
@@ -325,55 +297,38 @@ export default {
         }
     },
     methods: {
-        need_login: function () {
+        Submit() {
             if (!this.$cookies.isKey("user")) {
+                return;
+            }
+            this.imagedata.description = this.imagedata.decription
+            const header = {
+                'Content-Type': 'application/json',
+                "X-AUTH-TOKEN": this.$cookies.get('user').token,
+            }
+            axios.put(constants.host + '/modifyimage/' + this.$route.params.id, this.imagedata, {
+                headers: header
+            }).then((response) => {
+                console.log(response);
                 Swal.fire({
-                    type: 'warning',
-                    icon: 'warning',
-                    text: 'ログインしてください。',
-                    showConfirmButton: true,
-                    showCloseButton: false,
-                }).then(
-                    () => {
-                        return false;
+                    title: '投稿完了',
+                    text: '投稿が完了しました。',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        router.push('/image/' + this.$route.params.id);
                     }
-                )
-            } else {
-                return true;
-            }
-        },
-        disfavorite(list) {
-            if (!this.need_login()) {
-                return;
-            }
-            const header = {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN": this.$cookies.get('user').token,
-            }
-            axios.get(constants.host + '/delfav/' + list.id, { headers: header }).then(() => {
-                list.good -= 1;
-                // console.log("TEST")
-                //console.log(this.favs)
-                delete this.favs[list.id];
-                // console.log(this.favs)
-            }).catch(err => {
-                console.log(err);
-            });
-        },
-        favorite(list) {
-            if (!this.need_login()) {
-                return;
-            }
-            const header = {
-                'Content-Type': 'application/json',
-                "X-AUTH-TOKEN": this.$cookies.get('user').token,
-            }
-            axios.get(constants.host + '/fav/' + list.id, { headers: header }).then(() => {
-                list.good += 1;
-                this.favs[list.id] = list.title
-            }).catch(err => {
-                console.log(err);
-            });
+                })
+            })
+                .catch((error) => {
+                    Swal.fire({
+                        title: '投稿失敗',
+                        text: '投稿に失敗しました。' + error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    })
+                })
         },
         AddComment_Max() {
             this.comment_max += 5
@@ -506,3 +461,20 @@ export default {
 
 }
 </script>
+<style scoped>
+.input-color-red-class.v-text-field>>>input {
+    color: red !important;
+    font-weight: 700;
+    font-size: 30px;
+    text-align: center;
+    padding: 0 !important;
+}
+
+.input-color-black-class.v-textarea>>>input {
+    color: red !important;
+    font-weight: 700;
+    font-size: 30px;
+    text-align: center;
+    padding: 0 !important;
+}
+</style>

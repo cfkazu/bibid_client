@@ -42,7 +42,7 @@
                                 <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="3" lg="3"
                                     xl="2">
                                     <v-col md="12">
-                                        <v-card loading="false" class="mx-auto my-12" max-width="374" align="center">
+                                        <v-card loading="false" class="mx-auto " max-width="374" align="center">
                                             <router-link :to="'/image/' + list.id">
                                                 <v-img :aspect-ratio="1" v-bind:src="list.image">
                                                 </v-img>
@@ -115,7 +115,7 @@ export default {
             displayLists_devided: [],
             dividenum: 5,
             displayLists: [],
-            pageSize: 10,
+            pageSize: 12,
             favs: {},
 
             nsfw: 0
