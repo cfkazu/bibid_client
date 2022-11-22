@@ -80,7 +80,7 @@ export default {
                             this.$cookies.remove("togo")
                             this.$router.push({ path: togo });
                         } else {
-                            this.$router.push({ path: '/about' })
+                            this.$router.push({ path: '/' })
                         }
                     }
                 })

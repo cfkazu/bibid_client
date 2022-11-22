@@ -58,10 +58,18 @@
                                     mdi-heart
                                 </v-icon>
                                 <span class="subheading mr-2">{{ imagedata.good }}</span>
+                                <v-btn class="f mt text-capitalize caption mx-4" rounded color="#9ee4ff" dark depressed
+                                    height="48px" @click="share_twitter">
+                                    <img class="button-logo-img mr-4" src="../../public/static/twitter.png"
+                                        style="height: 20px" />
+                                    ツイートする
+                                </v-btn>
+
+
                             </v-row>
                         </v-list>
                     </v-card>
-                    <v-card class="mx-auto" max-width="1044">
+                    <v-card class="mx-auto my-4" max-width="1044">
                         <v-card-text>
                             <div>Prompt</div>
 
@@ -337,6 +345,18 @@ export default {
         }
     },
     methods: {
+        share_twitter() {
+            let gourl = "https://bibid-ai.com/image/" + this.$route.params.id
+            let Hashtags = [];
+            Hashtags.push("bibidai");
+            Hashtags.push("bibid");
+            Hashtags.push("AIイラスト");
+            Hashtags = Hashtags.join(",");
+            let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text= 閲覧中:「" + this.imagedata.title + "」at Bibid-AI&hashtags=" + Hashtags;
+            myurl = encodeURI(myurl)
+
+            open(myurl);
+        },
         need_login: function () {
             if (!this.$cookies.isKey("user")) {
                 Swal.fire({

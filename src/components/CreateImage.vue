@@ -122,15 +122,15 @@ export default {
             checkbox: null,
             previewSrc: "",
             NSFW: ['全年齢', 'R18', 'R18-G'],
-            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ving", "Unstable Diffusion", "Hentai Diffusion", "その他"],
+            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ViLG", "Unstable Diffusion", "Hentai Diffusion", "その他"],
             isUploading: false,
-            twitter:false,
+            twitter: false,
         }
     }, mounted() {
         this.checkLoggedIn();
 
         if (!(this.$route.query.deftag === void 0)) {
-         //   console.log(this.$route.query.deftag);
+            //   console.log(this.$route.query.deftag);
             this.imagedata.additonal_tags = this.$route.query.deftag;
         }
     },
@@ -159,7 +159,7 @@ export default {
         },
         async selectedFile(e) {
             this.isUploading = true;
-         //   console.log(e)
+            //   console.log(e)
             const file = e
             if (!file) {
                 return;
@@ -171,7 +171,7 @@ export default {
                 this.imagedata.image = compFile;
                 this.fileName = await ImageUtil.getDataUrlFromFile(compFile);
                 this.previewSrc = this.fileName;
-         
+
             } catch (err) {
 
                 console.error(err);
@@ -209,7 +209,7 @@ export default {
             // console.log(this.$session.get('id'));
             axios.post(constants.host + "/creategraph", formData, { headers: header })
                 .then((response) => {
-             
+
                     Swal.fire({
                         title: '投稿完了',
                         text: '投稿が完了しました。',
@@ -220,11 +220,16 @@ export default {
                             const newid = response.data.newid
                             router.push('/image/' + newid);
                             if (this.twitter) {
-                                let gourl ="https://bibid-ai.com/image/" + newid;
-                                let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text=「"+this.imagedata.title+"」をBibidに投稿しました！&hashtags=Bibid,AIイラスト";
+                                let gourl = "https://bibid-ai.com/image/" + newid;
+                                let Hashtags = constants.AitoTags[this.imagedata.ai_model].concat();
+                                Hashtags.push("bibidai");
+                                Hashtags.push("bibid");
+                                Hashtags.push("AIイラスト");
+                                Hashtags = Hashtags.join(",");
+                                let myurl = "https://twitter.com/intent/tweet?url=" + gourl + "&text=「" + this.imagedata.title + "」をBibidに投稿しました！&hashtags=" + Hashtags;
                                 myurl = encodeURI(myurl)
-  
-                                 open(myurl);
+
+                                open(myurl);
                             }
                         }
                     })
@@ -265,7 +270,7 @@ export default {
                     showCloseButton: false,
                 }).then(() => {
                     this.$cookies.config(60 * 60 * 1, '');
-                    this.$cookies.set("togo", "/createimg");
+                    this.$cookies.set("togo", this.$route.fullPath);
                     router.push('/login');
                 })
             }

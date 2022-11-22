@@ -207,10 +207,14 @@ export default {
             this.$router.push("/myfavoriteall");
         },
         delete_image: function (list) {
-            Swal.fire(
-                '削除しますか？',
-                '',
-                'warning'
+            Swal.fire({
+                text: '削除しますか？',
+                icon: "warning",
+                showCancelButton: true,
+                showConfirmButton: true,
+                confirmButtonText: '削除',
+                cancelButtonText: 'キャンセル',
+            }
             ).then((result) => {
                 if (result.isConfirmed) {
                     const header = {
