@@ -52,9 +52,11 @@
                 <div class="competetion_title-text">
                     <br>
                     Bibidでは定期的にコンテストを開催します。<br>
-                    開催期間中に最も皆様からの「いいね！」を集めた作品には<br>
-
+                    いいね！の数を#妹派と#姉派で競い合い、<br>
+                    勝者の派閥の中でもっともいいね！の数の多かった投稿を「MVP」作品として<br>
                     Amazonギフト券10000円分を贈呈します！<br>
+                    負けてしまった派閥の方でもいいね数の多かったイラストは「敢闘賞」として<br>
+                    Amazonギフト券3000円分を贈呈します!
                     <br><br>
                 </div>
                 <div class="competetion_title-subtitle">参加方法</div>
@@ -65,8 +67,6 @@
                     もちろん通常の画像の投稿も大歓迎です！
 
                     <br><br>
-
-
                 </div>
                 <div class="competetion_title-subtitle">注意事項</div>
                 <div class="competetion_title-text">

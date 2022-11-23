@@ -122,7 +122,7 @@ export default {
             checkbox: null,
             previewSrc: "",
             NSFW: ['全年齢', 'R18', 'R18-G'],
-            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ViLG", "Unstable Diffusion", "Hentai Diffusion", "その他"],
+            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ViLG", "Unstable Diffusion", "Hentai Diffusion","niji・journey","その他"],
             isUploading: false,
             twitter: false,
         }
