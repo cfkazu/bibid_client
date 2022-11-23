@@ -26,7 +26,7 @@
                                 <v-col md="12" class="mb-6 ">
                                     <v-card loading="false" class="mx-auto  " max-width="374" align="center">
                                         <router-link :to="'/image/' + list.id">
-                                            <v-img :aspect-ratio="1" v-bind:src="list.image">
+                                            <v-img :aspect-ratio="1" v-bind:src="list.image.split('?')[0]">
                                             </v-img>
                                         </router-link>
                                         <br>
@@ -37,7 +37,7 @@
                                             <v-col>
                                                 <div class="search-about__contents-text" align="left">
                                                     {{
-                                                    list.title
+                                                            list.title
                                                     }}
                                                 </div>
                                             </v-col>
@@ -213,7 +213,7 @@ export default {
                 axios.get(fav_url, { headers: header })
                     .then(response => {
                         this.favs = response.data;
-                      
+
                     })
                     .catch(error => {
                         console.error(error);

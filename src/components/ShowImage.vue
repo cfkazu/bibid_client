@@ -19,7 +19,7 @@
         <v-container>
             <v-row class="home-about__contents" align="center" fill-height>
                 <v-col cols="12" sm="12" md="7" lg="7" xl="7" class="home-about__contents-img">
-                    <img :src="imgSrc" alt="" class="img-fluid">
+                    <img :src="imgSrc.split('?')[0]" alt="" class="img-fluid">
                 </v-col>
                 <v-col cols="12" sm="12" md="5" lg="5" xl="5" class="home-about__contents-text">
                     <v-card hide-details :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">

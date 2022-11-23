@@ -59,6 +59,7 @@ export default {
         "Erine-ViLG": ["ernievilg", "ERNIEViLG"],
         "Unstable Diffusion": ["UnstableDiffusion"],
         "Hentai Diffusion": ["HentaiDiffusion"],
+        "niji・journey": ["nijijourney"],
         "その他": [],
     },
     host: "http://localhost:8000",
