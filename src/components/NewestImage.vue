@@ -49,41 +49,34 @@
                                             </v-col>
                                         </v-row>
                                         <v-card-actions>
-                                            <v-row justify="space-between">
-                                                <v-col>
-                                                    <v-list>
-                                                        <v-list-item class="grow">
 
-                                                            <router-link :to="'/user/' + list.author_id.id">
-                                                                <v-list-item-avatar color="grey darken-3">
-                                                                    <v-img class="elevation-6" alt=""
-                                                                        :src="list.author_id.profile_url">
-                                                                    </v-img>
-                                                                </v-list-item-avatar>
-                                                            </router-link>
-                                                            <router-link :to="'/user/' + list.author_id.id">
-                                                                <v-list-item-content>
-                                                                    <v-list-item-title>{{ list.author_id.first_name }}
-                                                                    </v-list-item-title>
-                                                                </v-list-item-content>
-                                                            </router-link>
+                                            <v-list-item class="grow">
 
-                                                        </v-list-item>
-                                                    </v-list>
-                                                </v-col>
-                                                <v-col class="mt-1" align="right">
-                                                    <br>
-                                                    <v-icon class="mr-1 " color="red lighten-2" v-show="list.id in favs"
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-avatar color="grey darken-3">
+                                                        <v-img class="elevation-6" alt=""
+                                                            :src="list.author_id.profile_url">
+                                                        </v-img>
+                                                    </v-list-item-avatar>
+                                                </router-link>
+                                                <router-link :to="'/user/' + list.author_id.id">
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>{{ list.author_id.first_name | omittedText }}
+                                                        </v-list-item-title>
+                                                    </v-list-item-content>
+                                                </router-link>
+                                                <v-row align="center" justify="end">
+                                                    <v-icon class="mr-1" color="red lighten-2" v-show="list.id in favs"
                                                         @click="disfavorite(list)">
                                                         mdi-heart
                                                     </v-icon>
-                                                    <v-icon class="mr-1 " @click="favorite(list)"
+                                                    <v-icon class="mr-1" @click="favorite(list)"
                                                         v-show="!(list.id in favs)">
                                                         mdi-heart
                                                     </v-icon>
-                                                    <span class="subheading mr-2 ">{{ list.good }}</span>
-                                                </v-col>
-                                            </v-row>
+                                                    <span class="subheading mr-2">{{ list.good }}</span>
+                                                </v-row>
+                                            </v-list-item>
                                         </v-card-actions>
 
                                     </v-card>
@@ -127,6 +120,15 @@ export default {
             pageSize: 12,
             favs: {},
             nsfw: 0,
+        }
+    }, filters: {
+        omittedText(text) {
+            // 11文字目以降は"…"
+            return text.length > 8 ? text.slice(0, 7) + "…" : text;
+        },
+        omittedText20(text) {
+            // 20文字目以降は"…"
+            return text.length > 20 ? text.slice(0, 20) + "…" : text;
         }
     },
     methods: {

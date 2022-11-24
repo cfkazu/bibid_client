@@ -44,7 +44,9 @@
                                                     </router-link>
                                                     <router-link :to="'/user/' + list.author_id.id">
                                                         <v-list-item-content>
-                                                            <v-list-item-title>{{ list.author_id.first_name }}
+                                                            <v-list-item-title>{{ list.author_id.first_name |
+                                                                    omittedText
+                                                            }}
                                                             </v-list-item-title>
                                                         </v-list-item-content>
                                                     </router-link>
@@ -101,6 +103,15 @@ export default {
             pageSize: 12,
             favs: {},
             nsfw: 0,
+        }
+    }, filters: {
+        omittedText(text) {
+            // 11文字目以降は"…"
+            return text.length > 8 ? text.slice(0, 7) + "…" : text;
+        },
+        omittedText20(text) {
+            // 20文字目以降は"…"
+            return text.length > 20 ? text.slice(0, 20) + "…" : text;
         }
     },
     methods: {
