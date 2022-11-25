@@ -332,7 +332,7 @@ export default {
                 console.error(error);
             });
         this.uid = this.$cookies.get('user').id;
-        axios.get(constants.host + "/getImagebyUserid/?user_id=" + this.uid + "&limit=" + this.maxnum)
+        axios.get(constants.host + "/myimage?limit=" + this.maxnum, { headers: header })
             .then(response => {
                 this.displayLists = response.data;
                 this.displayLists_devided = this.sliceByNumber(this.displayLists, this.dividenum);

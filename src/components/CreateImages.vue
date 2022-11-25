@@ -14,10 +14,12 @@
                     <v-file-input ref="fileInput" label="イラスト(クリックで選択)" accept="image/*" :clearable="true"
                         @click="clearFileName" @change="selectedFile">
                     </v-file-input>
-
-                    <div>
-                        <img :src="previewSrc" alt="" width="300" />
-                    </div>
+                    <v-row class="mb-6" no-gutters justify="start">
+                        <v-col v-for="(src, i) in previewSrc" :key="i" cols="6" sm="4" md="3" lg="3">
+                            <v-img :aspect-ratio="1" v-bind:src="src">
+                            </v-img>
+                        </v-col>
+                    </v-row>
                     <validation-provider v-slot="{ errors }" name="タイトル" rules="required|max:30">
                         <v-text-field v-model="imagedata.title" :counter="30" :error-messages="errors"
                             label="タイトル(30文字以内)" required>
@@ -118,15 +120,19 @@ export default {
             url: "",
             imagedata: {
                 additonal_tags: "(例)女の子,海,夏",
+                image: [
+
+                ],
             },
             filename: "",
             select: null,
             checkbox: null,
-            previewSrc: "",
+            previewSrc: [],
             NSFW: ['全年齢', 'R18', 'R18-G'],
-            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ViLG", "Unstable Diffusion", "Hentai Diffusion","niji・journey","その他"],
+            AIModel: ["NovelAI", "Waifu Diffusion", "Stable Diffusion", "TrinArt", "Midjourney", "Dalle-2", "Ernie-ViLG", "Unstable Diffusion", "Hentai Diffusion", "niji・journey", "その他"],
             isUploading: false,
             twitter: false,
+            imageindex: 0,
         }
     }, mounted() {
         this.checkLoggedIn();
@@ -152,36 +158,32 @@ export default {
     },
     methods: {
 
- 
 
-        Get_EXIF: function (file) {
+
+        Get_EXIF: function (file, index) {
             var reader = new FileReader();
-            //テキスト形式で読み込む
             reader.readAsArrayBuffer(file)
             console.log("a")
             console.log(this.imagedata)
             //読込終了後の処理
             reader.onload = e => {
-            //テキストエリアに表示する
-            
-            //  console.log(reader)
-            // console.log(reader.result.split('tEXt')[1])
-                const { getChunks} = require('png-chunks');
+
+                const { getChunks } = require('png-chunks');
 
                 const fileData = new Uint8Array(e.target.result);
                 console.log(e)
                 const chunks = getChunks(fileData);
                 const textChunks = chunks.filter(function (chunk) {
                     return chunk.chunkType === 'tEXt' || chunk.chunkType === 'iTXt';
-                    }).map(function (chunk) {
+                }).map(function (chunk) {
                     return text.decode(chunk.data)
-                    })
+                })
                 console.log(chunks)
-                this.GetPrompt_png(textChunks)
-                
+                this.GetPrompt_png(textChunks, index)
+
             }
         },
-        GetPrompt_png(textChunks){
+        GetPrompt_png(textChunks, index) {
             if (textChunks.length == 0) {
                 return;
             }
@@ -190,20 +192,21 @@ export default {
             if (textChunks[0].keyword == "Title") {
                 //Novel AIとみる。
                 //0:Title,1:Description,2:Software,3:Source,4:Comment
-                this.imagedata.prompt = textChunks[1].text;
+                this.imagedata.image[index].prompt = textChunks[1].text;
                 //let comments = textChunks[4].text.split(":");
-             //   console.log(comments);
-             try{
-                let json = JSON.parse(textChunks[4].text)
-             
-                this.imagedata.seed = json.seed;
-                this.imagedata.noise = json.noise;
-                this.imagedata.scale = json.scale;
-                this.imagedata.ai_model = "NovelAI";
-                this.imagedata.steps = json.steps
-                this.imagedata.strength = json.strength
-                this.imagedata.neg_prompt=json.uc}
-                catch(e){
+                //   console.log(comments);
+                try {
+                    let json = JSON.parse(textChunks[4].text)
+
+                    this.imagedata.image[index].seed = json.seed;
+                    this.imagedata.image[index].noise = json.noise;
+                    this.imagedata.image[index].scale = json.scale;
+                    this.imagedata.ai_model = "NovelAI";
+                    this.imagedata.image[index].steps = json.steps
+                    this.imagedata.image[index].strength = json.strength
+                    this.imagedata.image[index].neg_prompt = json.uc
+                }
+                catch (e) {
                     console.log(e)
                 }
             } else if (textChunks[0].keyword == "parameters") {
@@ -212,16 +215,16 @@ export default {
                 try {
                     let prompt = text.split(/(\nNegative prompt)|(Steps)/)[0]
                     prompt = prompt.replace(/\r?\n/g, '')
-                    this.imagedata.prompt = prompt;
+                    this.imagedata.image[index].prompt = prompt;
                 }
                 catch (e) {
                     console.log(e)
                 }
                 let neg_prompt = text.match(/Negative prompt: (.*)Steps:/s)[1]
-                this.imagedata.neg_prompt = neg_prompt.replace('\n', '');
-                this.imagedata.seed = text.match(/Seed: (.*?),/)[1]
-                this.imagedata.scale = text.match(/scale: (.*?),/)[1]
-                this.imagedata.steps = text.match(/Steps: (.*?),/)[1]
+                this.imagedata.image[index].neg_prompt = neg_prompt.replace('\n', '');
+                this.imagedata.image[index].seed = text.match(/Seed: (.*?),/)[1]
+                this.imagedata.image[index].scale = text.match(/scale: (.*?),/)[1]
+                this.imagedata.image[index].steps = text.match(/Steps: (.*?),/)[1]
             }
         },
         inputFile: function (e) {
@@ -236,7 +239,8 @@ export default {
             this.isUploading = true;
             //   console.log(e)
             const file = e
-            this.Get_EXIF(file);
+            this.imagedata.image.push({});
+            this.Get_EXIF(file, this.imageindex);
             if (!file) {
                 return;
 
@@ -244,9 +248,10 @@ export default {
             try {
                 // 圧縮した画像を取得
                 const compFile = await ImageUtil.getCompressImageFileAsync(file);
-                this.imagedata.image = compFile;
+                this.imagedata.image[this.imageindex].image = compFile;
                 this.fileName = await ImageUtil.getDataUrlFromFile(compFile);
-                this.previewSrc = this.fileName;
+                this.previewSrc[this.imageindex] = this.fileName;
+                this.imageindex++;
 
             } catch (err) {
 
@@ -254,6 +259,7 @@ export default {
                 // エラーメッセージ等を表示
             } finally {
                 this.isUploading = false;
+                console.log(this.imagedata)
             }
         },
         uploadFile() {
@@ -270,20 +276,24 @@ export default {
                 this.imagedata.additonal_tags = "";
             }
             var formData = new FormData();
-            formData.append('image', this.imagedata.image);
+            for (var i = 0; i < this.imagedata.image.length; i++) {
+                formData.append('image' + i, this.imagedata.image[i].image);
+                formData.append('prompt' + i, this.imagedata.image[i].prompt);
+                formData.append('neg_prompt' + i, this.imagedata.image[i].neg_prompt);
+                formData.append('seed' + i, this.imagedata.image[i].seed);
+            }
+            formData.append('num', this.imagedata.image.length);
             formData.append('title', this.imagedata.title);
             formData.append('decription', this.imagedata.decription);
-            formData.append('prompt', this.imagedata.prompt);
-            formData.append('neg_prompt', this.imagedata.neg_prompt);
             formData.append('additonal_tags', this.imagedata.additonal_tags);
             formData.append('author_id_id', this.$cookies.get('user').id);
             formData.append('good', 0)
-            formData.append('seed', -1)
             formData.append('is_nsfw', this.nsfw_id)
             formData.append('ai_model', this.imagedata.ai_model)
-
+            console.log("フォームデータ")
+            console.log(formData)
             // console.log(this.$session.get('id'));
-            axios.post(constants.host + "/creategraph", formData, { headers: header })
+            axios.post(constants.host + "/createimages", formData, { headers: header })
                 .then((response) => {
 
                     Swal.fire({

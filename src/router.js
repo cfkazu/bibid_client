@@ -13,6 +13,8 @@ import ModyfyImage from './components/ModifyImage.vue'
 import MyFavoriteAll from './components/MyFavorite_all.vue'
 import RedirectImage from './components/RedirectImage.vue'
 import ContestPage from './components/ContestPage.vue'
+import ShowImages from './components/ShowImages.vue'
+import CreateImages from './components/CreateImages.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -88,6 +90,14 @@ export default new Router({
             path: '/contest',
             name: 'contest',
             component: ContestPage
+        }, {
+            path: '/showimages/:id',
+            name: 'showimages',
+            component: ShowImages
+        }, {
+            path: '/createimages',
+            name: 'createimages',
+            component: CreateImages
         }
     ]
 })
