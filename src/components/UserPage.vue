@@ -18,7 +18,7 @@
                         <v-list-item-content>
                             <v-list-item-title>{{ this.user.first_name }}(<a
                                     :href="'https://twitter.com/' + this.user.username">@{{
-                                    this.user.username
+                                        this.user.username
                                     }}</a>)
                             </v-list-item-title>
                             <v-list-item-subtitle>{{ this.user.description }}</v-list-item-subtitle>
@@ -60,7 +60,7 @@
                                         xl="2">
                                         <v-col cols="12" sm="12" md="12" lg="12">
                                             <v-card loading="false" class="mx-auto " align="center">
-                                                <router-link :to="'/image/' + list.id">
+                                                <router-link :to="'/showimages/' + list.id">
                                                     <v-img :aspect-ratio="1" v-bind:src="list.image.split('?')[0]">
                                                     </v-img>
                                                 </router-link>

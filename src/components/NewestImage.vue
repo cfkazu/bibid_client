@@ -31,7 +31,7 @@
                             <v-col v-for="list in displayLists" :key="list.id" cols="12" sm="6" md="4" lg="4" xl="2">
                                 <v-col md="12">
                                     <v-card loading="false" class="mx-auto " max-width="374" align="center">
-                                        <router-link :to="'/image/' + list.id">
+                                        <router-link :to="'/showimages/' + list.id">
                                             <v-img :aspect-ratio="1" v-bind:src="list.image">
                                             </v-img>
                                         </router-link>
@@ -186,7 +186,7 @@ export default {
             });
         },
         gotoimage: function (id) {
-            this.$router.push({ path: '/image/' + id })
+            this.$router.push({ path: '/showimages/' + id })
         },
 
         sliceByNumber: function (array, number) {

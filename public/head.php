@@ -4,7 +4,7 @@ $url = 'https://bibid-api.tokyo/getgraph/'.$entry_id.'/';
 $json = file_get_contents($url);
 //echo $json;
 $data = json_decode($json);
-echo "ogp対応ページ。ツイート直後でここに来た場合は<a href=https://bibid-ai.com/#/image/".$data->id.">こちらへ。</a>";
+echo "ogp対応ページ。ツイート直後でここに来た場合は<a href=https://bibid-ai.com/#/showimages/".$data->id.">こちらへ。</a>";
 /*
 $entry_id = ctype_digit($_GET['id']) ? $_GET['id'] : 0;
 $ctrl = new dataController(); //この辺は省略

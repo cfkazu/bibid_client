@@ -20,6 +20,7 @@
             <v-row class="home-about__contents" align="center" fill-height>
                 <v-col cols="12" sm="12" md="7" lg="7" xl="7" class="home-about__contents-img">
                     <CCalouse :images="imagedata.images" @changeIndex="change_index"></CCalouse>
+
                 </v-col>
                 <v-col cols="12" sm="12" md="5" lg="5" xl="5" class="home-about__contents-text">
                     <v-card hide-details :max-width="$vuetify.breakpoint.width * 2 / 3" class="mx-auto" elevation="0">
@@ -353,7 +354,7 @@ export default {
             this.currentIndex = index
         },
         share_twitter() {
-            let gourl = "https://bibid-ai.com/image/" + this.$route.params.id
+            let gourl = "https://bibid-ai.com/showimages/" + this.$route.params.id
             let Hashtags = [];
             Hashtags.push("bibidai");
             Hashtags.push("bibid");

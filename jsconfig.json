@@ -14,6 +14,12 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],
+    "include": [
+      "pages",
+      "store",
+      "layout",
+      "component"
+    ],
   }
 }

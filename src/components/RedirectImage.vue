@@ -4,7 +4,7 @@ export default {
     name: 'RedirectImage',
     mounted() {
 
-        router.push('/image/' + this.$route.query.id)
+        router.push('/showimages/' + this.$route.query.id)
     }
 }
 

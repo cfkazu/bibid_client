@@ -294,9 +294,9 @@ export default {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             const newid = response.data.newid
-                            router.push('/image/' + newid);
+                            router.push('/showimages/' + newid);
                             if (this.twitter) {
-                                let gourl = "https://bibid-ai.com/image/" + newid;
+                                let gourl = "https://bibid-ai.com/showimages/" + newid;
                                 let Hashtags = constants.AitoTags[this.imagedata.ai_model].concat();
                                 Hashtags.push("bibidai");
                                 Hashtags.push("bibid");

@@ -4,14 +4,14 @@ import Home from './components/HomeMain.vue'
 import About from './components/AboutApp.vue'
 import Login from './components/SnsLogin.vue'
 import Hedge from './components/HedgeHog.vue'
-import ShowImage from './components/ShowImage.vue'
-import CreateImage from './components/CreateImage.vue'
+
+//import CreateImage from './components/CreateImage.vue'
 import SearchRes from './components/SearchResult.vue'
 import UserPage from './components/UserPage.vue'
 import MyPage from './components/MyPage.vue'
 import ModyfyImage from './components/ModifyImage.vue'
 import MyFavoriteAll from './components/MyFavorite_all.vue'
-import RedirectImage from './components/RedirectImage.vue'
+
 import ContestPage from './components/ContestPage.vue'
 import ShowImages from './components/ShowImages.vue'
 import CreateImages from './components/CreateImages.vue'
@@ -53,19 +53,14 @@ export default new Router({
             name: 'hedgehog',
             component: Hedge
         }, {
-            path: '/image/:id',
-            name: 'showimage',
-            component: ShowImage
+            path: '/images/:id',
+            name: 'showimages',
+            component: ShowImages
         },
         {
-            path: '/image',
-            name: 'redirectimage',
-            component: RedirectImage
-        }
-        , {
             path: '/createimg',
             name: 'createimg',
-            component: CreateImage
+            component: CreateImages
         }, {
             path: '/search',
             name: 'search',

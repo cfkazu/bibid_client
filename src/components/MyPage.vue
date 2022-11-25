@@ -55,7 +55,7 @@
 
                                     <v-col md="12">
                                         <v-card loading="false" class="mx-auto " max-width="374" align="center">
-                                            <router-link :to="'/image/' + list.image.id">
+                                            <router-link :to="'/showimages/' + list.image.id">
                                                 <v-img :aspect-ratio="1" v-bind:src="list.image.image.split('?')[0]">
                                                 </v-img>
                                             </router-link>
@@ -121,7 +121,7 @@
                                         xl="2">
                                         <v-col cols="12" sm="12" md="12" lg="12">
                                             <v-card loading="false" class="mx-auto " align="center">
-                                                <router-link :to="'/image/' + list.id">
+                                                <router-link :to="'/showimages/' + list.id">
                                                     <v-img :aspect-ratio="1" v-bind:src="list.image.split('?')[0]">
                                                     </v-img>
                                                 </router-link>

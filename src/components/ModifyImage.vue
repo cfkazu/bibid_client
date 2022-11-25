@@ -35,7 +35,7 @@
                                     <v-list-item-content>
                                         <v-list-item-title>
                                             {{ this.imagedata.author_id.first_name }} (@{{
-                                            this.imagedata.author_id.username
+                                                    this.imagedata.author_id.username
                                             }})
 
                                         </v-list-item-title>
@@ -315,7 +315,7 @@ export default {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        router.push('/image/' + this.$route.params.id);
+                        router.push('/showimages/' + this.$route.params.id);
                     }
                 })
             })

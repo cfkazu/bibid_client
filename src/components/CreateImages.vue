@@ -30,15 +30,7 @@
                             label="キャプション(簡単な説明、制作秘話など)">
                         </v-textarea>
                     </validation-provider>
-                    <validation-provider v-slot="{ errors }" name="Prompt">
-                        <v-textarea v-model="imagedata.prompt" :error-messages="errors" label="プロンプト(任意)">
-                        </v-textarea>
-                    </validation-provider>
-                    <validation-provider v-slot="{ errors }" name="NegPrompt">
-                        <v-textarea v-model="imagedata.neg_prompt
-                        " :error-messages="errors" label="ネガティブプロンプト(任意)">
-                        </v-textarea>
-                    </validation-provider>
+
 
                     <validation-provider v-slot="{ errors }" name="AdditonalTag">
                         <v-text-field v-model="imagedata.additonal_tags
@@ -56,6 +48,7 @@
                             required>
                         </v-select>
                     </validation-provider>
+                    <v-switch v-model="submit_prompts" label="プロンプトを投稿する"></v-switch>
                     <v-switch v-model="twitter" label="ツイッターにも投稿する" color="blue" value="secondary" hide-details>
                     </v-switch>
                     <br>
@@ -133,6 +126,7 @@ export default {
             isUploading: false,
             twitter: false,
             imageindex: 0,
+            submit_prompts: false,
         }
     }, mounted() {
         this.checkLoggedIn();
@@ -277,10 +271,13 @@ export default {
             }
             var formData = new FormData();
             for (var i = 0; i < this.imagedata.image.length; i++) {
+                if (this.submit_prompts) {
+                    formData.append('prompt' + i, this.imagedata.image[i].prompt);
+                    formData.append('neg_prompt' + i, this.imagedata.image[i].neg_prompt);
+                    formData.append('seed' + i, -1);
+                }
                 formData.append('image' + i, this.imagedata.image[i].image);
-                formData.append('prompt' + i, this.imagedata.image[i].prompt);
-                formData.append('neg_prompt' + i, this.imagedata.image[i].neg_prompt);
-                formData.append('seed' + i, this.imagedata.image[i].seed);
+
             }
             formData.append('num', this.imagedata.image.length);
             formData.append('title', this.imagedata.title);
@@ -305,8 +302,9 @@ export default {
                         if (result.isConfirmed) {
                             const newid = response.data.newid
                             router.push('/image/' + newid);
+                            router.push('/showimages/' + newid);
                             if (this.twitter) {
-                                let gourl = "https://bibid-ai.com/image/" + newid;
+                                let gourl = "https://bibid-ai.com/showimages/" + newid;
                                 let Hashtags = constants.AitoTags[this.imagedata.ai_model].concat();
                                 Hashtags.push("bibidai");
                                 Hashtags.push("bibid");
