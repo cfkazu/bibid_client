@@ -457,90 +457,111 @@ export default {
         }
 
     },
-    /*
-        watch: {
-            $route(to) {
-                this.url = constants.host + '/getgraph/' + to.params.id + '/'
-                this.current_comment['image_id'] = to.params.id
-                this.current_comment['comment'] = ''
-    
-                axios.get(this.url)
+
+    watch: {
+        $route(to) {
+            let fav_url = ""
+            if (this.$cookies.isKey("user")) {
+                const header = {
+                    'Content-Type': 'application/json',
+                    "X-AUTH-TOKEN": this.$cookies.get('user').token,
+                }
+                // console.log("token")
+                // console.log(this.$cookies.get('user').token,)
+                fav_url = constants.host + "/getfavorite"
+                axios.get(fav_url, { headers: header })
                     .then(response => {
-                        this.imagedata = response.data;
-                        if (this.imagedata.tag0 != null) {
-                            this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
-                        } else {
-                            this.imagedata.tag0 = ""
-                        }
-                        if (this.imagedata.tag1 != null) {
-                            this.imagedata.tag1 = "#" + this.imagedata.tag1 + ","
-                        } else {
-                            this.imagedata.tag1 = ""
-                        }
-                        if (this.imagedata.tag2 != null) {
-                            this.imagedata.tag2 = "#" + this.imagedata.tag2 + ","
-                        } else {
-                            this.imagedata.tag2 = ""
-                        }
-                        if (this.imagedata.tag3 != null) {
-                            this.imagedata.tag3 = "#" + this.imagedata.tag3 + ","
-                        } else {
-                            this.imagedata.tag3 = ""
-                        }
-                        if (this.imagedata.tag4 != null) {
-                            this.imagedata.tag4 = "#" + this.imagedata.tag4 + ","
-                        } else {
-                            this.imagedata.tag4 = ""
-                        }
-                        if (this.imagedata.tag5 != null) {
-                            this.imagedata.tag5 = "#" + this.imagedata.tag5 + ","
-                        } else {
-                            this.imagedata.tag5 = ""
-                        }
-                        if (this.imagedata.tag6 != null) {
-                            this.imagedata.tag6 = "#" + this.imagedata.tag6 + ","
-                        } else {
-                            this.imagedata.tag6 = ""
-                        }
-                        if (this.imagedata.tag7 != null) {
-                            this.imagedata.tag7 = "#" + this.imagedata.tag7 + ","
-                        } else {
-                            this.imagedata.tag7 = ""
-                        }
-                        if (this.imagedata.tag8 != null) {
-                            this.imagedata.tag8 = "#" + this.imagedata.tag8 + ","
-                        } else {
-                            this.imagedata.tag8 = ""
-                        }
-                        if (this.imagedata.tag9 != null) {
-                            this.imagedata.tag9 = "#" + this.imagedata.tag9 + ","
-                        } else {
-                            this.imagedata.tag9 = ""
-                        }
+                        this.favs = response.data;
+
                     })
                     .catch(error => {
                         console.error(error);
                     });
-                this.islogin = this.$cookies.isKey('user')
-                if (this.islogin) {
-                    const prof_url = constants.host + '/getuser/' + this.$cookies.get('user').id
-                    axios.get(prof_url)
-                        .then(response => {
-                            this.my_profile_url = response.data.profile_url
-                            this.my_first_name = response.data.first_name
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                }
-                const comment_url = constants.host + '/getcomment/' + this.$route.params.id
-                axios.get(comment_url)
-                    .then(response => {
-                        this.comments = response.data;
-    
-                    })
+
             }
-        },*/
+            this.url = constants.host + '/imagemul/' + to.params.id
+            this.current_comment['image_id'] = to.params.id
+            this.current_comment['comment'] = ''
+
+            axios.get(this.url)
+                .then(response => {
+                    this.imagedata = response.data;
+                    console.log(this.imagedata)
+                    if (this.imagedata.tag0 != null) {
+                        this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
+                    } else {
+                        this.imagedata.tag0 = ""
+                    }
+                    if (this.imagedata.tag1 != null) {
+                        this.imagedata.tag1 = "#" + this.imagedata.tag1 + ","
+                    } else {
+                        this.imagedata.tag1 = ""
+                    }
+                    if (this.imagedata.tag2 != null) {
+                        this.imagedata.tag2 = "#" + this.imagedata.tag2 + ","
+                    } else {
+                        this.imagedata.tag2 = ""
+                    }
+                    if (this.imagedata.tag3 != null) {
+                        this.imagedata.tag3 = "#" + this.imagedata.tag3 + ","
+                    } else {
+                        this.imagedata.tag3 = ""
+                    }
+                    if (this.imagedata.tag4 != null) {
+                        this.imagedata.tag4 = "#" + this.imagedata.tag4 + ","
+                    } else {
+                        this.imagedata.tag4 = ""
+                    }
+                    if (this.imagedata.tag5 != null) {
+                        this.imagedata.tag5 = "#" + this.imagedata.tag5 + ","
+                    } else {
+                        this.imagedata.tag5 = ""
+                    }
+                    if (this.imagedata.tag6 != null) {
+                        this.imagedata.tag6 = "#" + this.imagedata.tag6 + ","
+                    } else {
+                        this.imagedata.tag6 = ""
+                    }
+                    if (this.imagedata.tag7 != null) {
+                        this.imagedata.tag7 = "#" + this.imagedata.tag7 + ","
+                    } else {
+                        this.imagedata.tag7 = ""
+                    }
+                    if (this.imagedata.tag8 != null) {
+                        this.imagedata.tag8 = "#" + this.imagedata.tag8 + ","
+                    } else {
+                        this.imagedata.tag8 = ""
+                    }
+                    if (this.imagedata.tag9 != null) {
+                        this.imagedata.tag9 = "#" + this.imagedata.tag9 + ","
+                    } else {
+                        this.imagedata.tag9 = ""
+                    }
+
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            this.islogin = this.$cookies.isKey('user')
+            if (this.islogin) {
+                const prof_url = constants.host + '/getuser/' + this.$cookies.get('user').id
+                axios.get(prof_url)
+                    .then(response => {
+                        this.my_profile_url = response.data.profile_url
+                        this.my_first_name = response.data.first_name
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+            const comment_url = constants.host + '/getcomment/' + to.params.id
+            axios.get(comment_url)
+                .then(response => {
+                    this.comments = response.data;
+
+                })
+        }
+    },
 
 }
 </script>

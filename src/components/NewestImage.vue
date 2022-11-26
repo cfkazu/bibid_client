@@ -124,7 +124,7 @@ export default {
     }, filters: {
         omittedText(text) {
             // 11文字目以降は"…"
-            return text.length > 8 ? text.slice(0, 7) + "…" : text;
+            return text.length > 5 ? text.slice(0, 5) + "…" : text;
         },
         omittedText20(text) {
             // 20文字目以降は"…"

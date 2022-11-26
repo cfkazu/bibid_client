@@ -1,6 +1,6 @@
 <?php
 $entry_id = ctype_digit($_GET['id']) ? $_GET['id'] : 0;
-$url = 'https://bibid-api.tokyo/getgraph/'.$entry_id.'/';
+$url = 'https://bibid-api.tokyo/imagemul/'.$entry_id;
 $json = file_get_contents($url);
 //echo $json;
 $data = json_decode($json);

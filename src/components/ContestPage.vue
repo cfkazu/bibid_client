@@ -72,7 +72,7 @@
                 <div class="competetion_title-text">
 
                     AIで生成された画像がエントリー対象です。<br>
-                    一部人間の手によって修正された画像も対象となりまが、<br>
+                    一部人間の手によって修正された画像も対象となりますが、<br>
                     ご自身で生成・修正した画像のみを投稿してください。<br>
                     <br>
                     R-18画像も投稿可能です。<br>投稿画面より年齢指定を設定の上、事前に局部の修正をお願いします。
@@ -131,7 +131,7 @@ export default {
 
     &-bigtitle {
         text-align: center;
-        font-size: 60px;
+        font-size: 48px;
         font-weight: bold;
         color: yellow;
     }

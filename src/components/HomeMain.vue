@@ -101,7 +101,7 @@ export default {
 
     &-bigtitle {
         text-align: center;
-        font-size: 60px;
+        font-size: 48px;
         font-weight: bold;
         color: yellow;
     }

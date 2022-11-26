@@ -62,7 +62,7 @@ export default {
         "niji・journey": ["nijijourney"],
         "その他": [],
     },
-    host: "http://localhost:8000",
-    //host: "https://bibid-api.tokyo",
+    //host: "http://localhost:8000",
+    host: "https://bibid-api.tokyo",
 
 }
