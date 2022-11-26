@@ -67,7 +67,7 @@
                                                 <v-col>
                                                     <div class="search-about__contents-text" align="left">
                                                         {{
-                                                                list.title
+                                                        list.title
                                                         }}
                                                     </div>
                                                 </v-col>
@@ -133,7 +133,7 @@
 
 
                                                         <div class="search-about__contents-text mt-2" align="left">{{
-                                                                list.title
+                                                        list.title
                                                         }}
                                                         </div>
                                                     </v-col>
@@ -233,7 +233,7 @@ export default {
 
         },
         edit_image: function (list) {
-            router.push("mimage/" + list.id);
+            router.push("modifyimages/" + list.id);
         },
         editchange: function () {
             if (this.editing) {

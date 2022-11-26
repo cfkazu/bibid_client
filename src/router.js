@@ -10,6 +10,7 @@ import SearchRes from './components/SearchResult.vue'
 import UserPage from './components/UserPage.vue'
 import MyPage from './components/MyPage.vue'
 import ModyfyImage from './components/ModifyImage.vue'
+import ModifyImages from './components/ModifyImages.vue'
 import MyFavoriteAll from './components/MyFavorite_all.vue'
 
 import ContestPage from './components/ContestPage.vue'
@@ -93,6 +94,10 @@ export default new Router({
             path: '/createimages',
             name: 'createimages',
             component: CreateImages
+        }, {
+            path: '/modifyimages/:id',
+            name: 'modifyimages',
+            component: ModifyImages
         }
     ]
 })

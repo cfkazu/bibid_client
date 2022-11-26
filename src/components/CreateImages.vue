@@ -1,69 +1,82 @@
 
 <template>
     <section class="home-about">
+        <v-app>
+            <v-container>
 
-        <v-container>
+                <div class="section__title">
+                    <div class="sectiontitle-text">イラスト投稿</div>
+                    ※局部にはモザイクなどの修正のうえ投稿してください。
+                </div>
+                <validation-observer ref="observer" v-slot="{ invalid }">
+                    <form @submit.prevent="submit">
 
-            <div class="section__title">
-                <div class="sectiontitle-text">イラスト投稿</div>
-                ※局部にはモザイクなどの修正のうえ投稿してください。
-            </div>
-            <validation-observer ref="observer" v-slot="{ invalid }">
-                <form @submit.prevent="submit">
-
-                    <v-file-input ref="fileInput" label="イラスト(クリックで選択)" accept="image/*" :clearable="true"
-                        @click="clearFileName" @change="selectedFile">
-                    </v-file-input>
-                    <v-row class="mb-6" no-gutters justify="start">
-                        <v-col v-for="(src, i) in previewSrc" :key="i" cols="6" sm="4" md="3" lg="3">
-                            <v-img :aspect-ratio="1" v-bind:src="src">
-                            </v-img>
-                        </v-col>
-                    </v-row>
-                    <validation-provider v-slot="{ errors }" name="タイトル" rules="required|max:30">
-                        <v-text-field v-model="imagedata.title" :counter="30" :error-messages="errors"
-                            label="タイトル(30文字以内)" required>
-                        </v-text-field>
-                    </validation-provider>
-                    <validation-provider v-slot="{ errors }" name="Description">
-                        <v-textarea v-model="imagedata.decription" :error-messages="errors"
-                            label="キャプション(簡単な説明、制作秘話など)">
-                        </v-textarea>
-                    </validation-provider>
+                        <v-file-input ref="fileInput" label="イラスト(クリックで選択)" accept="image/*" :clearable="true"
+                            @click="clearFileName" @change="selectedFile">
+                        </v-file-input>
+                        <v-row class="mb-6" no-gutters justify="start">
+                            <v-col v-for="(src, i) in ok_Previews" :key="i" cols="6" sm="4" md="3" lg="3">
+                                <v-hover v-slot="{ hover }">
+                                    <v-img :aspect-ratio="1" v-bind:src="src.url"
+                                        v-if="imagedata.image[src.id].is_able">
+                                        <v-fade-transition>
+                                            <v-overlay absolute justify="end" v-if="hover">
+                                                <v-btn @click="deleteimage(src.id)">削除する</v-btn>
+                                            </v-overlay>
+                                        </v-fade-transition>
+                                    </v-img>
+                                </v-hover>
 
 
-                    <validation-provider v-slot="{ errors }" name="AdditonalTag">
-                        <v-text-field v-model="imagedata.additonal_tags
-                        " :error-messages="errors" label="タグ(任意,30字×10個まで)">
-                        </v-text-field>
-                    </validation-provider>
 
-                    <validation-provider v-slot="{ errors }" name="年齢設定" rules="required">
-                        <v-select v-model="imagedata.is_nsfw" :error-messages="errors" :items="NSFW" label="年齢設定"
-                            required>
-                        </v-select>
-                    </validation-provider>
-                    <validation-provider v-slot="{ errors }" name="AIモデル" rules="required">
-                        <v-select v-model="imagedata.ai_model" :error-messages="errors" :items="AIModel" label="AIモデル"
-                            required>
-                        </v-select>
-                    </validation-provider>
-                    <v-switch v-model="submit_prompts" label="プロンプトを投稿する"></v-switch>
-                    <v-switch v-model="twitter" label="ツイッターにも投稿する" color="blue" value="secondary" hide-details>
-                    </v-switch>
-                    <br>
-                    <v-btn class="mr-4" type="submit" :disabled="(invalid || !imagedata.image)">
-                        投稿
-                    </v-btn>
-                    <v-btn @click="clear">
-                        クリア
-                    </v-btn>
-                    <div>
-                        <br> <br> <br> <br> <br>
-                    </div>
-                </form>
-            </validation-observer>
-        </v-container>
+                            </v-col>
+
+                        </v-row>
+                        <validation-provider v-slot="{ errors }" name="タイトル" rules="required|max:30">
+                            <v-text-field v-model="imagedata.title" :counter="30" :error-messages="errors"
+                                label="タイトル(30文字以内)" required>
+                            </v-text-field>
+                        </validation-provider>
+                        <validation-provider v-slot="{ errors }" name="Description">
+                            <v-textarea v-model="imagedata.decription" :error-messages="errors"
+                                label="キャプション(簡単な説明、制作秘話など)">
+                            </v-textarea>
+                        </validation-provider>
+
+
+                        <validation-provider v-slot="{ errors }" name="AdditonalTag">
+                            <v-text-field v-model="imagedata.additonal_tags
+                            " :error-messages="errors" label="タグ(任意,30字×10個まで)">
+                            </v-text-field>
+                        </validation-provider>
+
+                        <validation-provider v-slot="{ errors }" name="年齢設定" rules="required">
+                            <v-select v-model="imagedata.is_nsfw" :error-messages="errors" :items="NSFW" label="年齢設定"
+                                required>
+                            </v-select>
+                        </validation-provider>
+                        <validation-provider v-slot="{ errors }" name="AIモデル" rules="required">
+                            <v-select v-model="imagedata.ai_model" :error-messages="errors" :items="AIModel"
+                                label="AIモデル" required>
+                            </v-select>
+                        </validation-provider>
+                        <v-switch v-model="submit_prompts" label="プロンプトを投稿する"></v-switch>
+                        <v-switch v-model="twitter" label="ツイッターにも投稿する" color="blue" value="secondary" hide-details>
+                        </v-switch>
+                        <br>
+                        <v-btn class="mr-4" type="submit" :disabled="(invalid || !imagedata.image)">
+                            投稿
+                        </v-btn>
+                        <v-btn @click="clear">
+                            クリア
+                        </v-btn>
+                        <div>
+                            <br> <br> <br> <br> <br>
+                        </div>
+                    </form>
+                </validation-observer>
+            </v-container>
+        </v-app>
     </section>
 </template>
 <script>
@@ -117,6 +130,7 @@ export default {
 
                 ],
             },
+            overlay: false,
             filename: "",
             select: null,
             checkbox: null,
@@ -127,6 +141,7 @@ export default {
             twitter: false,
             imageindex: 0,
             submit_prompts: false,
+            loading_chunks: false,
         }
     }, mounted() {
         this.checkLoggedIn();
@@ -136,7 +151,14 @@ export default {
             this.imagedata.additonal_tags = this.$route.query.deftag;
         }
     },
+
     computed: {
+        ok_Previews: function () {
+            return this.previewSrc.filter((item) => {
+                return item.is_able;
+            });
+        },
+
         nsfw_id: function () {
             if (this.imagedata.is_nsfw == '全年齢') {
                 return 0;
@@ -152,7 +174,21 @@ export default {
     },
     methods: {
 
+        deleteimage(index) {
+            Swal.fire({
+                title: '本当に削除しますか？',
 
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '削除',
+                cancelButtonText: 'キャンセル'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.imagedata.image[index].is_able = false;
+                    this.previewSrc[index].is_able = false;
+                }
+            })
+        },
 
         Get_EXIF: function (file, index) {
             var reader = new FileReader();
@@ -179,6 +215,7 @@ export default {
         },
         GetPrompt_png(textChunks, index) {
             if (textChunks.length == 0) {
+                this.loading_chunks = false;
                 return;
             }
             console.log(textChunks)
@@ -203,6 +240,9 @@ export default {
                 catch (e) {
                     console.log(e)
                 }
+                finally {
+                    this.loading_chunks = false;
+                }
             } else if (textChunks[0].keyword == "parameters") {
                 //Stable Diffusionとみる。
                 let text = textChunks[0].text;
@@ -214,11 +254,16 @@ export default {
                 catch (e) {
                     console.log(e)
                 }
-                let neg_prompt = text.match(/Negative prompt: (.*)Steps:/s)[1]
-                this.imagedata.image[index].neg_prompt = neg_prompt.replace('\n', '');
-                this.imagedata.image[index].seed = text.match(/Seed: (.*?),/)[1]
-                this.imagedata.image[index].scale = text.match(/scale: (.*?),/)[1]
-                this.imagedata.image[index].steps = text.match(/Steps: (.*?),/)[1]
+                finally {
+                    let neg_prompt = text.match(/Negative prompt: (.*)Steps:/s)[1]
+                    this.imagedata.image[index].neg_prompt = neg_prompt.replace('\n', '');
+                    this.imagedata.image[index].seed = text.match(/Seed: (.*?),/)[1]
+                    this.imagedata.image[index].scale = text.match(/scale: (.*?),/)[1]
+                    this.imagedata.image[index].steps = text.match(/Steps: (.*?),/)[1]
+                    this.loading_chunks = false;
+                }
+
+
             }
         },
         inputFile: function (e) {
@@ -233,7 +278,11 @@ export default {
             this.isUploading = true;
             //   console.log(e)
             const file = e
-            this.imagedata.image.push({});
+            this.imagedata.image.push({
+                is_able: true,
+            });
+
+            this.loading_chunks = true;
             this.Get_EXIF(file, this.imageindex);
             if (!file) {
                 return;
@@ -244,7 +293,13 @@ export default {
                 const compFile = await ImageUtil.getCompressImageFileAsync(file);
                 this.imagedata.image[this.imageindex].image = compFile;
                 this.fileName = await ImageUtil.getDataUrlFromFile(compFile);
-                this.previewSrc[this.imageindex] = this.fileName;
+                this.previewSrc.push({
+                    is_able: true,
+                    id: this.imageindex,
+                    url: this.fileName,
+
+                });
+
                 this.imageindex++;
 
             } catch (err) {
@@ -269,17 +324,25 @@ export default {
             if (this.imagedata.additonal_tags == "(例)女の子,海,夏") {
                 this.imagedata.additonal_tags = "";
             }
+            var sinai = 0;
+            var count = 0;
             var formData = new FormData();
             for (var i = 0; i < this.imagedata.image.length; i++) {
-                if (this.submit_prompts) {
-                    formData.append('prompt' + i, this.imagedata.image[i].prompt);
-                    formData.append('neg_prompt' + i, this.imagedata.image[i].neg_prompt);
-                    formData.append('seed' + i, -1);
+                if (!this.imagedata.image[i].is_able) {
+                    sinai++;
+                    continue;
                 }
-                formData.append('image' + i, this.imagedata.image[i].image);
+                if (this.submit_prompts) {
+                    formData.append('prompt' + count, this.imagedata.image[i].prompt);
+                    formData.append('neg_prompt' + count, this.imagedata.image[i].neg_prompt);
+                    formData.append('seed' + count, -1);
+
+                }
+                formData.append('image' + count, this.imagedata.image[i].image);
+                count++;
 
             }
-            formData.append('num', this.imagedata.image.length);
+            formData.append('num', this.imagedata.image.length - sinai);
             formData.append('title', this.imagedata.title);
             formData.append('decription', this.imagedata.decription);
             formData.append('additonal_tags', this.imagedata.additonal_tags);
