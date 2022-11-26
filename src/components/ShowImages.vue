@@ -262,6 +262,11 @@ export default {
         axios.get(this.url)
             .then(response => {
                 this.imagedata = response.data;
+                this.imagedata.images.sort(
+                    function (a, b) {
+                        return a.id - b.id
+                    }
+                )
                 console.log(this.imagedata)
                 if (this.imagedata.tag0 != null) {
                     this.imagedata.tag0 = "#" + this.imagedata.tag0 + ","
